@@ -1,0 +1,66 @@
+<div class="modal-overlay" (click)="aoClicarFora($event)">
+  <div class="modal">
+    <header class="modal__header">
+      <div class="modal__icone">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+          <polyline points="10 9 9 9 8 9" />
+        </svg>
+      </div>
+      <div class="modal__titulo-wrapper">
+        <h2 class="modal__titulo">{{ titulo }}</h2>
+        @if (subtitulo) {
+        <p class="modal__subtitulo">{{ subtitulo }}</p>
+        }
+      </div>
+      <button class="modal__fechar" type="button" aria-label="Fechar modal" (click)="aoFechar()">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </header>
+
+    <div class="modal__conteudo">
+      @for (secao of secoes; track secao.titulo) {
+      <section class="secao">
+        <h3 class="secao__titulo">{{ secao.titulo }}</h3>
+        @for (paragrafo of secao.conteudo; track $index) {
+        <p class="secao__texto">{{ paragrafo }}</p>
+        }
+      </section>
+      }
+    </div>
+
+    <footer class="modal__footer">
+      <app-logo tema="light" class="modal__logo"></app-logo>
+      <div class="modal__footer-esquerda">
+        @if (ultimaAtualizacao) {
+        <span class="modal__atualizacao">Atualizado em {{ ultimaAtualizacao }}</span>
+        }
+      </div>
+      <button class="modal__botao" type="button" (click)="aoFechar()">Entendi</button>
+    </footer>
+  </div>
+</div>

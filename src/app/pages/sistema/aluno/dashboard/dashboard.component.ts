@@ -1,0 +1,197 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import {
+  SistemaHeaderComponent,
+  Usuario,
+} from '../../../../components/sistema/header/header.component';
+
+interface Estatistica {
+  icone: string;
+  valor: string | number;
+  label: string;
+  cor: 'primary' | 'success' | 'warning' | 'info';
+}
+
+interface Curso {
+  id: number;
+  titulo: string;
+  categoria: string;
+  categoriaColor: string;
+  instrutor: string;
+  imagem: string;
+  progresso: number;
+  totalAulas: number;
+  aulaAtual: number;
+  duracao: string;
+  avaliacao: number;
+  totalAvaliacoes: number;
+  gratuito?: boolean;
+  modulo?: string;
+}
+
+interface Atividade {
+  id: number;
+  tipo: 'aula' | 'certificado' | 'avaliacao' | 'curso';
+  titulo: string;
+  descricao: string;
+  tempo: string;
+  icone: string;
+  cor: string;
+}
+
+interface MetaDia {
+  dia: string;
+  horas: number;
+  atual?: boolean;
+}
+
+@Component({
+  selector: 'app-aluno-dashboard',
+  standalone: true,
+  imports: [CommonModule, RouterLink, SistemaHeaderComponent],
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss',
+})
+export class AlunoDashboardComponent {
+  nomeAluno = 'João';
+  sidebarAberta = true;
+
+  usuario: Usuario = {
+    nome: 'João Silva',
+    email: 'joao@email.com',
+  };
+
+  onSidebarMudou(aberta: boolean) {
+    this.sidebarAberta = aberta;
+  }
+
+  estatisticas: Estatistica[] = [
+    { icone: 'cursos', valor: 4, label: 'Cursos em andamento', cor: 'primary' },
+    { icone: 'concluidos', valor: 12, label: 'Cursos concluídos', cor: 'success' },
+    { icone: 'horas', valor: '48h', label: 'Horas estudadas', cor: 'warning' },
+    { icone: 'progresso', valor: '58%', label: 'Progresso geral', cor: 'info' },
+  ];
+
+  cursoAtual: Curso = {
+    id: 1,
+    titulo: 'Desenvolvimento Web Fullstack: Do Zero ao Pro',
+    categoria: 'Programação',
+    categoriaColor: '#21b7cd',
+    instrutor: 'Prof. Carlos Mendes',
+    imagem: 'assets/cursos/fullstack.jpg',
+    progresso: 35,
+    totalAulas: 45,
+    aulaAtual: 14,
+    duracao: '4h 20m',
+    avaliacao: 4.8,
+    totalAvaliacoes: 234,
+    modulo: 'Módulo 3: Introdução ao React Hooks e Context API',
+  };
+
+  meusCursos: Curso[] = [
+    {
+      id: 1,
+      titulo: 'Desenvolvimento Web Fullstack: Do Zero ao Pro',
+      categoria: 'Programação',
+      categoriaColor: '#21b7cd',
+      instrutor: 'Prof. Carlos Mendes',
+      imagem: 'assets/cursos/fullstack.jpg',
+      progresso: 35,
+      totalAulas: 45,
+      aulaAtual: 14,
+      duracao: '48h',
+      avaliacao: 4.8,
+      totalAvaliacoes: 234,
+      gratuito: true,
+    },
+    {
+      id: 2,
+      titulo: 'UX/UI Design Masterclass',
+      categoria: 'Design',
+      categoriaColor: '#8b5cf6',
+      instrutor: 'Prof. Ana Souza',
+      imagem: 'assets/cursos/ux-ui.jpg',
+      progresso: 80,
+      totalAulas: 28,
+      aulaAtual: 22,
+      duracao: '32h',
+      avaliacao: 4.9,
+      totalAvaliacoes: 512,
+      gratuito: true,
+    },
+    {
+      id: 3,
+      titulo: 'Marketing Digital para Iniciantes',
+      categoria: 'Marketing',
+      categoriaColor: '#f59e0b',
+      instrutor: 'Prof. Carlos Mendes',
+      imagem: 'assets/cursos/marketing.jpg',
+      progresso: 15,
+      totalAulas: 20,
+      aulaAtual: 3,
+      duracao: '24h',
+      avaliacao: 4.7,
+      totalAvaliacoes: 389,
+    },
+  ];
+
+  atividadesRecentes: Atividade[] = [
+    {
+      id: 1,
+      tipo: 'aula',
+      titulo: 'Aula concluída',
+      descricao: 'Módulo 3: Componentes React - Desenv...',
+      tempo: 'Há 2 horas',
+      icone: 'check',
+      cor: '#22c55e',
+    },
+    {
+      id: 2,
+      tipo: 'certificado',
+      titulo: 'Certificado emitido',
+      descricao: 'Você concluiu o curso de Python para In...',
+      tempo: 'Há 1 dia',
+      icone: 'certificado',
+      cor: '#21b7cd',
+    },
+    {
+      id: 3,
+      tipo: 'avaliacao',
+      titulo: 'Avaliação enviada',
+      descricao: 'Você avaliou o curso Marketing Digital ...',
+      tempo: 'Há 2 dias',
+      icone: 'star',
+      cor: '#f59e0b',
+    },
+    {
+      id: 4,
+      tipo: 'curso',
+      titulo: 'Novo curso iniciado',
+      descricao: 'UI/UX Design Fundamentos',
+      tempo: 'Há 3 dias',
+      icone: 'curso',
+      cor: '#8b5cf6',
+    },
+  ];
+
+  metaSemanal = {
+    horasAlvo: 20,
+    horasConcluidas: 15,
+    porcentagem: 75,
+  };
+
+  diasSemana: MetaDia[] = [
+    { dia: 'Segunda', horas: 3 },
+    { dia: 'Terça', horas: 2 },
+    { dia: 'Quarta', horas: 4 },
+    { dia: 'Hoje', horas: 6, atual: true },
+  ];
+
+  get saudacao(): string {
+    const hora = new Date().getHours();
+    if (hora < 12) return 'Bom dia';
+    if (hora < 18) return 'Boa tarde';
+    return 'Boa noite';
+  }
+}

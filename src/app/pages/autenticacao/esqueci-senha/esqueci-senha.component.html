@@ -1,0 +1,40 @@
+<div class="recuperar">
+  <div class="conteudo">
+    <a class="voltar-link" routerLink="/login">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+      Voltar para o login
+    </a>
+    <app-logo tema="light"></app-logo>
+
+    <h1 class="titulo">Recuperar senha</h1>
+    <p class="subtitulo">Digite seu e-mail e enviaremos um link para você criar uma nova senha.</p>
+
+    <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
+      <app-campo
+        rotulo="E-mail"
+        tipo="email"
+        placeholder="seu@email.com"
+        icone="email"
+        formControlName="email"
+      ></app-campo>
+
+      <app-botao tipo="submit" variante="primario">Enviar link de recuperação</app-botao>
+    </form>
+
+    <div class="rodape">
+      <span>Lembrou sua senha?</span>
+      <a class="atalho" routerLink="/login">Fazer login</a>
+    </div>
+  </div>
+</div>

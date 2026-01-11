@@ -1,0 +1,366 @@
+$primary: #21b7cd;
+$primary-dark: #1a9aab;
+$text-dark: #0b1b2b;
+$text-muted: #64748b;
+$border: #e2e8f0;
+$bg-light: #f8fafb;
+$white: #fff;
+$danger: #ef4444;
+
+.pagamento {
+  &__header {
+    margin-bottom: 2rem;
+  }
+
+  &__titulo {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text-dark;
+    margin: 0 0 0.25rem;
+  }
+
+  &__subtitulo {
+    color: $text-muted;
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+    border-top: 1px solid $border;
+    margin-top: 1.5rem;
+  }
+}
+
+.secao {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid $border;
+
+  &:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &__titulo {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-dark;
+    margin: 0 0 1rem;
+  }
+
+  &__hint {
+    font-size: 0.75rem;
+    color: $text-muted;
+    margin: 0.5rem 0 0;
+  }
+}
+
+.cartoes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cartao {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: $bg-light;
+  border: 1px solid $border;
+  border-radius: 10px;
+
+  &__icone {
+    width: 44px;
+    height: 44px;
+    background: $primary;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  &__numero {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: $text-dark;
+  }
+
+  &__expiracao {
+    font-size: 0.8125rem;
+    color: $text-muted;
+  }
+
+  &__badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: $text-muted;
+    padding: 0.25rem 0.75rem;
+    background: $white;
+    border: 1px solid $border;
+    border-radius: 20px;
+  }
+
+  &__acoes {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__btn {
+    background: none;
+    border: none;
+    font-size: 0.8125rem;
+    color: $primary;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &--remover {
+      color: $danger;
+    }
+  }
+}
+
+.btn-adicionar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem;
+  background: $white;
+  border: 1px dashed $border;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  color: $text-muted;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+    background: rgba($primary, 0.02);
+  }
+}
+
+.form-cartao {
+  padding: 1.5rem;
+  background: $bg-light;
+  border: 1px solid $border;
+  border-radius: 10px;
+
+  &__acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+}
+
+.campos-inline {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  &__label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-dark;
+  }
+
+  &__input {
+    padding: 0.75rem 1rem;
+    border: 1px solid $border;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    color: $text-dark;
+    background: $white;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+
+    &::placeholder {
+      color: $text-muted;
+    }
+  }
+}
+
+.email-cobranca {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-copiar {
+  width: 44px;
+  height: 44px;
+  background: $bg-light;
+  border: 1px solid $border;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $text-muted;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+  }
+}
+
+.assinatura {
+  padding: 1.25rem;
+  background: $bg-light;
+  border: 1px solid $border;
+  border-radius: 10px;
+
+  &__info {
+    margin-bottom: 1rem;
+  }
+
+  &__plano {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  &__nome {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-dark;
+  }
+
+  &__badge {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 0.25rem 0.625rem;
+    border-radius: 20px;
+    background: #fef2f2;
+    color: $danger;
+
+    &--ativo {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+  }
+
+  &__detalhes {
+    font-size: 0.875rem;
+    color: $text-muted;
+  }
+
+  &__acoes {
+    display: flex;
+    gap: 0.75rem;
+  }
+}
+
+.btn-outline {
+  padding: 0.5rem 1rem;
+  background: $white;
+  border: 1px solid $border;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $text-dark;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+  }
+}
+
+.btn-cancelar {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  font-size: 0.875rem;
+  color: $text-muted;
+  cursor: pointer;
+
+  &:hover {
+    color: $text-dark;
+  }
+}
+
+.btn-cancelar-assinatura {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $danger;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.btn-salvar-cartao {
+  padding: 0.5rem 1rem;
+  background: $primary;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $white;
+  cursor: pointer;
+
+  &:hover {
+    background: $primary-dark;
+  }
+}
+
+.btn-salvar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: $primary;
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: $primary-dark;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}

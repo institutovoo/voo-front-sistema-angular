@@ -1,0 +1,110 @@
+<div class="perfil">
+  <div class="perfil__header">
+    <h2 class="perfil__titulo">Informações do Perfil</h2>
+    <p class="perfil__subtitulo">Atualize suas informações pessoais</p>
+  </div>
+
+  <form [formGroup]="formulario" (ngSubmit)="salvar()" class="perfil__form">
+    <!-- Foto de Perfil -->
+    <div class="foto-section">
+      <div class="foto-section__avatar">
+        <img *ngIf="fotoUrl" [src]="fotoUrl" alt="Foto de perfil" />
+        <span *ngIf="!fotoUrl" class="foto-section__inicial">J</span>
+      </div>
+      <div class="foto-section__info">
+        <label class="foto-section__btn">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+            />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+          Alterar Foto
+          <input type="file" accept="image/jpeg,image/png" (change)="onFotoChange($event)" hidden />
+        </label>
+        <span class="foto-section__hint">JPG, PNG. Máx 2MB</span>
+      </div>
+    </div>
+
+    <!-- Campos do Formulário -->
+    <div class="campos-grid">
+      <div class="campo">
+        <label class="campo__label">Nome Completo</label>
+        <input
+          type="text"
+          class="campo__input"
+          formControlName="nomeCompleto"
+          placeholder="Seu nome completo"
+        />
+      </div>
+
+      <div class="campo">
+        <label class="campo__label">Email</label>
+        <input
+          type="email"
+          class="campo__input"
+          formControlName="email"
+          placeholder="seu@email.com"
+        />
+      </div>
+
+      <div class="campo">
+        <label class="campo__label">Telefone</label>
+        <input
+          type="text"
+          class="campo__input"
+          formControlName="telefone"
+          placeholder="(00) 00000-0000"
+          (input)="formatarTelefone($event)"
+          maxlength="15"
+        />
+      </div>
+
+      <div class="campo">
+        <label class="campo__label">Idioma</label>
+        <select class="campo__input" formControlName="idioma">
+          <option value="pt-BR">Português (Brasil)</option>
+          <option value="en-US">English (US)</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="campo campo--full">
+      <label class="campo__label">Bio</label>
+      <textarea
+        class="campo__input campo__input--textarea"
+        formControlName="bio"
+        placeholder="Conte um pouco sobre você..."
+        rows="3"
+      ></textarea>
+    </div>
+
+    <!-- Botão Salvar -->
+    <div class="perfil__footer">
+      <button type="submit" class="btn-salvar" [disabled]="salvando">
+        <svg
+          *ngIf="!salvando"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+          <polyline points="17,21 17,13 7,13 7,21" />
+          <polyline points="7,3 7,8 15,8" />
+        </svg>
+        {{ salvando ? 'Salvando...' : 'Salvar Alterações' }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,17 @@
+<button
+  class="botao"
+  [class.botao--primario]="variante === 'primario'"
+  [class.botao--secundario]="variante === 'secundario'"
+  [class.botao--outline]="variante === 'outline'"
+  [class.botao--pequeno]="tamanho === 'pequeno'"
+  [class.botao--grande]="tamanho === 'grande'"
+  [class.botao--largura-total]="larguraTotal"
+  [class.botao--carregando]="carregando"
+  [type]="tipo"
+  [disabled]="desabilitado || carregando"
+>
+  <span class="botao__spinner" *ngIf="carregando"></span>
+  <span class="botao__conteudo" [class.botao__conteudo--oculto]="carregando">
+    <ng-content></ng-content>
+  </span>
+</button>

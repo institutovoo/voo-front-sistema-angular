@@ -1,0 +1,91 @@
+.campo-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo {
+  position: relative;
+  display: block;
+
+  &__rotulo {
+    font-size: 14px;
+    color: #0b1b2b;
+    font-weight: 500;
+  }
+
+  &__controle {
+    width: 100%;
+    height: 44px;
+    border: 1px solid #e0e6ed;
+    border-radius: 12px;
+    padding: 0 12px;
+    background: #fff;
+    color: #0b1b2b;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    font-size: 14px;
+
+    &::placeholder {
+      color: #8b9aa8;
+    }
+
+    &:disabled {
+      background: #f5f7fa;
+      cursor: not-allowed;
+    }
+  }
+
+  &--com-icone-esquerda {
+    .campo__controle {
+      padding-left: 40px;
+    }
+  }
+
+  &--com-icone-direita {
+    .campo__controle {
+      padding-right: 44px;
+    }
+  }
+
+  &__icone {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #607081;
+    transition: color 0.15s ease;
+
+    &--esquerda {
+      left: 12px;
+      pointer-events: none;
+    }
+
+    &--direita {
+      right: 8px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+
+      &:hover {
+        background: #f0f4f8;
+      }
+    }
+  }
+
+  // Focus states
+  &:focus-within {
+    .campo__controle {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(13, 192, 199, 0.2), 0 0 0 1px var(--color-primary);
+    }
+    .campo__icone {
+      color: var(--color-primary);
+    }
+  }
+}

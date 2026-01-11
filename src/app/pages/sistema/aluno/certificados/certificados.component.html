@@ -1,0 +1,171 @@
+<app-sistema-header
+  [usuario]="usuario"
+  tipoUsuario="aluno"
+  (sidebarMudou)="onSidebarMudou($event)"
+></app-sistema-header>
+
+<div class="certificados-page">
+  <main class="main" [class.main--expandido]="!sidebarAberta">
+    <div class="conteudo">
+      <!-- Header da página -->
+      <div class="page-header">
+        <div class="page-header__info">
+          <h1 class="page-header__titulo">Meus Certificados</h1>
+          <p class="page-header__subtitulo">
+            Gerencie e compartilhe suas conquistas de aprendizado
+          </p>
+        </div>
+        <div class="page-header__acoes">
+          <button class="btn btn--outline">
+            <app-header-icone nome="download" [tamanho]="18"></app-header-icone>
+            Baixar Todos
+          </button>
+        </div>
+      </div>
+
+      <!-- Métricas -->
+      <section class="metricas">
+        <div class="metricas__grid">
+          <div
+            *ngFor="let metrica of metricas"
+            class="metrica-card"
+            [ngClass]="'metrica-card--' + metrica.cor"
+          >
+            <div class="metrica-card__icone">
+              <app-header-icone [nome]="metrica.icone" [tamanho]="24"></app-header-icone>
+            </div>
+            <div class="metrica-card__info">
+              <span class="metrica-card__valor">{{ metrica.valor }}</span>
+              <span class="metrica-card__label">{{ metrica.label }}</span>
+            </div>
+            <div class="metrica-card__tendencia" *ngIf="metrica.tendencia">
+              <span
+                class="metrica-card__tendencia-badge"
+                [class.metrica-card__tendencia-badge--up]="metrica.tendencia.tipo === 'up'"
+                [class.metrica-card__tendencia-badge--down]="metrica.tendencia.tipo === 'down'"
+              >
+                <app-header-icone
+                  [nome]="metrica.tendencia.tipo === 'up' ? 'sort-asc' : 'sort'"
+                  [tamanho]="12"
+                ></app-header-icone>
+                +{{ metrica.tendencia.valor }}
+              </span>
+              <span class="metrica-card__tendencia-label">este mês</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filtros -->
+      <section class="filtros">
+        <div class="filtros__categorias">
+          <button
+            *ngFor="let cat of categorias"
+            class="filtros__categoria"
+            [class.filtros__categoria--ativa]="categoriaFiltro === cat.id"
+            (click)="setCategoria(cat.id)"
+          >
+            <span
+              class="filtros__categoria-dot"
+              [style.background-color]="cat.cor"
+              *ngIf="cat.id !== 'todas'"
+            ></span>
+            {{ cat.nome }}
+            <span class="filtros__categoria-count">{{ cat.quantidade }}</span>
+          </button>
+        </div>
+
+        <div class="filtros__controles">
+          <!-- Busca -->
+          <div class="filtros__busca">
+            <app-header-icone nome="busca" [tamanho]="18" cor="#64748b"></app-header-icone>
+            <input
+              type="text"
+              placeholder="Buscar certificado..."
+              [(ngModel)]="termoBusca"
+              class="filtros__busca-input"
+            />
+          </div>
+
+          <!-- Ordenação -->
+          <div class="filtros__select-wrapper">
+            <app-header-icone nome="sort" [tamanho]="16" cor="#64748b"></app-header-icone>
+            <select [(ngModel)]="ordenacao" class="filtros__select">
+              <option value="recentes">Mais recentes</option>
+              <option value="antigos">Mais antigos</option>
+              <option value="nome">Nome A-Z</option>
+              <option value="nota">Maior nota</option>
+            </select>
+          </div>
+
+          <!-- Visualização -->
+          <div class="filtros__visualizacao">
+            <button
+              class="filtros__viz-btn"
+              [class.filtros__viz-btn--ativo]="visualizacao === 'grid'"
+              (click)="setVisualizacao('grid')"
+              title="Visualização em grade"
+            >
+              <app-header-icone nome="grid" [tamanho]="18"></app-header-icone>
+            </button>
+            <button
+              class="filtros__viz-btn"
+              [class.filtros__viz-btn--ativo]="visualizacao === 'lista'"
+              (click)="setVisualizacao('lista')"
+              title="Visualização em lista"
+            >
+              <app-header-icone nome="list" [tamanho]="18"></app-header-icone>
+            </button>
+          </div>
+
+          <!-- Limpar filtros -->
+          <button class="filtros__limpar" *ngIf="temFiltrosAtivos" (click)="limparFiltros()">
+            <app-header-icone nome="x" [tamanho]="14"></app-header-icone>
+            Limpar
+          </button>
+        </div>
+      </section>
+
+      <!-- Resultados -->
+      <section class="resultados">
+        <div class="resultados__header">
+          <span class="resultados__count">
+            {{ certificadosFiltrados.length }}
+            {{
+              certificadosFiltrados.length === 1
+                ? 'certificado encontrado'
+                : 'certificados encontrados'
+            }}
+          </span>
+        </div>
+
+        <!-- Grid/Lista de Certificados -->
+        <div class="certificados-grid" [class.certificados-grid--lista]="visualizacao === 'lista'">
+          <app-certificado-card
+            *ngFor="let cert of certificadosFiltrados"
+            [certificado]="cert"
+            [visualizacao]="visualizacao"
+            (visualizar)="onVisualizarCertificado($event)"
+            (baixar)="onBaixarCertificado($event)"
+            (compartilhar)="onCompartilharCertificado($event)"
+          ></app-certificado-card>
+        </div>
+
+        <!-- Estado vazio -->
+        <div class="estado-vazio" *ngIf="certificadosFiltrados.length === 0">
+          <div class="estado-vazio__icone">
+            <app-header-icone nome="certificados" [tamanho]="48" cor="#cbd5e1"></app-header-icone>
+          </div>
+          <h3 class="estado-vazio__titulo">Nenhum certificado encontrado</h3>
+          <p class="estado-vazio__texto">
+            Tente ajustar os filtros ou conclua novos cursos para obter certificados.
+          </p>
+          <button class="btn btn--primary" routerLink="/aluno/loja">
+            <app-header-icone nome="loja" [tamanho]="18"></app-header-icone>
+            Explorar Cursos
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>

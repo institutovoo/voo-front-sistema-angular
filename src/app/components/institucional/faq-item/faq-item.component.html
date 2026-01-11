@@ -1,0 +1,21 @@
+<details class="faq-item" [attr.open]="aberto ? '' : null">
+  <summary class="faq-item__pergunta">
+    <span>{{ pergunta }}</span>
+    <svg
+      class="faq-item__icone"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  </summary>
+  <div class="faq-item__resposta">
+    <ng-content></ng-content>
+  </div>
+</details>

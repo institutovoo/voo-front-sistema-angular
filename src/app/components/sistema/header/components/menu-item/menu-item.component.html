@@ -1,0 +1,12 @@
+<a
+  [routerLink]="item.rota"
+  routerLinkActive="menu-item--ativo"
+  class="menu-item"
+  [class.menu-item--compacto]="compacto"
+  [class.menu-item--sair]="variante === 'sair'"
+  [title]="compacto ? item.label : ''"
+  (click)="onClick()"
+>
+  <app-header-icone [nome]="item.icone" [tamanho]="20"></app-header-icone>
+  <span class="menu-item__label" *ngIf="!compacto">{{ item.label }}</span>
+</a>

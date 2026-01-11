@@ -1,0 +1,156 @@
+<div class="seguranca">
+  <div class="seguranca__header">
+    <h2 class="seguranca__titulo">Segurança</h2>
+    <p class="seguranca__subtitulo">Gerencie a segurança da sua conta</p>
+  </div>
+
+  <!-- Alterar Senha -->
+  <div class="secao">
+    <h3 class="secao__titulo">Alterar Senha</h3>
+    <form [formGroup]="formularioSenha" (ngSubmit)="alterarSenha()" class="form-senha">
+      <div class="campo">
+        <label class="campo__label">Senha Atual</label>
+        <input
+          type="password"
+          class="campo__input"
+          formControlName="senhaAtual"
+          placeholder="••••••••"
+        />
+      </div>
+      <div class="campo">
+        <label class="campo__label">Nova Senha</label>
+        <input
+          type="password"
+          class="campo__input"
+          formControlName="novaSenha"
+          placeholder="••••••••"
+        />
+      </div>
+      <div class="campo">
+        <label class="campo__label">Confirmar Nova Senha</label>
+        <input
+          type="password"
+          class="campo__input"
+          formControlName="confirmarSenha"
+          placeholder="••••••••"
+        />
+      </div>
+      <button type="submit" class="btn-alterar-senha" [disabled]="alterandoSenha">
+        {{ alterandoSenha ? 'Alterando...' : 'Alterar Senha' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Autenticação de Dois Fatores -->
+  <div class="secao">
+    <h3 class="secao__titulo">Autenticação de Dois Fatores</h3>
+    <div class="auth-2fa">
+      <div class="auth-2fa__info">
+        <div class="auth-2fa__icone">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        </div>
+        <div class="auth-2fa__texto">
+          <span class="auth-2fa__nome">2FA via Aplicativo</span>
+          <span class="auth-2fa__descricao"
+            >Use um aplicativo autenticador para maior segurança</span
+          >
+        </div>
+      </div>
+      <button class="btn-ativar" [class.btn-ativar--ativo]="auth2FA" (click)="toggleAuth2FA()">
+        {{ auth2FA ? 'Desativar' : 'Ativar' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Sessões Ativas -->
+  <div class="secao">
+    <h3 class="secao__titulo">Sessões Ativas</h3>
+    <div class="sessoes">
+      <div *ngFor="let sessao of sessoes" class="sessao">
+        <div class="sessao__icone">
+          <!-- Desktop -->
+          <svg
+            *ngIf="sessao.dispositivo === 'Windows'"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path
+              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            />
+          </svg>
+          <!-- Mobile -->
+          <svg
+            *ngIf="sessao.dispositivo === 'iPhone'"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+            <line x1="12" y1="18" x2="12.01" y2="18" />
+          </svg>
+        </div>
+        <div class="sessao__info">
+          <span class="sessao__dispositivo">{{ sessao.navegador }} • {{ sessao.dispositivo }}</span>
+          <span class="sessao__detalhes">{{ sessao.localizacao }} • {{ sessao.tempo }}</span>
+        </div>
+        <span *ngIf="sessao.atual" class="sessao__badge">Este dispositivo</span>
+        <button *ngIf="!sessao.atual" class="sessao__btn" (click)="encerrarSessao(sessao)">
+          Encerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zona de Perigo -->
+  <div class="secao secao--danger">
+    <h3 class="secao__titulo secao__titulo--danger">Zona de Perigo</h3>
+    <div class="danger-zone">
+      <div class="danger-zone__info">
+        <span class="danger-zone__titulo">Excluir Conta</span>
+        <span class="danger-zone__descricao"
+          >Esta ação é irreversível. Todos os seus dados serão permanentemente excluídos.</span
+        >
+      </div>
+      <button class="btn-excluir" (click)="excluirConta()">Excluir Minha Conta</button>
+    </div>
+  </div>
+
+  <!-- Botão Salvar -->
+  <div class="seguranca__footer">
+    <button type="button" class="btn-salvar" (click)="salvar()" [disabled]="salvando">
+      <svg
+        *ngIf="!salvando"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+        <polyline points="17,21 17,13 7,13 7,21" />
+        <polyline points="7,3 7,8 15,8" />
+      </svg>
+      {{ salvando ? 'Salvando...' : 'Salvar Alterações' }}
+    </button>
+  </div>
+</div>

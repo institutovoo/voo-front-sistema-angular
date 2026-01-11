@@ -1,0 +1,46 @@
+$primary: #21b7cd;
+$text-dark: #0b1b2b;
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+
+  &__logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: $primary;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__nome {
+    font-weight: 800;
+    font-size: 20px;
+    color: $text-dark;
+    letter-spacing: -0.02em;
+  }
+
+  &__cursos {
+    color: $primary;
+  }
+
+  // Tema escuro (para fundos escuros como footer)
+  &--dark {
+    .marca__nome {
+      color: #fff;
+    }
+
+    .marca__cursos {
+      color: $primary;
+    }
+  }
+}

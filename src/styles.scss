@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+// ============================================
+// VARIÁVEIS DO SISTEMA (Design Tokens)
+// ============================================
+:root {
+  // Cores de fundo
+  --color-bg: #ffffff;
+  --color-bg-light: #f8fafb;
+
+  // Cores de texto
+  --color-text: #1a202c;
+  --color-text-dark: #0d1421;
+  --color-muted: #64748b;
+
+  // Cores de borda
+  --color-border: #e2e8f0;
+
+  // Cores da marca
+  --color-primary: #21b7cd;
+  --color-primary-dark: #1a9aab;
+  --color-accent: #00b5ff;
+
+  // Cores de status
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-star: #f59e0b;
+}
+
+// ============================================
+// RESET E BASE
+// ============================================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ============================================
+// TIPOGRAFIA BASE
+// ============================================
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text-dark);
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+select {
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+}
+
+// ============================================
+// UTILITÁRIOS GLOBAIS (usados em múltiplos componentes)
+// ============================================
+
+// Logo
+.marca__cursos {
+  color: var(--color-primary);
+}
+
+// Títulos reutilizáveis
+.titulo {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0b1b2b;
+  margin: 0;
+
+  &--grande {
+    font-size: 36px;
+  }
+
+  &--pequeno {
+    font-size: 24px;
+  }
+
+  &--centro {
+    text-align: center;
+  }
+}
+
+.subtitulo {
+  color: #607081;
+  margin: 0;
+  line-height: 1.5;
+
+  &--centro {
+    text-align: center;
+  }
+}
+
+// Links de ação
+.atalho {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--color-primary-dark);
+  }
+}
+
+// ============================================
+// COMPONENTES DE FORMULÁRIO GLOBAIS
+// ============================================
+
+// Container de formulário
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &__grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__rotulo {
+    font-size: 14px;
+    color: #0b1b2b;
+    font-weight: 500;
+  }
+
+  &__linha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #607081;
+  }
+}
+
+// Checkbox redondo (padrão do sistema)
+.caixa {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #607081;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.5;
+
+  input[type='checkbox'] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--color-primary);
+    display: inline-grid;
+    place-items: center;
+    background: #fff;
+    cursor: pointer;
+    margin-top: 1px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+
+    &::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      transform: scale(0);
+      background: var(--color-primary);
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    &:checked::before {
+      transform: scale(1);
+    }
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(33, 183, 205, 0.2);
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(33, 183, 205, 0.25), 0 0 0 1px var(--color-primary);
+    }
+  }
+
+  span {
+    color: #607081;
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Select customizado
+.selecao {
+  &__controle {
+    width: 100%;
+    height: 44px;
+    border: 1px solid #e0e6ed;
+    border-radius: 12px;
+    padding: 0 12px;
+    background: #fff;
+    color: #0b1b2b;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(13, 192, 199, 0.2), 0 0 0 1px var(--color-primary);
+    }
+  }
+}
+
+// Separador com texto
+.separador {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+
+  &__linha {
+    flex: 1;
+    height: 1px;
+    background: #e0e6ed;
+  }
+
+  &__texto {
+    color: #607081;
+    font-size: 12px;
+  }
+}
+
+// Botões sociais (Google, etc)
+.social {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid var(--color-primary);
+    background: #fff;
+    color: #0b1b2b;
+    cursor: pointer;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+
+    &:hover {
+      background: #f6fbfc;
+      box-shadow: 0 8px 16px rgba(33, 183, 205, 0.18);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(33, 183, 205, 0.2), 0 0 0 1px var(--color-primary);
+    }
+  }
+
+  &__icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+  }
+
+  &__texto {
+    font-weight: 600;
+    font-size: 14px;
+  }
+}
+
+// Rodapé de páginas de autenticação
+.rodape {
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  font-size: 14px;
+  color: #607081;
+}

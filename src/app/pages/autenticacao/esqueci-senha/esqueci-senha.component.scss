@@ -1,0 +1,56 @@
+// Layout específico da página de recuperação de senha
+.recuperar {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  background: #f8fafb;
+}
+
+.voltar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #607081;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.15s ease;
+  align-self: flex-start;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.conteudo {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.titulo {
+  margin-top: 16px;
+}
+
+.subtitulo {
+  color: #607081;
+  line-height: 1.5;
+}
+
+.formulario {
+  margin-top: 8px;
+}
+
+.rodape {
+  text-align: center;
+  margin-top: 8px;
+}

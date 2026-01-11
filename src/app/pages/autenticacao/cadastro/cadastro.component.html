@@ -1,0 +1,222 @@
+<div class="autenticacao">
+  <div class="autenticacao__esquerda">
+    <div class="destaque">
+      <div class="destaque__icone">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+      </div>
+
+      <h2 class="destaque__titulo">Comece sua jornada de aprendizado</h2>
+      <p class="destaque__descricao">
+        Junte-se a milhares de alunos que estão transformando suas carreiras através da educação
+        online.
+      </p>
+
+      <ul class="destaque__beneficios">
+        <li class="destaque__beneficio">
+          <span class="destaque__check">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </span>
+          <span>Acesso ilimitado a todos os cursos</span>
+        </li>
+        <li class="destaque__beneficio">
+          <span class="destaque__check">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </span>
+          <span>Certificados reconhecidos</span>
+        </li>
+        <li class="destaque__beneficio">
+          <span class="destaque__check">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </span>
+          <span>Suporte especializado 24/7</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="autenticacao__direita">
+    <div class="autenticacao__formulario">
+      <app-logo tema="light"></app-logo>
+
+      <h1 class="titulo">Criar conta</h1>
+      <p class="subtitulo">Preencha os dados abaixo para começar</p>
+
+      <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
+        <div class="tipo-conta">
+          <span class="tipo-conta__rotulo">Tipo de conta</span>
+          <div class="tipo-conta__opcoes">
+            <label
+              class="tipo-conta__opcao"
+              [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'PF'"
+            >
+              <input type="radio" formControlName="tipoConta" value="PF" />
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              <span>Pessoa Física</span>
+            </label>
+            <label
+              class="tipo-conta__opcao"
+              [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'PJ'"
+            >
+              <input type="radio" formControlName="tipoConta" value="PJ" />
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 21h18" />
+                <path d="M9 8h1" />
+                <path d="M9 12h1" />
+                <path d="M9 16h1" />
+                <path d="M14 8h1" />
+                <path d="M14 12h1" />
+                <path d="M14 16h1" />
+                <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" />
+              </svg>
+              <span>Pessoa Jurídica</span>
+            </label>
+          </div>
+        </div>
+
+        <app-campo
+          [rotulo]="rotuloNome"
+          tipo="text"
+          [placeholder]="placeholderNome"
+          icone="usuario"
+          formControlName="nome"
+        ></app-campo>
+
+        <app-campo
+          rotulo="E-mail"
+          tipo="email"
+          placeholder="seu@email.com"
+          icone="email"
+          formControlName="email"
+        ></app-campo>
+
+        <app-campo
+          rotulo="Telefone"
+          tipo="tel"
+          placeholder="(11) 99999-9999"
+          icone="telefone"
+          formControlName="telefone"
+        ></app-campo>
+
+        <app-campo
+          rotulo="Senha"
+          tipo="password"
+          placeholder="••••••••"
+          icone="senha"
+          [mostrarAlternarSenha]="true"
+          formControlName="senha"
+        ></app-campo>
+
+        <app-campo
+          rotulo="Confirmar senha"
+          tipo="password"
+          placeholder="••••••••"
+          icone="senha"
+          [mostrarAlternarSenha]="true"
+          formControlName="confirmarSenha"
+        ></app-campo>
+
+        <div class="formulario__linha">
+          <label class="caixa">
+            <input type="checkbox" formControlName="termos" />
+            <span>
+              Li e aceito os
+              <a class="atalho" (click)="abrirTermos(); $event.preventDefault()">Termos de Uso</a>
+              e a
+              <a class="atalho" (click)="abrirPrivacidade(); $event.preventDefault()"
+                >Política de Privacidade</a
+              >
+            </span>
+          </label>
+        </div>
+
+        <app-botao tipo="submit" variante="primario" [larguraTotal]="true"
+          >Criar minha conta</app-botao
+        >
+      </form>
+
+      <div class="rodape">
+        <span>Já tem uma conta?</span>
+        <a class="atalho" routerLink="/login">Fazer login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (mostrarTermos) {
+<app-termos (fechou)="fecharTermos()"></app-termos>
+} @if (mostrarPrivacidade) {
+<app-privacidade (fechou)="fecharPrivacidade()"></app-privacidade>
+}

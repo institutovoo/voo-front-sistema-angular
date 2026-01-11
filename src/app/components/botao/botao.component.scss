@@ -1,0 +1,125 @@
+.botao {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: filter 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease, background 0.15s ease;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  // Variantes
+  &--primario {
+    background: var(--color-primary);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.04);
+      box-shadow: 0 10px 20px rgba(33, 183, 205, 0.22);
+    }
+    &:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 0 6px 12px rgba(33, 183, 205, 0.18);
+    }
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(33, 183, 205, 0.2), 0 0 0 1px var(--color-primary);
+    }
+  }
+
+  &--secundario {
+    background: #f0f4f8;
+    color: #0b1b2b;
+
+    &:hover:not(:disabled) {
+      background: #e4eaf0;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    }
+    &:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(33, 183, 205, 0.2), 0 0 0 1px var(--color-primary);
+    }
+  }
+
+  &--outline {
+    background: #fff;
+    color: #0b1b2b;
+    border: 1px solid var(--color-primary);
+
+    &:hover:not(:disabled) {
+      background: #f6fbfc;
+      box-shadow: 0 8px 16px rgba(33, 183, 205, 0.18);
+    }
+    &:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(33, 183, 205, 0.2), 0 0 0 1px var(--color-primary);
+    }
+  }
+
+  // Tamanhos
+  &--pequeno {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  &--grande {
+    height: 52px;
+    padding: 0 28px;
+    font-size: 16px;
+    border-radius: 14px;
+  }
+
+  // Largura total
+  &--largura-total {
+    width: 100%;
+  }
+
+  // Loading state
+  &--carregando {
+    pointer-events: none;
+  }
+
+  &__conteudo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    &--oculto {
+      visibility: hidden;
+    }
+  }
+
+  &__spinner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spinner 0.7s linear infinite;
+  }
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,29 @@
+<div class="admin-autenticacao">
+  <div class="cartao">
+    <app-logo tema="light"></app-logo>
+
+    <h1 class="titulo titulo--centro">Acesso administrativo</h1>
+    <p class="subtitulo subtitulo--centro">Entre para gerenciar cursos, provas e usuários.</p>
+
+    <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
+      <app-campo
+        rotulo="Email"
+        tipo="email"
+        placeholder="admin@voocursos.com.br"
+        icone="email"
+        formControlName="email"
+      ></app-campo>
+
+      <app-campo
+        rotulo="Senha"
+        tipo="password"
+        placeholder="••••••••"
+        icone="senha"
+        [mostrarAlternarSenha]="true"
+        formControlName="senha"
+      ></app-campo>
+
+      <app-botao tipo="submit" variante="primario">Entrar</app-botao>
+    </form>
+  </div>
+</div>

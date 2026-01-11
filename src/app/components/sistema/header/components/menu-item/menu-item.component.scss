@@ -1,0 +1,57 @@
+$primary: #21b7cd;
+$primary-light: #e0f7fa;
+$text-dark: #0b1b2b;
+$text-muted: #64748b;
+$bg-light: #f8fafb;
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  color: $text-muted;
+  text-decoration: none;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    background: $bg-light;
+    color: $text-dark;
+  }
+
+  &--ativo {
+    background: $primary-light;
+    color: $primary;
+
+    &:hover {
+      background: $primary-light;
+      color: $primary;
+    }
+  }
+
+  &--compacto {
+    justify-content: center;
+    padding: 0.875rem;
+  }
+
+  &--sair {
+    color: #ef4444;
+
+    &:hover {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+  }
+
+  &__label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

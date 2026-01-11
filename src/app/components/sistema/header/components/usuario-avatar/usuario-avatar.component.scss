@@ -1,0 +1,62 @@
+$primary: #21b7cd;
+$text-dark: #0b1b2b;
+$white: #fff;
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &__nome {
+    font-weight: 600;
+    color: $text-dark;
+    font-size: 0.9375rem;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  &__avatar {
+    border-radius: 50%;
+    background: $primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+    font-weight: 600;
+  }
+
+  &__avatar-img {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  // Tamanhos
+  &--sm {
+    .usuario__avatar,
+    .usuario__avatar-img {
+      width: 32px;
+      height: 32px;
+      font-size: 0.875rem;
+    }
+  }
+
+  &--md {
+    .usuario__avatar,
+    .usuario__avatar-img {
+      width: 40px;
+      height: 40px;
+      font-size: 1rem;
+    }
+  }
+
+  &--lg {
+    .usuario__avatar,
+    .usuario__avatar-img {
+      width: 48px;
+      height: 48px;
+      font-size: 1.25rem;
+    }
+  }
+}

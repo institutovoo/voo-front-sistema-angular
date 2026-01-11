@@ -1,0 +1,168 @@
+<div class="pagamento">
+  <div class="pagamento__header">
+    <h2 class="pagamento__titulo">Método de Pagamento</h2>
+    <p class="pagamento__subtitulo">Gerencie seus métodos de pagamento</p>
+  </div>
+
+  <!-- Cartões -->
+  <div class="secao">
+    <div class="cartoes">
+      <div *ngFor="let cartao of cartoes" class="cartao">
+        <div class="cartao__icone">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+            <line x1="1" y1="10" x2="23" y2="10" />
+          </svg>
+        </div>
+        <div class="cartao__info">
+          <span class="cartao__numero"
+            >{{ cartao.bandeira | titlecase }} •••• {{ cartao.ultimos4 }}</span
+          >
+          <span class="cartao__expiracao">Expira em {{ cartao.expiracao }}</span>
+        </div>
+        <span *ngIf="cartao.padrao" class="cartao__badge">Padrão</span>
+        <div class="cartao__acoes" *ngIf="!cartao.padrao">
+          <button class="cartao__btn" (click)="definirPadrao(cartao)">Definir padrão</button>
+          <button class="cartao__btn cartao__btn--remover" (click)="removerCartao(cartao)">
+            Remover
+          </button>
+        </div>
+      </div>
+
+      <!-- Adicionar Novo Cartão -->
+      <button *ngIf="!mostrarFormCartao" class="btn-adicionar" (click)="adicionarCartao()">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+          <line x1="1" y1="10" x2="23" y2="10" />
+        </svg>
+        Adicionar Novo Cartão
+      </button>
+
+      <!-- Formulário Novo Cartão -->
+      <div *ngIf="mostrarFormCartao" class="form-cartao">
+        <form [formGroup]="formularioCartao" (ngSubmit)="salvarCartao()">
+          <div class="campo">
+            <label class="campo__label">Número do Cartão</label>
+            <input
+              type="text"
+              class="campo__input"
+              formControlName="numero"
+              placeholder="0000 0000 0000 0000"
+            />
+          </div>
+          <div class="campo">
+            <label class="campo__label">Nome no Cartão</label>
+            <input
+              type="text"
+              class="campo__input"
+              formControlName="nome"
+              placeholder="Como está no cartão"
+            />
+          </div>
+          <div class="campos-inline">
+            <div class="campo">
+              <label class="campo__label">Validade</label>
+              <input
+                type="text"
+                class="campo__input"
+                formControlName="validade"
+                placeholder="MM/AA"
+              />
+            </div>
+            <div class="campo">
+              <label class="campo__label">CVV</label>
+              <input type="text" class="campo__input" formControlName="cvv" placeholder="000" />
+            </div>
+          </div>
+          <div class="form-cartao__acoes">
+            <button type="button" class="btn-cancelar" (click)="cancelarCartao()">Cancelar</button>
+            <button type="submit" class="btn-salvar-cartao">Salvar Cartão</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email de Cobrança -->
+  <div class="secao">
+    <h3 class="secao__titulo">Email de Cobrança</h3>
+    <div class="email-cobranca">
+      <input type="email" class="campo__input" [value]="emailCobranca" readonly />
+      <button class="btn-copiar" (click)="copiarEmail()">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+      </button>
+    </div>
+    <p class="secao__hint">Recibos e faturas serão enviados para este email</p>
+  </div>
+
+  <!-- Assinatura -->
+  <div class="secao">
+    <h3 class="secao__titulo">Assinatura</h3>
+    <div class="assinatura">
+      <div class="assinatura__info">
+        <div class="assinatura__plano">
+          <span class="assinatura__nome">{{ assinatura.plano }}</span>
+          <span
+            class="assinatura__badge"
+            [class.assinatura__badge--ativo]="assinatura.status === 'ativo'"
+          >
+            {{ assinatura.status === 'ativo' ? 'Ativo' : 'Cancelado' }}
+          </span>
+        </div>
+        <span class="assinatura__detalhes">
+          R$ {{ assinatura.preco | number : '1.2-2' }}/mês • Renova em {{ assinatura.renovacao }}
+        </span>
+      </div>
+      <div class="assinatura__acoes">
+        <button class="btn-outline" (click)="alterarPlano()">Alterar Plano</button>
+        <button class="btn-cancelar-assinatura" (click)="cancelarAssinatura()">
+          Cancelar Assinatura
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botão Salvar -->
+  <div class="pagamento__footer">
+    <button type="button" class="btn-salvar" (click)="salvar()" [disabled]="salvando">
+      <svg
+        *ngIf="!salvando"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+        <polyline points="17,21 17,13 7,13 7,21" />
+        <polyline points="7,3 7,8 15,8" />
+      </svg>
+      {{ salvando ? 'Salvando...' : 'Salvar Alterações' }}
+    </button>
+  </div>
+</div>

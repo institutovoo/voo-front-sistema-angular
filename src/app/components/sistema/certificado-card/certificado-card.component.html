@@ -1,0 +1,70 @@
+<div class="certificado-card" [class.certificado-card--lista]="visualizacao === 'lista'">
+  <!-- Imagem/Preview do Certificado -->
+  <div class="certificado-card__preview">
+    <div class="certificado-card__badge">
+      <app-header-icone nome="certificados" [tamanho]="24" cor="#fff"></app-header-icone>
+    </div>
+    <img
+      [src]="certificado.imagemCurso"
+      [alt]="certificado.titulo"
+      class="certificado-card__imagem"
+    />
+    <div class="certificado-card__overlay">
+      <button class="certificado-card__btn-preview" (click)="onVisualizar()">
+        <app-header-icone nome="eye" [tamanho]="20" cor="#fff"></app-header-icone>
+        <span>Visualizar</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Conteúdo -->
+  <div class="certificado-card__conteudo">
+    <div class="certificado-card__header">
+      <span
+        class="certificado-card__categoria"
+        [style.background-color]="certificado.categoriaColor"
+      >
+        {{ certificado.categoria }}
+      </span>
+      <span class="certificado-card__nota" *ngIf="certificado.nota">
+        <app-header-icone
+          nome="estrela"
+          [tamanho]="14"
+          preenchimento="#f59e0b"
+          cor="#f59e0b"
+        ></app-header-icone>
+        {{ certificado.nota | number : '1.1-1' }}
+      </span>
+    </div>
+
+    <h3 class="certificado-card__titulo">{{ certificado.titulo }}</h3>
+    <p class="certificado-card__instrutor">Por {{ certificado.instrutor }}</p>
+
+    <div class="certificado-card__info">
+      <div class="certificado-card__info-item">
+        <app-header-icone nome="calendario" [tamanho]="14"></app-header-icone>
+        <span>{{ formatarData(certificado.dataConclusao) }}</span>
+      </div>
+      <div class="certificado-card__info-item">
+        <app-header-icone nome="relogio" [tamanho]="14"></app-header-icone>
+        <span>{{ certificado.cargaHoraria }}h</span>
+      </div>
+    </div>
+
+    <div class="certificado-card__codigo">
+      <span class="certificado-card__codigo-label">Código:</span>
+      <span class="certificado-card__codigo-valor">{{ certificado.codigoValidacao }}</span>
+    </div>
+
+    <!-- Ações -->
+    <div class="certificado-card__acoes">
+      <button class="certificado-card__acao certificado-card__acao--principal" (click)="onBaixar()">
+        <app-header-icone nome="download" [tamanho]="16"></app-header-icone>
+        <span>Baixar PDF</span>
+      </button>
+      <button class="certificado-card__acao" (click)="onCompartilhar()">
+        <app-header-icone nome="share" [tamanho]="16"></app-header-icone>
+      </button>
+    </div>
+  </div>
+</div>

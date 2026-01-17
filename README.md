@@ -77,3 +77,9 @@
 npm install
 npm start
 ```
+
+## Deploy
+
+O projeto está configurado para deploy automático no GitHub Pages via GitHub Actions. Sempre que houver um push para a branch `main`, o workflow será disparado.
+
+Acompanhe o progresso em: [GitHub Actions](https://github.com/institutovoo/voo-front-sistema-angular/actions)

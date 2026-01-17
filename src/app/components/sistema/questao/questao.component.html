@@ -1,0 +1,91 @@
+<div class="questao" [class.questao--revisao]="modoRevisao">
+  <!-- Header da questão -->
+  <div class="questao__header">
+    <div class="questao__numero">
+      <span class="questao__numero-badge">{{ questao.numero }}</span>
+    </div>
+    <div class="questao__info">
+      <span class="questao__tipo">
+        <app-header-icone [nome]="tipoIcone" [tamanho]="14"></app-header-icone>
+        {{ tipoLabel }}
+      </span>
+      <span class="questao__pontos"
+        >{{ questao.pontos }} {{ questao.pontos === 1 ? 'ponto' : 'pontos' }}</span
+      >
+    </div>
+  </div>
+
+  <!-- Enunciado -->
+  <div class="questao__enunciado">
+    <p [innerHTML]="questao.enunciado"></p>
+    <img
+      *ngIf="questao.imagemUrl"
+      [src]="questao.imagemUrl"
+      [alt]="'Imagem da questão ' + questao.numero"
+      class="questao__imagem"
+    />
+  </div>
+
+  <!-- Instruções -->
+  <p class="questao__instrucao" *ngIf="questao.tipo === 'multipla'">
+    <app-header-icone nome="info" [tamanho]="14"></app-header-icone>
+    Selecione todas as alternativas corretas
+  </p>
+
+  <!-- Alternativas -->
+  <div class="questao__alternativas">
+    <button
+      *ngFor="let alt of questao.alternativas; let i = index"
+      type="button"
+      [class]="getAlternativaClass(alt)"
+      (click)="onAlternativaClick(alt)"
+      [disabled]="modoRevisao && mostrarResposta"
+    >
+      <span class="questao__alternativa-check">
+        <!-- Checkbox para múltipla escolha -->
+        <ng-container *ngIf="questao.tipo === 'multipla'">
+          <span class="questao__checkbox" [class.questao__checkbox--checked]="isSelected(alt.id)">
+            <app-header-icone
+              *ngIf="isSelected(alt.id)"
+              nome="check"
+              [tamanho]="12"
+            ></app-header-icone>
+          </span>
+        </ng-container>
+
+        <!-- Radio para escolha única e V/F -->
+        <ng-container *ngIf="questao.tipo !== 'multipla'">
+          <span class="questao__radio" [class.questao__radio--checked]="isSelected(alt.id)">
+            <span *ngIf="isSelected(alt.id)" class="questao__radio-dot"></span>
+          </span>
+        </ng-container>
+      </span>
+
+      <span class="questao__alternativa-letra">{{ getLetraAlternativa(i) }}</span>
+      <span class="questao__alternativa-texto">{{ alt.texto }}</span>
+
+      <!-- Indicador de correta/incorreta no modo revisão -->
+      <span
+        *ngIf="mostrarResposta && alt.correta"
+        class="questao__alternativa-feedback questao__alternativa-feedback--correta"
+      >
+        <app-header-icone nome="check-circle" [tamanho]="16"></app-header-icone>
+      </span>
+      <span
+        *ngIf="mostrarResposta && isSelected(alt.id) && !alt.correta"
+        class="questao__alternativa-feedback questao__alternativa-feedback--incorreta"
+      >
+        <app-header-icone nome="x" [tamanho]="16"></app-header-icone>
+      </span>
+    </button>
+  </div>
+
+  <!-- Explicação (só aparece no modo revisão com respostas) -->
+  <div *ngIf="mostrarResposta && questao.explicacao" class="questao__explicacao">
+    <div class="questao__explicacao-header">
+      <app-header-icone nome="info" [tamanho]="18"></app-header-icone>
+      <strong>Explicação</strong>
+    </div>
+    <p>{{ questao.explicacao }}</p>
+  </div>
+</div>

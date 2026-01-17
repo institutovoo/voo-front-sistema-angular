@@ -1,327 +1,147 @@
-<app-sistema-header
-  [usuario]="usuario"
-  tipoUsuario="aluno"
-  (sidebarMudou)="onSidebarMudou($event)"
-></app-sistema-header>
-
-<div class="dashboard">
-  <!-- Conteúdo Principal -->
-  <main class="main" [class.main--expandido]="!sidebarAberta">
-    <div class="conteudo">
-      <!-- Banner de Boas-vindas -->
-      <section class="boas-vindas">
-        <div class="boas-vindas__texto">
-          <h1 class="boas-vindas__titulo">Olá, {{ nomeAluno }}! 👋</h1>
-          <p class="boas-vindas__subtitulo">Continue de onde parou e alcance seus objetivos.</p>
-        </div>
-      </section>
-
-      <!-- Estatísticas -->
-      <section class="estatisticas">
-        <div class="estatisticas__grid">
-          <div
-            *ngFor="let stat of estatisticas"
-            class="stat-card"
-            [ngClass]="'stat-card--' + stat.cor"
-          >
-            <div class="stat-card__icone">
-              <!-- Cursos -->
-              <svg
-                *ngIf="stat.icone === 'cursos'"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-              </svg>
-              <!-- Concluídos -->
-              <svg
-                *ngIf="stat.icone === 'concluidos'"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <circle cx="12" cy="8" r="6" />
-                <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
-              </svg>
-              <!-- Horas -->
-              <svg
-                *ngIf="stat.icone === 'horas'"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12,6 12,12 16,14" />
-              </svg>
-              <!-- Progresso -->
-              <svg
-                *ngIf="stat.icone === 'progresso'"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <polyline points="23,6 13.5,15.5 8.5,10.5 1,18" />
-                <polyline points="17,6 23,6 23,12" />
-              </svg>
-            </div>
-            <div class="stat-card__info">
-              <span class="stat-card__valor">{{ stat.valor }}</span>
-              <span class="stat-card__label">{{ stat.label }}</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Grid Principal -->
-      <div class="grid-principal">
-        <!-- Coluna Principal -->
-        <div class="coluna-principal">
-          <!-- Continue Aprendendo -->
-          <section class="secao">
-            <div class="secao__header">
-              <h2 class="secao__titulo">Continue aprendendo</h2>
-              <a routerLink="/aluno/meus-cursos" class="secao__link">Ver todos ›</a>
-            </div>
-
-            <div class="curso-destaque">
-              <div class="curso-destaque__imagem">
-                <img [src]="cursoAtual.imagem" [alt]="cursoAtual.titulo" />
-                <button class="curso-destaque__play">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <polygon points="5,3 19,12 5,21" />
-                  </svg>
-                </button>
-              </div>
-              <div class="curso-destaque__info">
-                <div class="curso-destaque__meta">
-                  <span
-                    class="curso-destaque__categoria"
-                    [style.background-color]="cursoAtual.categoriaColor"
-                  >
-                    {{ cursoAtual.categoria }}
-                  </span>
-                  <span class="curso-destaque__aula"
-                    >Aula {{ cursoAtual.aulaAtual }} de {{ cursoAtual.totalAulas }}</span
-                  >
-                </div>
-                <h3 class="curso-destaque__titulo">{{ cursoAtual.titulo }}</h3>
-                <p class="curso-destaque__modulo">{{ cursoAtual.modulo }}</p>
-                <div class="curso-destaque__progresso">
-                  <div class="barra-progresso">
-                    <div class="barra-progresso__fill" [style.width.%]="cursoAtual.progresso"></div>
-                  </div>
-                  <div class="curso-destaque__stats">
-                    <span>{{ cursoAtual.progresso }}% Concluído</span>
-                    <span>Restam {{ cursoAtual.duracao }}</span>
-                  </div>
-                </div>
-                <button class="btn-continuar">Continuar Assistindo</button>
-              </div>
-            </div>
-          </section>
-
-          <!-- Meus Cursos -->
-          <section class="secao">
-            <div class="secao__header">
-              <h2 class="secao__titulo">Meus Cursos</h2>
-              <a routerLink="/aluno/meus-cursos" class="secao__link">Ver todos</a>
-            </div>
-
-            <div class="cursos-grid">
-              <div *ngFor="let curso of meusCursos" class="curso-card">
-                <div class="curso-card__imagem">
-                  <img [src]="curso.imagem" [alt]="curso.titulo" />
-                  <span *ngIf="curso.gratuito" class="curso-card__badge">GRÁTIS</span>
-                </div>
-                <div class="curso-card__conteudo">
-                  <span
-                    class="curso-card__categoria"
-                    [style.background-color]="curso.categoriaColor"
-                  >
-                    {{ curso.categoria }}
-                  </span>
-                  <h4 class="curso-card__titulo">{{ curso.titulo }}</h4>
-                  <p class="curso-card__instrutor">{{ curso.instrutor }}</p>
-
-                  <div class="curso-card__progresso">
-                    <div class="barra-progresso barra-progresso--pequena">
-                      <div class="barra-progresso__fill" [style.width.%]="curso.progresso"></div>
-                    </div>
-                    <span class="curso-card__porcentagem">{{ curso.progresso }}% Concluído</span>
-                  </div>
-
-                  <div class="curso-card__footer">
-                    <div class="curso-card__stats">
-                      <span class="curso-card__avaliacao">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b">
-                          <polygon
-                            points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"
-                          />
-                        </svg>
-                        {{ curso.avaliacao }} ({{ curso.totalAvaliacoes }})
-                      </span>
-                      <span class="curso-card__duracao">
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                        >
-                          <circle cx="12" cy="12" r="10" />
-                          <polyline points="12,6 12,12 16,14" />
-                        </svg>
-                        {{ curso.duracao }}
-                      </span>
-                      <span class="curso-card__aulas">
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                        >
-                          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                          <path
-                            d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
-                          />
-                        </svg>
-                        {{ curso.totalAulas }} aulas
-                      </span>
-                    </div>
-                    <button class="btn-acessar">Acessar</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <!-- Coluna Lateral -->
-        <aside class="coluna-lateral">
-          <!-- Atividade Recente -->
-          <div class="card-lateral">
-            <h3 class="card-lateral__titulo">Atividade Recente</h3>
-            <div class="atividades">
-              <div *ngFor="let atividade of atividadesRecentes" class="atividade">
-                <div class="atividade__icone" [style.background-color]="atividade.cor">
-                  <!-- Check -->
-                  <svg
-                    *ngIf="atividade.icone === 'check'"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    stroke-width="3"
-                  >
-                    <polyline points="20,6 9,17 4,12" />
-                  </svg>
-                  <!-- Certificado -->
-                  <svg
-                    *ngIf="atividade.icone === 'certificado'"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    stroke-width="2"
-                  >
-                    <circle cx="12" cy="8" r="6" />
-                    <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
-                  </svg>
-                  <!-- Star -->
-                  <svg
-                    *ngIf="atividade.icone === 'star'"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="white"
-                  >
-                    <polygon
-                      points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"
-                    />
-                  </svg>
-                  <!-- Curso -->
-                  <svg
-                    *ngIf="atividade.icone === 'curso'"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    stroke-width="2"
-                  >
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-                  </svg>
-                </div>
-                <div class="atividade__info">
-                  <span class="atividade__titulo">{{ atividade.titulo }}</span>
-                  <span class="atividade__descricao">{{ atividade.descricao }}</span>
-                  <span class="atividade__tempo">{{ atividade.tempo }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Meta Semanal -->
-          <div class="card-lateral">
-            <h3 class="card-lateral__titulo">Meta Semanal</h3>
-            <div class="meta">
-              <div class="meta__circulo">
-                <svg viewBox="0 0 100 100" class="meta__svg">
-                  <circle cx="50" cy="50" r="45" class="meta__fundo" />
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    class="meta__progresso"
-                    [style.stroke-dasharray]="'283'"
-                    [style.stroke-dashoffset]="283 - (283 * metaSemanal.porcentagem) / 100"
-                  />
-                </svg>
-                <span class="meta__valor">{{ metaSemanal.porcentagem }}%</span>
-              </div>
-              <p class="meta__texto">
-                {{ metaSemanal.horasConcluidas }} de {{ metaSemanal.horasAlvo }} horas concluídas
-              </p>
-            </div>
-
-            <div class="meta__dias">
-              <div
-                *ngFor="let dia of diasSemana"
-                class="meta__dia"
-                [class.meta__dia--atual]="dia.atual"
-              >
-                <span class="meta__dia-nome">{{ dia.dia }}</span>
-                <div class="meta__dia-barra" *ngIf="!dia.atual">
-                  <div class="meta__dia-fill" [style.width.%]="(dia.horas / 6) * 100"></div>
-                </div>
-                <span class="meta__dia-horas" [class.meta__dia-horas--destaque]="dia.atual"
-                  >{{ dia.horas }}h</span
-                >
-              </div>
-            </div>
-          </div>
-        </aside>
-      </div>
+<app-sistema-layout [usuario]="usuario" tipoUsuario="aluno">
+  <!-- Banner de Boas-vindas -->
+  <section class="boas-vindas">
+    <div class="boas-vindas__texto">
+      <h1 class="boas-vindas__titulo">Olá, {{ nomeAluno }}! 👋</h1>
+      <p class="boas-vindas__subtitulo">Continue de onde parou e alcance seus objetivos.</p>
     </div>
-  </main>
-</div>
+  </section>
+
+  <!-- Estatísticas -->
+  <section class="estatisticas">
+    <div class="estatisticas__grid">
+      <app-card-kpi *ngFor="let stat of estatisticas" [estatistica]="stat"></app-card-kpi>
+    </div>
+  </section>
+
+  <!-- Grid Principal -->
+  <div class="grid-principal">
+    <!-- Coluna Principal -->
+    <div class="coluna-principal">
+      <!-- Continue Aprendendo -->
+      <section class="secao">
+        <div class="secao__header">
+          <h2 class="secao__titulo">Continue aprendendo</h2>
+          <a routerLink="/aluno/meus-cursos" class="secao__link">Ver todos ›</a>
+        </div>
+
+        <div class="curso-destaque">
+          <div class="curso-destaque__imagem">
+            <img [src]="cursoAtual.imagem" [alt]="cursoAtual.titulo" />
+            <button class="curso-destaque__play">
+              <app-header-icone
+                nome="play"
+                [tamanho]="24"
+                preenchimento="white"
+                cor="none"
+              ></app-header-icone>
+            </button>
+          </div>
+          <div class="curso-destaque__info">
+            <div class="curso-destaque__meta">
+              <span
+                class="curso-destaque__categoria"
+                [style.background-color]="cursoAtual.categoriaColor"
+              >
+                {{ cursoAtual.categoria }}
+              </span>
+              <span class="curso-destaque__aula">
+                Aula {{ cursoAtual.aulaAtual }} de {{ cursoAtual.totalAulas }}
+              </span>
+            </div>
+            <h3 class="curso-destaque__titulo">{{ cursoAtual.titulo }}</h3>
+            <p class="curso-destaque__modulo">{{ cursoAtual.modulo }}</p>
+            <div class="curso-destaque__progresso">
+              <app-barra-progresso [valor]="cursoAtual.progresso"></app-barra-progresso>
+              <div class="curso-destaque__stats">
+                <span>{{ cursoAtual.progresso }}% Concluído</span>
+                <span>Restam {{ cursoAtual.duracao }}</span>
+              </div>
+            </div>
+            <button class="btn-continuar">Continuar Assistindo</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Meus Cursos -->
+      <section class="secao">
+        <div class="secao__header">
+          <h2 class="secao__titulo">Meus Cursos</h2>
+          <a routerLink="/aluno/meus-cursos" class="secao__link">Ver todos</a>
+        </div>
+
+        <div class="cursos-grid">
+          <app-curso-card
+            *ngFor="let curso of meusCursos"
+            [curso]="curso"
+            (acessar)="onAcessarCurso($event)"
+          ></app-curso-card>
+        </div>
+      </section>
+    </div>
+
+    <!-- Coluna Lateral -->
+    <aside class="coluna-lateral">
+      <!-- Atividade Recente -->
+      <section class="secao">
+        <div class="secao__header">
+          <h2 class="secao__titulo">Atividade Recente</h2>
+        </div>
+        <div class="card-lateral">
+          <div class="atividades">
+            <app-atividade-item
+              *ngFor="let atividade of atividadesRecentes"
+              [atividade]="atividade"
+            ></app-atividade-item>
+          </div>
+        </div>
+      </section>
+
+      <!-- Meta Semanal -->
+      <section class="secao">
+        <div class="secao__header">
+          <h2 class="secao__titulo">Meta Semanal</h2>
+        </div>
+        <div class="card-lateral">
+          <div class="meta">
+            <div class="meta__circulo">
+              <svg viewBox="0 0 100 100" class="meta__svg">
+                <circle cx="50" cy="50" r="45" class="meta__fundo" />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  class="meta__progresso"
+                  [style.stroke-dasharray]="'283'"
+                  [style.stroke-dashoffset]="283 - (283 * metaSemanal.porcentagem) / 100"
+                />
+              </svg>
+              <span class="meta__valor">{{ metaSemanal.porcentagem }}%</span>
+            </div>
+            <p class="meta__texto">
+              {{ metaSemanal.horasConcluidas }} de {{ metaSemanal.horasAlvo }} horas concluídas
+            </p>
+          </div>
+
+          <div class="meta__dias">
+            <div
+              *ngFor="let dia of diasSemana"
+              class="meta__dia"
+              [class.meta__dia--atual]="dia.atual"
+            >
+              <span class="meta__dia-nome">{{ dia.dia }}</span>
+              <app-barra-progresso
+                [valor]="(dia.horas / 6) * 100"
+                tamanho="pequeno"
+                class="meta__dia-barra"
+              ></app-barra-progresso>
+              <span class="meta__dia-horas" [class.meta__dia-horas--destaque]="dia.atual">
+                {{ dia.horas }}h
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+</app-sistema-layout>

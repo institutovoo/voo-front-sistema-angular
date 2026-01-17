@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { LogoComponent } from '../../../components/logo/logo.component';
 import { BotaoComponent } from '../../../components/botao/botao.component';
 import { CampoComponent } from '../../../components/campo/campo.component';
+import { AutenticacaoController } from '../../../core/controller/autenticacao.controller';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +22,11 @@ import { CampoComponent } from '../../../components/campo/campo.component';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
+  private authController = inject(AutenticacaoController);
+
   formulario = new FormGroup({
-    email: new FormControl('', {
-      validators: [Validators.required, Validators.email],
+    cpf_cnpj: new FormControl('', {
+      validators: [Validators.required],
       nonNullable: true,
     }),
     senha: new FormControl('', {
@@ -33,12 +36,25 @@ export class LoginComponent {
     lembrar: new FormControl<boolean>(false, { nonNullable: true }),
   });
 
-  enviar() {
+  erro = '';
+
+  async enviar() {
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();
       return;
     }
-    const dados = this.formulario.getRawValue();
-    console.log('login', dados);
+
+    this.erro = '';
+    const { cpf_cnpj, senha } = this.formulario.getRawValue();
+
+    // Como revertemos a API para aceitar APENAS cpf_cnpj, removemos a lógica de email
+    // e enviamos tudo como cpf_cnpj (removendo não-numéricos se necessário, ou enviando direto)
+    const documentoLimpo = cpf_cnpj.replace(/\D/g, ''); // Remove formatação se houver
+    
+    const resultado = await this.authController.login({ cpf_cnpj: documentoLimpo, senha });
+    
+    if (!resultado.sucesso) {
+      this.erro = resultado.mensagem || 'Erro desconhecido';
+    }
   }
 }

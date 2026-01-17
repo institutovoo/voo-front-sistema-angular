@@ -108,6 +108,6 @@ export class SistemaHeaderComponent {
   }
 
   get inicialUsuario(): string {
-    return this.usuario.nome.charAt(0).toUpperCase();
+    return this.usuario?.nome?.charAt(0)?.toUpperCase() || 'U';
   }
 }

@@ -1,19 +1,38 @@
-<div class="campo-wrapper">
-  <label class="campo__rotulo" *ngIf="rotulo">{{ rotulo }}</label>
+<div class="campo-wrapper" [class.campo-wrapper--erro]="temErro">
+  <label class="campo__rotulo" *ngIf="rotulo">
+    {{ rotulo }}
+    <span *ngIf="obrigatorio" class="campo__obrigatorio" aria-hidden="true">*</span>
+  </label>
   <div
     class="campo"
     [class.campo--com-icone-esquerda]="icone"
     [class.campo--com-icone-direita]="mostrarAlternarSenha && tipo === 'password'"
+    [class.campo--erro]="temErro"
   >
     <input
+      *ngIf="tipo !== 'select'"
       class="campo__controle"
       [type]="tipoCampo"
       [placeholder]="placeholder"
       [value]="valor()"
       [disabled]="desabilitado()"
+      [attr.maxlength]="maxlength"
       (input)="aoDigitar($event)"
       (blur)="aoPerderFoco()"
     />
+
+    <select
+      *ngIf="tipo === 'select'"
+      class="campo__controle campo__controle--select"
+      [value]="valor()"
+      [disabled]="desabilitado()"
+      (change)="aoDigitar($event)"
+      (blur)="aoPerderFoco()"
+      [class.campo__controle--vazio]="!valor()"
+    >
+      <option value="" disabled selected hidden>{{ placeholder }}</option>
+      <option *ngFor="let opcao of opcoes" [value]="opcao">{{ opcao }}</option>
+    </select>
 
     <!-- Ícone esquerda -->
     <span class="campo__icone campo__icone--esquerda" *ngIf="icone" aria-hidden="true">
@@ -97,6 +116,23 @@
       >
         <circle cx="11" cy="11" r="8"></circle>
         <path d="M21 21l-4.35-4.35"></path>
+      </svg>
+
+      <svg
+        *ngIf="icone === 'documento'"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+        <path d="M9 7h6" />
+        <path d="M9 11h6" />
+        <path d="M9 15h4" />
       </svg>
     </span>
 

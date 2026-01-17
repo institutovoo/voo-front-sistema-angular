@@ -1,0 +1,52 @@
+<div
+  class="stat-card"
+  [class.stat-card--pequeno]="tamanho === 'pequeno'"
+  [class.stat-card--grande]="tamanho === 'grande'"
+  [ngClass]="'stat-card--' + estatistica.cor"
+>
+  <div class="stat-card__icone">
+    <app-header-icone
+      [nome]="estatistica.icone"
+      [tamanho]="tamanho === 'grande' ? 28 : 24"
+    ></app-header-icone>
+  </div>
+  <div class="stat-card__info">
+    <span class="stat-card__valor">{{ estatistica.valor }}</span>
+    <span class="stat-card__label">{{ estatistica.label }}</span>
+  </div>
+  <div
+    *ngIf="estatistica.tendencia"
+    class="kpi__tendencia"
+    [class.kpi__tendencia--up]="estatistica.tendencia.tipo === 'up'"
+    [class.kpi__tendencia--down]="estatistica.tendencia.tipo === 'down'"
+  >
+    <span class="kpi__tendencia-badge">
+      <svg
+        *ngIf="estatistica.tendencia.tipo === 'up'"
+        width="12"
+        height="12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <polyline points="18 15 12 9 6 15" />
+      </svg>
+      <svg
+        *ngIf="estatistica.tendencia.tipo === 'down'"
+        width="12"
+        height="12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+      {{ estatistica.tendencia.valor }}%
+    </span>
+    <span class="kpi__tendencia-periodo" *ngIf="estatistica.tendencia.periodo">
+      {{ estatistica.tendencia.periodo }}
+    </span>
+  </div>
+</div>

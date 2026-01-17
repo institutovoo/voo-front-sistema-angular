@@ -1,0 +1,172 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="aluno" conteudoMaxWidth="1400px">
+  <!-- Header da página -->
+  <div class="page-header">
+    <div class="page-header__info">
+      <h1 class="page-header__titulo">Meus Cursos</h1>
+      <p class="page-header__subtitulo">Acompanhe seu progresso e continue aprendendo</p>
+    </div>
+    <div class="page-header__acoes">
+      <a routerLink="/cursos" class="btn btn--primary">
+        <app-header-icone nome="mais" [tamanho]="18"></app-header-icone>
+        Explorar Cursos
+      </a>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <section class="kpis">
+    <div class="kpis__grid">
+      <app-card-kpi *ngFor="let kpi of kpis" [estatistica]="kpi"></app-card-kpi>
+    </div>
+  </section>
+
+  <!-- Filtros -->
+  <app-filtros-barra
+    [tabs]="filtroTabs"
+    [tabAtiva]="filtroAtivo()"
+    [termoBusca]="termoBusca()"
+    placeholderBusca="Buscar curso..."
+    [ordenacao]="ordenacao()"
+    [opcoesOrdenacao]="opcoesOrdenacao"
+    [visualizacao]="visualizacao()"
+    [mostrarVisualizacao]="true"
+    tabEstilo="icone"
+    (tabChange)="onTabChange($event)"
+    (buscaChange)="onBuscaChange($event)"
+    (ordenacaoChange)="onOrdenacaoChange($event)"
+    (visualizacaoChange)="onVisualizacaoChange($event)"
+  ></app-filtros-barra>
+
+  <!-- Lista de Cursos -->
+  <section class="cursos">
+    <!-- Estado vazio -->
+    <div *ngIf="cursosFiltrados.length === 0" class="cursos__vazio">
+      <app-header-icone nome="cursos" [tamanho]="48" cor="#cbd5e1"></app-header-icone>
+      <h3>Nenhum curso encontrado</h3>
+      <p>Tente ajustar os filtros ou explore novos cursos.</p>
+      <a routerLink="/cursos" class="btn btn--primary">Explorar Cursos</a>
+    </div>
+
+    <!-- Grid de Cursos -->
+    <div
+      class="cursos__grid"
+      [class.cursos__grid--lista]="visualizacao() === 'lista'"
+      *ngIf="cursosFiltrados.length > 0"
+    >
+      <div
+        *ngFor="let curso of cursosFiltrados"
+        class="curso-card"
+        [class.curso-card--lista]="visualizacao() === 'lista'"
+        [class.curso-card--vencido]="curso.status === 'vencido'"
+      >
+        <!-- Imagem -->
+        <div class="curso-card__imagem">
+          <img [src]="curso.imagem" [alt]="curso.titulo" />
+          <span class="curso-card__categoria" [style.background-color]="curso.categoriaColor">
+            {{ curso.categoria }}
+          </span>
+          <span
+            class="curso-card__status"
+            [class.curso-card__status--concluido]="curso.status === 'concluido'"
+            [class.curso-card__status--vencido]="curso.status === 'vencido'"
+            [class.curso-card__status--nao-iniciado]="curso.status === 'nao-iniciado'"
+          >
+            {{ getStatusLabel(curso.status) }}
+          </span>
+        </div>
+
+        <!-- Conteúdo -->
+        <div class="curso-card__conteudo">
+          <h3 class="curso-card__titulo">{{ curso.titulo }}</h3>
+          <p class="curso-card__instrutor">
+            <app-header-icone nome="usuario" [tamanho]="14"></app-header-icone>
+            {{ curso.instrutor }}
+          </p>
+
+          <!-- Progresso -->
+          <div class="curso-card__progresso" *ngIf="curso.status !== 'vencido'">
+            <div class="curso-card__progresso-header">
+              <span>{{ curso.aulasAssistidas }}/{{ curso.totalAulas }} aulas</span>
+              <span>{{ curso.progresso }}%</span>
+            </div>
+            <app-barra-progresso
+              [valor]="curso.progresso"
+              tamanho="pequeno"
+              [cor]="curso.status === 'concluido' ? '#22c55e' : '#21b7cd'"
+            ></app-barra-progresso>
+          </div>
+
+          <!-- Módulo atual -->
+          <p class="curso-card__modulo" *ngIf="curso.modulo && curso.status === 'em-andamento'">
+            <app-header-icone nome="play" [tamanho]="14"></app-header-icone>
+            {{ curso.modulo }}
+          </p>
+
+          <!-- Meta informações -->
+          <div class="curso-card__meta">
+            <span class="curso-card__meta-item">
+              <app-header-icone nome="relogio" [tamanho]="14"></app-header-icone>
+              {{ curso.duracao }}
+            </span>
+            <span class="curso-card__meta-item">
+              <app-header-icone
+                nome="star"
+                [tamanho]="14"
+                preenchimento="#f59e0b"
+                cor="none"
+              ></app-header-icone>
+              {{ curso.avaliacao }}
+            </span>
+            <span class="curso-card__meta-item" *ngIf="curso.ultimoAcesso">
+              <app-header-icone nome="calendario" [tamanho]="14"></app-header-icone>
+              {{ formatarData(curso.ultimoAcesso) }}
+            </span>
+          </div>
+
+          <!-- Validade -->
+          <div
+            class="curso-card__validade"
+            [class.curso-card__validade--alerta]="
+              calcularDiasRestantes(curso.dataValidade) <= 30 && curso.status !== 'vencido'
+            "
+            [class.curso-card__validade--vencido]="curso.status === 'vencido'"
+          >
+            <app-header-icone
+              [nome]="curso.status === 'vencido' ? 'alerta' : 'calendario'"
+              [tamanho]="14"
+            ></app-header-icone>
+            <span *ngIf="curso.status !== 'vencido'">
+              {{ calcularDiasRestantes(curso.dataValidade) }} dias restantes
+            </span>
+            <span *ngIf="curso.status === 'vencido'">
+              Vencido em {{ formatarData(curso.dataValidade) }}
+            </span>
+          </div>
+
+          <!-- Ações -->
+          <div class="curso-card__acoes">
+            <button
+              *ngIf="curso.status !== 'vencido'"
+              class="btn btn--primary"
+              (click)="acessarCurso(curso)"
+            >
+              <app-header-icone nome="play" [tamanho]="16"></app-header-icone>
+              {{ curso.status === 'nao-iniciado' ? 'Começar' : 'Continuar' }}
+            </button>
+            <button
+              *ngIf="curso.status === 'vencido'"
+              class="btn btn--warning"
+              (click)="renovarCurso(curso)"
+            >
+              <app-header-icone nome="refresh" [tamanho]="16"></app-header-icone>
+              Renovar
+            </button>
+            <button class="btn btn--outline" title="Ver detalhes" (click)="acessarCurso(curso)">
+              <app-header-icone nome="mais" [tamanho]="16"></app-header-icone>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</app-sistema-layout>

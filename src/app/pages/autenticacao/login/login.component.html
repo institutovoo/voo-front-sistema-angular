@@ -5,13 +5,15 @@
     <h1 class="titulo">Bem-vindo de volta!</h1>
     <p class="subtitulo">Entre na sua conta para continuar aprendendo</p>
 
+    <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
+
     <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
       <app-campo
-        rotulo="E-mail"
-        tipo="email"
-        placeholder="seu@email.com"
+        rotulo="CPF ou CNPJ"
+        tipo="text"
+        placeholder="Digite apenas números"
         icone="email"
-        formControlName="email"
+        formControlName="cpf_cnpj"
       ></app-campo>
 
       <app-campo

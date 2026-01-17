@@ -1,0 +1,389 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="aluno" conteudoMaxWidth="1000px">
+  <!-- ========== TELA DE INSTRUÇÕES ========== -->
+  <div class="prova-instrucoes" *ngIf="statusProva() === 'instrucoes'">
+    <div class="prova-instrucoes__card">
+      <div class="prova-instrucoes__header">
+        <div class="prova-instrucoes__icone">
+          <app-header-icone nome="certificados" [tamanho]="32" cor="#21b7cd"></app-header-icone>
+        </div>
+        <h1 class="prova-instrucoes__titulo">{{ prova.titulo }}</h1>
+        <p class="prova-instrucoes__curso">{{ prova.curso }}</p>
+      </div>
+
+      <p class="prova-instrucoes__descricao">{{ prova.descricao }}</p>
+
+      <div class="prova-instrucoes__info-grid">
+        <div class="prova-instrucoes__info-item">
+          <app-header-icone nome="relogio" [tamanho]="20" cor="#64748b"></app-header-icone>
+          <div>
+            <span class="prova-instrucoes__info-label">Tempo limite</span>
+            <span class="prova-instrucoes__info-valor">{{ prova.tempoLimite }} minutos</span>
+          </div>
+        </div>
+
+        <div class="prova-instrucoes__info-item">
+          <app-header-icone nome="cursos" [tamanho]="20" cor="#64748b"></app-header-icone>
+          <div>
+            <span class="prova-instrucoes__info-label">Questões</span>
+            <span class="prova-instrucoes__info-valor">{{ prova.totalQuestoes }} questões</span>
+          </div>
+        </div>
+
+        <div class="prova-instrucoes__info-item">
+          <app-header-icone nome="star" [tamanho]="20" cor="#64748b"></app-header-icone>
+          <div>
+            <span class="prova-instrucoes__info-label">Pontuação total</span>
+            <span class="prova-instrucoes__info-valor">{{ prova.pontuacaoTotal }} pontos</span>
+          </div>
+        </div>
+
+        <div class="prova-instrucoes__info-item">
+          <app-header-icone nome="check-circle" [tamanho]="20" cor="#64748b"></app-header-icone>
+          <div>
+            <span class="prova-instrucoes__info-label">Nota mínima</span>
+            <span class="prova-instrucoes__info-valor">{{ prova.notaMinima }}%</span>
+          </div>
+        </div>
+
+        <div class="prova-instrucoes__info-item">
+          <app-header-icone nome="refresh" [tamanho]="20" cor="#64748b"></app-header-icone>
+          <div>
+            <span class="prova-instrucoes__info-label">Tentativas restantes</span>
+            <span class="prova-instrucoes__info-valor">{{ prova.tentativasRestantes }}</span>
+          </div>
+        </div>
+
+        <div class="prova-instrucoes__info-item">
+          <app-header-icone nome="usuario" [tamanho]="20" cor="#64748b"></app-header-icone>
+          <div>
+            <span class="prova-instrucoes__info-label">Instrutor</span>
+            <span class="prova-instrucoes__info-valor">{{ prova.instrutor }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prova-instrucoes__regras">
+        <h3>
+          <app-header-icone nome="alerta" [tamanho]="18"></app-header-icone>
+          Regras e Orientações
+        </h3>
+        <ul>
+          <li>
+            Você terá <strong>{{ prova.tempoLimite }} minutos</strong> para completar a prova.
+          </li>
+          <li>Você pode navegar entre as questões a qualquer momento.</li>
+          <li>Questões de múltipla escolha permitem selecionar mais de uma alternativa.</li>
+          <li>Você pode revisar suas respostas antes de finalizar.</li>
+          <li>Após finalizar, não será possível alterar as respostas.</li>
+          <li>
+            É necessário obter no mínimo <strong>{{ prova.notaMinima }}%</strong> para aprovação.
+          </li>
+        </ul>
+      </div>
+
+      <div class="prova-instrucoes__acoes">
+        <button class="btn btn--outline" (click)="voltarParaCurso()">
+          <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
+          Voltar ao Curso
+        </button>
+        <button class="btn btn--primary btn--lg" (click)="iniciarProva()">
+          <app-header-icone nome="play" [tamanho]="18"></app-header-icone>
+          Iniciar Prova
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TELA DA PROVA ========== -->
+  <div class="prova" *ngIf="statusProva() === 'em-andamento' || statusProva() === 'revisao'">
+    <!-- Header fixo -->
+    <div class="prova__header">
+      <div class="prova__header-info">
+        <h2 class="prova__titulo">{{ prova.titulo }}</h2>
+        <span class="prova__progresso-texto">
+          {{ respostas().size }}/{{ prova.totalQuestoes }} respondidas
+        </span>
+      </div>
+
+      <div class="prova__header-controles">
+        <!-- Timer -->
+        <div
+          class="prova__timer"
+          [class.prova__timer--alerta]="isTempoEsgotando()"
+          *ngIf="statusProva() === 'em-andamento'"
+        >
+          <app-header-icone nome="relogio" [tamanho]="18"></app-header-icone>
+          <span>{{ tempoFormatado() }}</span>
+        </div>
+
+        <!-- Badge de revisão -->
+        <span class="prova__badge-revisao" *ngIf="statusProva() === 'revisao'">
+          <app-header-icone nome="check" [tamanho]="14"></app-header-icone>
+          Modo Revisão
+        </span>
+
+        <!-- Botão de navegação -->
+        <button class="prova__nav-toggle" (click)="toggleNavegacao()">
+          <app-header-icone nome="grid" [tamanho]="18"></app-header-icone>
+          Questões
+        </button>
+      </div>
+    </div>
+
+    <!-- Barra de progresso -->
+    <div class="prova__progresso-bar">
+      <app-barra-progresso [valor]="progresso()" tamanho="pequeno"></app-barra-progresso>
+    </div>
+
+    <!-- Painel de navegação de questões -->
+    <div class="prova__navegacao" [class.prova__navegacao--aberta]="mostrarNavegacao()">
+      <div class="prova__navegacao-header">
+        <h3>Navegação de Questões</h3>
+        <button class="prova__navegacao-fechar" (click)="toggleNavegacao()">
+          <app-header-icone nome="x" [tamanho]="20"></app-header-icone>
+        </button>
+      </div>
+
+      <div class="prova__navegacao-legenda">
+        <span class="legenda-item legenda-item--atual">
+          <span class="legenda-dot"></span> Atual
+        </span>
+        <span class="legenda-item legenda-item--respondida">
+          <span class="legenda-dot"></span> Respondida
+        </span>
+        <span class="legenda-item legenda-item--pendente">
+          <span class="legenda-dot"></span> Pendente
+        </span>
+      </div>
+
+      <div class="prova__navegacao-grid">
+        <button
+          *ngFor="let questao of prova.questoes; let i = index"
+          class="prova__navegacao-item"
+          [class.prova__navegacao-item--atual]="getStatusQuestao(questao) === 'atual'"
+          [class.prova__navegacao-item--respondida]="getStatusQuestao(questao) === 'respondida'"
+          (click)="irParaQuestao(i)"
+        >
+          {{ questao.numero }}
+        </button>
+      </div>
+
+      <div class="prova__navegacao-acoes">
+        <button
+          class="btn btn--primary btn--block"
+          (click)="irParaRevisao()"
+          *ngIf="statusProva() === 'em-andamento'"
+        >
+          <app-header-icone nome="check" [tamanho]="16"></app-header-icone>
+          Revisar e Finalizar
+        </button>
+        <button
+          class="btn btn--success btn--block"
+          (click)="finalizarProva()"
+          *ngIf="statusProva() === 'revisao'"
+        >
+          <app-header-icone nome="check-circle" [tamanho]="16"></app-header-icone>
+          Finalizar Prova
+        </button>
+      </div>
+    </div>
+
+    <!-- Overlay para fechar navegação -->
+    <div class="prova__overlay" *ngIf="mostrarNavegacao()" (click)="toggleNavegacao()"></div>
+
+    <!-- Conteúdo da questão -->
+    <div class="prova__conteudo">
+      <app-questao
+        [questao]="questaoAtual()"
+        [respostaAtual]="getRespostaQuestao(questaoAtual().id)"
+        [modoRevisao]="statusProva() === 'revisao'"
+        [mostrarResposta]="false"
+        (respostaChange)="onRespostaChange($event)"
+      ></app-questao>
+
+      <!-- Navegação entre questões -->
+      <div class="prova__navegacao-questoes">
+        <button
+          class="btn btn--outline"
+          (click)="questaoAnterior()"
+          [disabled]="questaoAtualIndex() === 0"
+        >
+          <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
+          Anterior
+        </button>
+
+        <span class="prova__questao-contador">
+          Questão {{ questaoAtualIndex() + 1 }} de {{ prova.totalQuestoes }}
+        </span>
+
+        <button
+          class="btn btn--outline"
+          (click)="proximaQuestao()"
+          *ngIf="questaoAtualIndex() < prova.totalQuestoes - 1"
+        >
+          Próxima
+          <app-header-icone nome="seta-direita" [tamanho]="18"></app-header-icone>
+        </button>
+
+        <button
+          class="btn btn--primary"
+          (click)="irParaRevisao()"
+          *ngIf="
+            questaoAtualIndex() === prova.totalQuestoes - 1 && statusProva() === 'em-andamento'
+          "
+        >
+          Revisar
+          <app-header-icone nome="check" [tamanho]="18"></app-header-icone>
+        </button>
+
+        <button
+          class="btn btn--success"
+          (click)="finalizarProva()"
+          *ngIf="questaoAtualIndex() === prova.totalQuestoes - 1 && statusProva() === 'revisao'"
+        >
+          Finalizar
+          <app-header-icone nome="check-circle" [tamanho]="18"></app-header-icone>
+        </button>
+      </div>
+
+      <!-- Aviso de questões pendentes -->
+      <div class="prova__aviso" *ngIf="statusProva() === 'revisao' && questoesNaoRespondidas > 0">
+        <app-header-icone nome="alerta" [tamanho]="18"></app-header-icone>
+        <span>
+          Você ainda tem <strong>{{ questoesNaoRespondidas }}</strong>
+          {{
+            questoesNaoRespondidas === 1 ? 'questão não respondida' : 'questões não respondidas'
+          }}.
+        </span>
+        <button class="btn btn--sm btn--outline" (click)="voltarParaProva()">Voltar à Prova</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TELA DE RESULTADO ========== -->
+  <div class="resultado" *ngIf="statusProva() === 'finalizada' && resultado()">
+    <div class="resultado__card">
+      <!-- Header com status -->
+      <div
+        class="resultado__header"
+        [class.resultado__header--aprovado]="resultado()!.aprovado"
+        [class.resultado__header--reprovado]="!resultado()!.aprovado"
+      >
+        <div class="resultado__status-icone">
+          <app-header-icone
+            [nome]="resultado()!.aprovado ? 'check-circle' : 'x'"
+            [tamanho]="48"
+          ></app-header-icone>
+        </div>
+        <h1 class="resultado__status">
+          {{ resultado()!.aprovado ? 'Parabéns! Você foi aprovado!' : 'Não foi dessa vez...' }}
+        </h1>
+        <p class="resultado__curso">{{ prova.curso }}</p>
+      </div>
+
+      <!-- Pontuação principal -->
+      <div class="resultado__pontuacao">
+        <div class="resultado__nota">
+          <span class="resultado__nota-valor">{{ resultado()!.pontuacao }}</span>
+          <span class="resultado__nota-total">/ {{ prova.pontuacaoTotal }}</span>
+        </div>
+        <span class="resultado__nota-percentual">
+          {{ (resultado()!.pontuacao / prova.pontuacaoTotal) * 100 | number : '1.0-0' }}%
+        </span>
+      </div>
+
+      <!-- Estatísticas -->
+      <div class="resultado__stats">
+        <div class="resultado__stat resultado__stat--acertos">
+          <app-header-icone nome="check-circle" [tamanho]="24"></app-header-icone>
+          <div class="resultado__stat-info">
+            <span class="resultado__stat-valor">{{ resultado()!.acertos }}</span>
+            <span class="resultado__stat-label">Acertos</span>
+          </div>
+        </div>
+
+        <div class="resultado__stat resultado__stat--erros">
+          <app-header-icone nome="x" [tamanho]="24"></app-header-icone>
+          <div class="resultado__stat-info">
+            <span class="resultado__stat-valor">{{ resultado()!.erros }}</span>
+            <span class="resultado__stat-label">Erros</span>
+          </div>
+        </div>
+
+        <div class="resultado__stat resultado__stat--branco">
+          <app-header-icone nome="minus" [tamanho]="24"></app-header-icone>
+          <div class="resultado__stat-info">
+            <span class="resultado__stat-valor">{{ resultado()!.emBranco }}</span>
+            <span class="resultado__stat-label">Em Branco</span>
+          </div>
+        </div>
+
+        <div class="resultado__stat resultado__stat--tempo">
+          <app-header-icone nome="relogio" [tamanho]="24"></app-header-icone>
+          <div class="resultado__stat-info">
+            <span class="resultado__stat-valor">{{ tempoGastoFormatado() }}</span>
+            <span class="resultado__stat-label">Tempo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensagem -->
+      <div class="resultado__mensagem" *ngIf="resultado()!.aprovado">
+        <p>
+          Excelente trabalho! Você demonstrou domínio do conteúdo. Continue assim e avance para os
+          próximos módulos do curso.
+        </p>
+      </div>
+
+      <div
+        class="resultado__mensagem resultado__mensagem--reprovado"
+        *ngIf="!resultado()!.aprovado"
+      >
+        <p>
+          Não desanime! Revise o conteúdo do curso e tente novamente. Você ainda tem
+          <strong>{{ prova.tentativasRestantes - 1 }}</strong> tentativa(s).
+        </p>
+      </div>
+
+      <!-- Ações -->
+      <div class="resultado__acoes">
+        <button class="btn btn--outline" (click)="voltarParaCurso()">
+          <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
+          Voltar ao Curso
+        </button>
+
+        <button
+          class="btn btn--primary"
+          *ngIf="!resultado()!.aprovado && prova.tentativasRestantes > 1"
+          (click)="refazerProva()"
+        >
+          <app-header-icone nome="refresh" [tamanho]="18"></app-header-icone>
+          Refazer Prova
+        </button>
+
+        <button class="btn btn--success" *ngIf="resultado()!.aprovado" (click)="voltarParaCurso()">
+          <app-header-icone nome="certificados" [tamanho]="18"></app-header-icone>
+          Ver Certificado
+        </button>
+      </div>
+    </div>
+
+    <!-- Gabarito (opcional - mostrar após finalizar) -->
+    <div class="gabarito">
+      <h2 class="gabarito__titulo">
+        <app-header-icone nome="cursos" [tamanho]="24"></app-header-icone>
+        Gabarito e Explicações
+      </h2>
+
+      <div class="gabarito__questoes">
+        <app-questao
+          *ngFor="let questao of prova.questoes"
+          [questao]="questao"
+          [respostaAtual]="getRespostaQuestao(questao.id)"
+          [modoRevisao]="true"
+          [mostrarResposta]="true"
+        ></app-questao>
+      </div>
+    </div>
+  </div>
+</app-sistema-layout>

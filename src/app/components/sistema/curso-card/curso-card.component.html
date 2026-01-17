@@ -1,0 +1,47 @@
+<div
+  class="curso-card"
+  [class.curso-card--compacto]="variante === 'compacto'"
+  [class.curso-card--destaque]="variante === 'destaque'"
+>
+  <div class="curso-card__imagem">
+    <img [src]="curso.imagem" [alt]="curso.titulo" />
+    <span *ngIf="curso.gratuito" class="curso-card__badge">GRÁTIS</span>
+  </div>
+
+  <div class="curso-card__conteudo">
+    <span class="curso-card__categoria" [style.background-color]="curso.categoriaColor">
+      {{ curso.categoria }}
+    </span>
+
+    <h4 class="curso-card__titulo">{{ curso.titulo }}</h4>
+    <p class="curso-card__instrutor">{{ curso.instrutor }}</p>
+
+    <div *ngIf="mostrarProgresso && curso.progresso !== undefined" class="curso-card__progresso">
+      <app-barra-progresso [valor]="curso.progresso" tamanho="pequeno"></app-barra-progresso>
+      <span class="curso-card__porcentagem">{{ curso.progresso }}% Concluído</span>
+    </div>
+
+    <div class="curso-card__footer">
+      <div class="curso-card__stats">
+        <span class="curso-card__avaliacao">
+          <app-header-icone
+            nome="star"
+            [tamanho]="14"
+            preenchimento="#f59e0b"
+            cor="none"
+          ></app-header-icone>
+          {{ curso.avaliacao }} ({{ curso.totalAvaliacoes }})
+        </span>
+        <span class="curso-card__duracao">
+          <app-header-icone nome="relogio" [tamanho]="14"></app-header-icone>
+          {{ curso.duracao }}
+        </span>
+        <span class="curso-card__aulas">
+          <app-header-icone nome="cursos" [tamanho]="14"></app-header-icone>
+          {{ curso.totalAulas }} aulas
+        </span>
+      </div>
+      <button class="btn-acessar" (click)="onAcessar()">Acessar</button>
+    </div>
+  </div>
+</div>

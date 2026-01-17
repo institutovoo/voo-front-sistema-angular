@@ -1,0 +1,8 @@
+<div
+  class="barra-progresso"
+  [class.barra-progresso--pequeno]="tamanho === 'pequeno'"
+  [class.barra-progresso--grande]="tamanho === 'grande'"
+>
+  <div class="barra-progresso__fill" [style.width.%]="valor" [style.background-color]="cor"></div>
+</div>
+<span *ngIf="mostrarTexto" class="barra-progresso__texto">{{ textoExibido }}</span>

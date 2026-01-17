@@ -138,6 +138,14 @@
   max-width: 480px;
   text-align: center;
 
+  position: fixed;
+  top: 50vh;
+  left: 25vw;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+
+  width: min(480px, 40vw);
+
   &__icone {
     width: 72px;
     height: 72px;
@@ -197,6 +205,26 @@
   }
 }
 
+.mensagem-erro {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+}
+
+.mensagem-sucesso {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #dcfce7;
+  color: #16a34a;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #bbf7d0;
+}
+
 @media (max-width: 1024px) {
   .autenticacao {
     grid-template-columns: 1fr;
@@ -204,6 +232,13 @@
 
   .autenticacao__esquerda {
     display: none;
+  }
+
+  /* Em telas menores, remover position fixed para evitar sobreposição */
+  .destaque {
+    position: static;
+    transform: none;
+    width: 100%;
   }
 
   .autenticacao__direita {

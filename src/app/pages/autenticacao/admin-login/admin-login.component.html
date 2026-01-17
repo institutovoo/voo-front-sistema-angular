@@ -5,6 +5,8 @@
     <h1 class="titulo titulo--centro">Acesso administrativo</h1>
     <p class="subtitulo subtitulo--centro">Entre para gerenciar cursos, provas e usuários.</p>
 
+    <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
+
     <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
       <app-campo
         rotulo="Email"

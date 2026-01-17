@@ -1,0 +1,292 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="aluno" conteudoMaxWidth="1400px">
+  <!-- Header da página -->
+  <div class="page-header">
+    <div class="page-header__info">
+      <h1 class="page-header__titulo">Loja de Cursos</h1>
+      <p class="page-header__subtitulo">
+        Explore nossa biblioteca com mais de {{ cursos.length }} cursos para impulsionar sua
+        carreira
+      </p>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <section class="kpis">
+    <div class="kpis__grid">
+      <app-card-kpi *ngFor="let kpi of kpis" [estatistica]="kpi"></app-card-kpi>
+    </div>
+  </section>
+
+  <!-- Cursos em Destaque -->
+  <section class="destaques" *ngIf="cursosDestaque.length > 0">
+    <div class="destaques__header">
+      <h2 class="destaques__titulo">
+        <app-header-icone nome="star" [tamanho]="24" cor="#f59e0b"></app-header-icone>
+        Cursos em Destaque
+      </h2>
+      <p class="destaques__subtitulo">Os mais populares entre nossos alunos</p>
+    </div>
+
+    <div class="destaques__grid">
+      <div
+        class="curso-card curso-card--destaque"
+        *ngFor="let curso of cursosDestaque"
+        (click)="onVerDetalhes(curso)"
+      >
+        <div class="curso-card__imagem">
+          <img [src]="curso.imagem" [alt]="curso.titulo" />
+          <div class="curso-card__badges">
+            <span *ngIf="curso.gratuito" class="curso-card__badge curso-card__badge--gratis">
+              GRÁTIS
+            </span>
+            <span
+              *ngIf="!curso.gratuito && curso.precoOriginal"
+              class="curso-card__badge curso-card__badge--desconto"
+            >
+              {{
+                ((curso.precoOriginal - curso.preco) / curso.precoOriginal) * 100
+                  | number : '1.0-0'
+              }}% OFF
+            </span>
+            <span *ngIf="curso.novo" class="curso-card__badge curso-card__badge--novo"> NOVO </span>
+          </div>
+        </div>
+
+        <div class="curso-card__conteudo">
+          <div class="curso-card__meta">
+            <span class="curso-card__categoria" [style.background-color]="curso.categoriaColor">
+              {{ curso.categoria }}
+            </span>
+            <span class="curso-card__nivel" [ngClass]="getNivelClass(curso.nivel)">
+              {{ getNivelLabel(curso.nivel) }}
+            </span>
+          </div>
+
+          <h3 class="curso-card__titulo">{{ curso.titulo }}</h3>
+          <p class="curso-card__descricao">{{ curso.descricao }}</p>
+
+          <div class="curso-card__instrutor">
+            <img
+              *ngIf="curso.instrutorAvatar"
+              [src]="curso.instrutorAvatar"
+              [alt]="curso.instrutor"
+              class="curso-card__instrutor-avatar"
+            />
+            <span>{{ curso.instrutor }}</span>
+          </div>
+
+          <div class="curso-card__stats">
+            <span class="curso-card__stat">
+              <app-header-icone nome="star" [tamanho]="14" cor="#f59e0b"></app-header-icone>
+              {{ curso.avaliacao }} ({{ curso.totalAvaliacoes | number }})
+            </span>
+            <span class="curso-card__stat">
+              <app-header-icone nome="usuarios" [tamanho]="14"></app-header-icone>
+              {{ curso.totalAlunos | number }} alunos
+            </span>
+            <span class="curso-card__stat">
+              <app-header-icone nome="relogio" [tamanho]="14"></app-header-icone>
+              {{ curso.duracao }}
+            </span>
+            <span class="curso-card__stat">
+              <app-header-icone nome="cursos" [tamanho]="14"></app-header-icone>
+              {{ curso.totalAulas }} aulas
+            </span>
+          </div>
+
+          <div class="curso-card__footer">
+            <div class="curso-card__preco">
+              <span *ngIf="curso.gratuito" class="curso-card__preco-gratis">Gratuito</span>
+              <ng-container *ngIf="!curso.gratuito">
+                <span *ngIf="curso.precoOriginal" class="curso-card__preco-original">
+                  {{ formatarPreco(curso.precoOriginal) }}
+                </span>
+                <span class="curso-card__preco-atual">{{ formatarPreco(curso.preco) }}</span>
+              </ng-container>
+            </div>
+            <button class="btn btn--primary" (click)="onComprar(curso); $event.stopPropagation()">
+              {{ curso.gratuito ? 'Acessar Grátis' : 'Comprar Agora' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filtros -->
+  <app-filtros-barra
+    [tabs]="categoriasTabs"
+    [tabAtiva]="categoriaAtiva()"
+    [termoBusca]="termoBusca()"
+    placeholderBusca="Buscar cursos, instrutores ou temas..."
+    [ordenacao]="ordenacao()"
+    [opcoesOrdenacao]="opcoesOrdenacao"
+    [visualizacao]="visualizacao()"
+    [mostrarVisualizacao]="true"
+    tabEstilo="dot"
+    (tabChange)="onCategoriaChange($event)"
+    (buscaChange)="onBuscaChange($event)"
+    (ordenacaoChange)="onOrdenacaoChange($event)"
+    (visualizacaoChange)="onVisualizacaoChange($event)"
+  ></app-filtros-barra>
+
+  <!-- Filtros Secundários -->
+  <div class="filtros-secundarios">
+    <div class="filtros-secundarios__grupo">
+      <span class="filtros-secundarios__label">Tipo:</span>
+      <button
+        class="filtros-secundarios__chip"
+        [class.filtros-secundarios__chip--ativo]="tipoPreco() === 'todos'"
+        (click)="setTipoPreco('todos')"
+      >
+        Todos
+      </button>
+      <button
+        class="filtros-secundarios__chip"
+        [class.filtros-secundarios__chip--ativo]="tipoPreco() === 'gratuito'"
+        (click)="setTipoPreco('gratuito')"
+      >
+        <app-header-icone nome="check-circle" [tamanho]="14"></app-header-icone>
+        Gratuitos ({{ cursosGratuitos }})
+      </button>
+      <button
+        class="filtros-secundarios__chip"
+        [class.filtros-secundarios__chip--ativo]="tipoPreco() === 'pago'"
+        (click)="setTipoPreco('pago')"
+      >
+        <app-header-icone nome="moedas" [tamanho]="14"></app-header-icone>
+        Pagos ({{ cursosPagos }})
+      </button>
+    </div>
+
+    <div class="filtros-secundarios__grupo">
+      <span class="filtros-secundarios__label">Nível:</span>
+      <button
+        *ngFor="let nivel of niveis"
+        class="filtros-secundarios__chip"
+        [class.filtros-secundarios__chip--ativo]="nivelSelecionado() === nivel.id"
+        (click)="setNivel(nivel.id)"
+      >
+        {{ nivel.nome }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Resultados -->
+  <section class="resultados">
+    <div class="resultados__header">
+      <span class="resultados__count">
+        {{ cursosFiltrados.length }}
+        {{ cursosFiltrados.length === 1 ? 'curso encontrado' : 'cursos encontrados' }}
+      </span>
+    </div>
+
+    <!-- Estado vazio -->
+    <div *ngIf="cursosFiltrados.length === 0" class="resultados__vazio">
+      <app-header-icone nome="cursos" [tamanho]="56" cor="#cbd5e1"></app-header-icone>
+      <h3>Nenhum curso encontrado</h3>
+      <p>Tente ajustar os filtros ou busque por outros termos.</p>
+      <button class="btn btn--primary" (click)="limparFiltros()">Limpar Filtros</button>
+    </div>
+
+    <!-- Grid de Cursos -->
+    <div
+      class="cursos-grid"
+      [class.cursos-grid--lista]="visualizacao() === 'lista'"
+      *ngIf="cursosFiltrados.length > 0"
+    >
+      <div
+        class="curso-card"
+        [class.curso-card--lista]="visualizacao() === 'lista'"
+        *ngFor="let curso of cursosFiltrados"
+        (click)="onVerDetalhes(curso)"
+      >
+        <div class="curso-card__imagem">
+          <img [src]="curso.imagem" [alt]="curso.titulo" />
+          <div class="curso-card__badges">
+            <span *ngIf="curso.gratuito" class="curso-card__badge curso-card__badge--gratis">
+              GRÁTIS
+            </span>
+            <span
+              *ngIf="!curso.gratuito && curso.precoOriginal"
+              class="curso-card__badge curso-card__badge--desconto"
+            >
+              {{
+                ((curso.precoOriginal - curso.preco) / curso.precoOriginal) * 100
+                  | number : '1.0-0'
+              }}% OFF
+            </span>
+            <span *ngIf="curso.novo" class="curso-card__badge curso-card__badge--novo"> NOVO </span>
+          </div>
+        </div>
+
+        <div class="curso-card__conteudo">
+          <div class="curso-card__meta">
+            <span class="curso-card__categoria" [style.background-color]="curso.categoriaColor">
+              {{ curso.categoria }}
+            </span>
+            <span class="curso-card__nivel" [ngClass]="getNivelClass(curso.nivel)">
+              {{ getNivelLabel(curso.nivel) }}
+            </span>
+          </div>
+
+          <h3 class="curso-card__titulo">{{ curso.titulo }}</h3>
+
+          <p class="curso-card__descricao">{{ curso.descricao }}</p>
+
+          <div class="curso-card__instrutor">
+            <img
+              *ngIf="curso.instrutorAvatar"
+              [src]="curso.instrutorAvatar"
+              [alt]="curso.instrutor"
+              class="curso-card__instrutor-avatar"
+            />
+            <span>{{ curso.instrutor }}</span>
+          </div>
+
+          <div class="curso-card__stats">
+            <span class="curso-card__stat curso-card__stat--rating">
+              <app-header-icone nome="star" [tamanho]="14" cor="#f59e0b"></app-header-icone>
+              {{ curso.avaliacao }} ({{ curso.totalAvaliacoes | number }})
+            </span>
+            <span class="curso-card__stat">
+              <app-header-icone nome="usuarios" [tamanho]="14"></app-header-icone>
+              {{ curso.totalAlunos | number }} alunos
+            </span>
+          </div>
+
+          <div class="curso-card__info">
+            <span class="curso-card__info-item">
+              <app-header-icone nome="relogio" [tamanho]="14"></app-header-icone>
+              {{ curso.duracao }}
+            </span>
+            <span class="curso-card__info-item">
+              <app-header-icone nome="cursos" [tamanho]="14"></app-header-icone>
+              {{ curso.totalAulas }} aulas
+            </span>
+          </div>
+
+          <div class="curso-card__footer">
+            <div class="curso-card__preco">
+              <span *ngIf="curso.gratuito" class="curso-card__preco-gratis">Gratuito</span>
+              <ng-container *ngIf="!curso.gratuito">
+                <span *ngIf="curso.precoOriginal" class="curso-card__preco-original">
+                  {{ formatarPreco(curso.precoOriginal) }}
+                </span>
+                <span class="curso-card__preco-atual">{{ formatarPreco(curso.preco) }}</span>
+              </ng-container>
+            </div>
+            <button
+              class="btn btn--full"
+              [class.btn--primary]="!curso.gratuito"
+              [class.btn--success]="curso.gratuito"
+              (click)="onComprar(curso); $event.stopPropagation()"
+            >
+              {{ curso.gratuito ? 'Acessar Grátis' : 'Comprar Agora' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</app-sistema-layout>

@@ -18,3 +18,13 @@
   display: grid;
   gap: 14px;
 }
+
+.mensagem-erro {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+}

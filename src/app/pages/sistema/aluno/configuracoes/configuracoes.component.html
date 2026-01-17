@@ -1,11 +1,5 @@
-<app-sistema-header
-  [usuario]="usuario"
-  tipoUsuario="aluno"
-  (sidebarMudou)="onSidebarMudou($event)"
-></app-sistema-header>
-
-<div class="configuracoes">
-  <main class="main" [class.main--expandido]="!sidebarAberta">
+<app-sistema-layout [usuario]="usuario" tipoUsuario="aluno">
+  <div class="configuracoes">
     <div class="configuracoes__container">
       <div class="configuracoes__header">
         <h1 class="configuracoes__titulo">Configurações</h1>
@@ -72,10 +66,9 @@
 
       <div class="configuracoes__conteudo">
         <app-config-perfil *ngIf="abaAtiva === 'perfil'"></app-config-perfil>
-        <app-config-notificacao *ngIf="abaAtiva === 'notificacoes'"></app-config-notificacao>
         <app-config-pagamento *ngIf="abaAtiva === 'pagamento'"></app-config-pagamento>
         <app-config-seguranca *ngIf="abaAtiva === 'seguranca'"></app-config-seguranca>
       </div>
     </div>
-  </main>
-</div>
+  </div>
+</app-sistema-layout>

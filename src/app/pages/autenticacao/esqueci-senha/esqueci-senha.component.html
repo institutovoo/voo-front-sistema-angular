@@ -17,8 +17,13 @@
     </a>
     <app-logo tema="light"></app-logo>
 
-    <h1 class="titulo">Recuperar senha</h1>
-    <p class="subtitulo">Digite seu e-mail e enviaremos um link para você criar uma nova senha.</p>
+    <h1 class="titulo">Esqueceu sua senha?</h1>
+    <p class="subtitulo">
+      Não se preocupe! Digite seu e-mail abaixo e enviaremos as instruções para recuperar sua senha.
+    </p>
+
+    <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
+    <div *ngIf="mensagem" class="mensagem-sucesso">{{ mensagem }}</div>
 
     <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
       <app-campo

@@ -33,9 +33,11 @@
     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
   </ng-container>
 
-  <!-- Mensagens -->
-  <ng-container *ngIf="nome === 'mensagens'">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+  <!-- Dúvida -->
+  <ng-container *ngIf="nome === 'duvida'">
+    <circle cx="12" cy="12" r="10" />
+    <path d="M9.09 9a3 3 0 0 1 5.82 1c0 2-3 2-3 4" />
+    <line x1="12" y1="17" x2="12" y2="17" />
   </ng-container>
 
   <!-- Alunos -->
@@ -84,12 +86,6 @@
   <ng-container *ngIf="nome === 'busca' || nome === 'search'">
     <circle cx="11" cy="11" r="8" />
     <path d="m21 21-4.35-4.35" />
-  </ng-container>
-
-  <!-- Notificação / Sino -->
-  <ng-container *ngIf="nome === 'notificacao' || nome === 'sino'">
-    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
   </ng-container>
 
   <!-- Menu / Hamburger -->
@@ -221,6 +217,48 @@
 
   <!-- Grid -->
   <ng-container *ngIf="nome === 'grid'">
+    <rect x="3" y="3" width="7" height="7" rx="1" />
+    <rect x="14" y="3" width="7" height="7" rx="1" />
+    <rect x="3" y="14" width="7" height="7" rx="1" />
+    <rect x="14" y="14" width="7" height="7" rx="1" />
+  </ng-container>
+
+  <!-- Lista -->
+  <ng-container *ngIf="nome === 'list' || nome === 'lista'">
+    <line x1="8" y1="6" x2="21" y2="6" />
+    <line x1="8" y1="12" x2="21" y2="12" />
+    <line x1="8" y1="18" x2="21" y2="18" />
+    <circle cx="4" cy="6" r="1" />
+    <circle cx="4" cy="12" r="1" />
+    <circle cx="4" cy="18" r="1" />
+  </ng-container>
+
+  <!-- Sort -->
+  <ng-container *ngIf="nome === 'sort'">
+    <line x1="11" y1="5" x2="17" y2="5" />
+    <line x1="11" y1="9" x2="19" y2="9" />
+    <line x1="11" y1="13" x2="21" y2="13" />
+    <line x1="11" y1="17" x2="15" y2="17" />
+    <polyline points="7,7 3,11 7,15" />
+  </ng-container>
+
+  <!-- Sort Asc -->
+  <ng-container *ngIf="nome === 'sort-asc'">
+    <line x1="11" y1="7" x2="21" y2="7" />
+    <line x1="11" y1="11" x2="19" y2="11" />
+    <line x1="11" y1="15" x2="17" y2="15" />
+    <line x1="11" y1="19" x2="15" y2="19" />
+    <polyline points="7,17 3,13 7,9" />
+  </ng-container>
+
+  <!-- Megafone -->
+  <ng-container *ngIf="nome === 'megafone'">
+    <path d="M3 11v2a2 2 0 0 0 2 2h1l3 6h2l-2.5-6H14l7-4V7l-7-4H5a2 2 0 0 0-2 2v6Z" />
+    <line x1="14" y1="11" x2="14" y2="13" />
+  </ng-container>
+
+  <!-- Grid -->
+  <ng-container *ngIf="nome === 'grid'">
     <rect x="3" y="3" width="7" height="7" />
     <rect x="14" y="3" width="7" height="7" />
     <rect x="14" y="14" width="7" height="7" />
@@ -290,5 +328,227 @@
     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
     <polyline points="15,3 21,3 21,9" />
     <line x1="10" y1="14" x2="21" y2="3" />
+  </ng-container>
+
+  <!-- Concluídos / Medalha -->
+  <ng-container *ngIf="nome === 'concluidos' || nome === 'medalha'">
+    <circle cx="12" cy="8" r="6" />
+    <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+  </ng-container>
+
+  <!-- Progresso / Tendência -->
+  <ng-container *ngIf="nome === 'progresso' || nome === 'tendencia'">
+    <polyline points="23,6 13.5,15.5 8.5,10.5 1,18" />
+    <polyline points="17,6 23,6 23,12" />
+  </ng-container>
+
+  <!-- Curso (alias) -->
+  <ng-container *ngIf="nome === 'curso'">
+    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+  </ng-container>
+
+  <!-- Horas (alias para relógio) -->
+  <ng-container *ngIf="nome === 'horas'">
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12,6 12,12 16,14" />
+  </ng-container>
+
+  <!-- Check Circle -->
+  <ng-container *ngIf="nome === 'check-circle'">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+    <polyline points="22,4 12,14.01 9,11.01" />
+  </ng-container>
+
+  <!-- Alerta / Warning -->
+  <ng-container *ngIf="nome === 'alerta' || nome === 'warning'">
+    <path
+      d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+    />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </ng-container>
+
+  <!-- Refresh / Atualizar -->
+  <ng-container *ngIf="nome === 'refresh' || nome === 'atualizar'">
+    <polyline points="23,4 23,10 17,10" />
+    <polyline points="1,20 1,14 7,14" />
+    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+  </ng-container>
+
+  <!-- Mais / Plus Circle -->
+  <ng-container *ngIf="nome === 'mais'">
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="8" x2="12" y2="16" />
+    <line x1="8" y1="12" x2="16" y2="12" />
+  </ng-container>
+
+  <!-- Moedas / Coins -->
+  <ng-container *ngIf="nome === 'moedas' || nome === 'coins'">
+    <circle cx="8" cy="8" r="6" />
+    <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
+    <line x1="7" y1="6" x2="7" y2="10" />
+    <line x1="5.5" y1="8" x2="8.5" y2="8" />
+  </ng-container>
+
+  <!-- Info -->
+  <ng-container *ngIf="nome === 'info'">
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="16" x2="12" y2="12" />
+    <line x1="12" y1="8" x2="12.01" y2="8" />
+  </ng-container>
+
+  <!-- Play -->
+  <ng-container *ngIf="nome === 'play'">
+    <polygon points="5 3 19 12 5 21 5 3" />
+  </ng-container>
+
+  <!-- Seta Esquerda -->
+  <ng-container *ngIf="nome === 'seta-esquerda'">
+    <line x1="19" y1="12" x2="5" y2="12" />
+    <polyline points="12 19 5 12 12 5" />
+  </ng-container>
+
+  <!-- Seta Direita -->
+  <ng-container *ngIf="nome === 'seta-direita'">
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </ng-container>
+
+  <!-- Seta Cima -->
+  <ng-container *ngIf="nome === 'seta-cima'">
+    <line x1="12" y1="19" x2="12" y2="5" />
+    <polyline points="5 12 12 5 19 12" />
+  </ng-container>
+
+  <!-- Seta Baixo -->
+  <ng-container *ngIf="nome === 'seta-baixo'">
+    <line x1="12" y1="5" x2="12" y2="19" />
+    <polyline points="19 12 12 19 5 12" />
+  </ng-container>
+
+  <!-- Enviar / Send -->
+  <ng-container *ngIf="nome === 'enviar' || nome === 'send'">
+    <line x1="22" y1="2" x2="11" y2="13" />
+    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+  </ng-container>
+
+  <!-- Documento / File -->
+  <ng-container *ngIf="nome === 'documento' || nome === 'file'">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+  </ng-container>
+
+  <!-- Questão / Question -->
+  <ng-container *ngIf="nome === 'questao' || nome === 'question'">
+    <circle cx="12" cy="12" r="10" />
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </ng-container>
+
+  <!-- Gráfico / Chart -->
+  <ng-container *ngIf="nome === 'grafico' || nome === 'chart'">
+    <line x1="12" y1="20" x2="12" y2="10" />
+    <line x1="18" y1="20" x2="18" y2="4" />
+    <line x1="6" y1="20" x2="6" y2="16" />
+  </ng-container>
+
+  <!-- Minus -->
+  <ng-container *ngIf="nome === 'minus'">
+    <line x1="5" y1="12" x2="19" y2="12" />
+  </ng-container>
+
+  <!-- Award / Medalha / Prêmio -->
+  <ng-container *ngIf="nome === 'award' || nome === 'medalha'">
+    <circle cx="12" cy="8" r="7" />
+    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+  </ng-container>
+
+  <!-- Video -->
+  <ng-container *ngIf="nome === 'video'">
+    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+    <polygon points="10 8 10 12 14 10 10 8" />
+    <line x1="2" y1="17" x2="22" y2="17" />
+    <line x1="7" y1="17" x2="7" y2="21" />
+    <line x1="17" y1="17" x2="17" y2="21" />
+  </ng-container>
+
+  <!-- Texto -->
+  <ng-container *ngIf="nome === 'texto'">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <line x1="16" y1="13" x2="8" y2="13" />
+    <line x1="16" y1="17" x2="8" y2="17" />
+    <polyline points="10 9 9 9 8 9" />
+  </ng-container>
+
+  <!-- Audio -->
+  <ng-container *ngIf="nome === 'audio'">
+    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+    <line x1="12" y1="19" x2="12" y2="23" />
+    <line x1="8" y1="23" x2="16" y2="23" />
+  </ng-container>
+
+  <!-- Ao Vivo -->
+  <ng-container *ngIf="nome === 'ao-vivo'">
+    <circle cx="12" cy="12" r="2" />
+    <path d="M16.24 7.76a6 6 0 0 1 0 8.48" />
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    <path d="M7.76 16.24a6 6 0 0 1 0-8.48" />
+    <path d="M4.93 19.07a10 10 0 0 1 0-14.14" />
+  </ng-container>
+
+  <!-- PDF -->
+  <ng-container *ngIf="nome === 'pdf'">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <path d="M9 15h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9v-3z" />
+    <path d="M13 15v3h1" />
+    <path d="M17 15h-2v3" />
+    <path d="M15 16.5h1.5" />
+  </ng-container>
+
+  <!-- Slide -->
+  <ng-container *ngIf="nome === 'slide'">
+    <rect x="2" y="3" width="20" height="14" rx="2" />
+    <path d="M2 17l10 5 10-5" />
+    <path d="M2 12l10 5 10-5" />
+  </ng-container>
+
+  <!-- Planilha -->
+  <ng-container *ngIf="nome === 'planilha'">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <path d="M8 13h8" />
+    <path d="M8 17h8" />
+    <path d="M12 13v4" />
+  </ng-container>
+
+  <!-- Codigo -->
+  <ng-container *ngIf="nome === 'codigo'">
+    <polyline points="16 18 22 12 16 6" />
+    <polyline points="8 6 2 12 8 18" />
+  </ng-container>
+
+  <!-- Link -->
+  <ng-container *ngIf="nome === 'link'">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+  </ng-container>
+
+  <!-- Arquivo / Outro -->
+  <ng-container *ngIf="nome === 'arquivo'">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+    <polyline points="13 2 13 9 20 9" />
+  </ng-container>
+
+  <!-- Presente -->
+  <ng-container *ngIf="nome === 'presente'">
+    <polyline points="20 12 20 22 4 22 4 12" />
+    <rect x="2" y="7" width="20" height="5" />
+    <line x1="12" y1="22" x2="12" y2="7" />
+    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
   </ng-container>
 </svg>

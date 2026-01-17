@@ -1,0 +1,40 @@
+$primary: #21b7cd;
+$bg-light: #e9ecef;
+$radius-full: 999px;
+
+:host {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.barra-progresso {
+  flex: 1;
+  height: 8px;
+  background: $bg-light;
+  border-radius: $radius-full;
+  overflow: hidden;
+
+  &--pequeno {
+    height: 4px;
+  }
+
+  &--grande {
+    height: 12px;
+  }
+
+  &__fill {
+    height: 100%;
+    background: $primary;
+    border-radius: $radius-full;
+    transition: width 0.3s ease;
+  }
+
+  &__texto {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    white-space: nowrap;
+  }
+}

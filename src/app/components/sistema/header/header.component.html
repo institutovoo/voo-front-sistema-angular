@@ -1,27 +1,24 @@
+<!-- Overlay Mobile -->
+<div class="sidebar-overlay" *ngIf="menuMobileAberto" (click)="fecharMenuMobile()"></div>
+
 <!-- Sidebar -->
 <aside
   class="sidebar"
   [class.sidebar--fechada]="!sidebarAberta"
   [class.sidebar--mobile-aberta]="menuMobileAberto"
 >
-  <!-- Overlay Mobile -->
-  <div class="sidebar__overlay" *ngIf="menuMobileAberto" (click)="fecharMenuMobile()"></div>
-
   <div class="sidebar__conteudo">
     <!-- Logo -->
     <div class="sidebar__logo">
       <app-logo [linkHome]="false" tema="light" [class.logo--compacto]="!sidebarAberta"></app-logo>
 
       <!-- Botão Toggle Desktop -->
-      <button
-        class="sidebar__toggle"
-        (click)="toggleSidebar()"
-        [attr.aria-label]="sidebarAberta ? 'Fechar menu' : 'Abrir menu'"
-      >
+      <button class="sidebar__toggle" (click)="toggleSidebar()">
         <app-header-icone
           [nome]="sidebarAberta ? 'seta-esquerda-dupla' : 'seta-direita-dupla'"
           [tamanho]="20"
-        ></app-header-icone>
+        >
+        </app-header-icone>
       </button>
     </div>
 
@@ -58,10 +55,39 @@
 
 <!-- Header Superior -->
 <header class="header" [class.header--expandido]="!sidebarAberta">
-  <!-- Botão Menu Mobile -->
-  <button class="header__menu-mobile" (click)="toggleMenuMobile()">
-    <app-header-icone nome="menu" [tamanho]="24"></app-header-icone>
-  </button>
+  <div class="header__left">
+    <!-- Botão Toggle Desktop (quando sidebar fechada) -->
+    <button 
+      class="header__toggle-desktop" 
+      (click)="toggleSidebar()" 
+      [style.display]="!sidebarAberta ? 'flex' : 'none'"
+    >
+      <app-header-icone nome="menu" [tamanho]="24"></app-header-icone>
+    </button>
+
+    <!-- Logo (quando sidebar fechada) -->
+    <app-logo 
+      [linkHome]="false" 
+      tema="light" 
+      [style.display]="!sidebarAberta ? 'block' : 'none'" 
+      class="header__logo"
+    ></app-logo>
+
+    <!-- Botão Menu Mobile -->
+    <button class="header__menu-mobile" (click)="toggleMenuMobile()">
+      <app-header-icone nome="menu" [tamanho]="24"></app-header-icone>
+    </button>
+
+    <!-- Menu Horizontal (quando sidebar fechada) -->
+    <nav class="header__nav" [style.display]="!sidebarAberta ? 'flex' : 'none'">
+      <app-header-menu-item
+        *ngFor="let item of menuPrincipal"
+        [item]="item"
+        [compacto]="false"
+        class="header__nav-item"
+      ></app-header-menu-item>
+    </nav>
+  </div>
 
   <!-- Busca -->
   <div class="header__busca">
@@ -76,11 +102,6 @@
 
   <!-- Ações -->
   <div class="header__acoes">
-    <button class="header__notificacao">
-      <app-header-icone nome="notificacao" [tamanho]="20"></app-header-icone>
-      <span class="header__badge"></span>
-    </button>
-
     <app-header-usuario-avatar
       [nome]="usuario.nome"
       [avatar]="usuario.avatar"

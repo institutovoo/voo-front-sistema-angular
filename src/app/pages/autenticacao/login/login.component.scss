@@ -129,6 +129,25 @@
   }
 }
 
+.mensagem-erro {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+}
+
+.rodape {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #607081;
+}
+
 @media (max-width: 1024px) {
   .autenticacao {
     grid-template-columns: 1fr;

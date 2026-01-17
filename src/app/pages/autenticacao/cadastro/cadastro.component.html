@@ -93,15 +93,18 @@
       <h1 class="titulo">Criar conta</h1>
       <p class="subtitulo">Preencha os dados abaixo para começar</p>
 
+      <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
+      <div *ngIf="sucesso" class="mensagem-sucesso">{{ sucesso }}</div>
+
       <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
         <div class="tipo-conta">
-          <span class="tipo-conta__rotulo">Tipo de conta</span>
+          <span class="tipo-conta__rotulo">Eu sou:</span>
           <div class="tipo-conta__opcoes">
             <label
               class="tipo-conta__opcao"
-              [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'PF'"
+              [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'Aluno'"
             >
-              <input type="radio" formControlName="tipoConta" value="PF" />
+              <input type="radio" formControlName="tipoConta" value="Aluno" />
               <svg
                 width="20"
                 height="20"
@@ -109,19 +112,17 @@
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
               >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
               </svg>
-              <span>Pessoa Física</span>
+              Aluno
             </label>
             <label
               class="tipo-conta__opcao"
-              [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'PJ'"
+              [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'Instrutor'"
             >
-              <input type="radio" formControlName="tipoConta" value="PJ" />
+              <input type="radio" formControlName="tipoConta" value="Instrutor" />
               <svg
                 width="20"
                 height="20"
@@ -129,19 +130,31 @@
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
               >
-                <path d="M3 21h18" />
-                <path d="M9 8h1" />
-                <path d="M9 12h1" />
-                <path d="M9 16h1" />
-                <path d="M14 8h1" />
-                <path d="M14 12h1" />
-                <path d="M14 16h1" />
-                <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" />
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
               </svg>
-              <span>Pessoa Jurídica</span>
+              Instrutor
+            </label>
+            <label
+              class="tipo-conta__opcao"
+              [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'Empresa'"
+            >
+              <input type="radio" formControlName="tipoConta" value="Empresa" />
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+              Empresa
             </label>
           </div>
         </div>
@@ -152,6 +165,66 @@
           [placeholder]="placeholderNome"
           icone="usuario"
           formControlName="nome"
+          [obrigatorio]="true"
+        ></app-campo>
+
+        <app-campo
+          rotulo="Nome Social"
+          tipo="text"
+          placeholder="Como gostaria de ser chamado(a)"
+          icone="usuario"
+          formControlName="nomeSocial"
+        ></app-campo>
+
+        <app-campo
+          *ngIf="formulario.get('tipoConta')?.value !== 'Empresa'"
+          rotulo="Nome da Mãe"
+          tipo="text"
+          placeholder="Nome completo da mãe"
+          icone="usuario"
+          formControlName="nomeMae"
+          [obrigatorio]="true"
+        ></app-campo>
+
+        <app-campo
+          rotulo="Endereço"
+          tipo="text"
+          placeholder="Rua, número, bairro, cidade - UF"
+          icone="busca"
+          formControlName="endereco"
+          [obrigatorio]="true"
+        ></app-campo>
+
+        <app-campo
+          *ngIf="formulario.get('tipoConta')?.value !== 'Empresa'"
+          rotulo="Última Formação"
+          tipo="select"
+          placeholder="Selecione sua formação"
+          icone="documento"
+          formControlName="ultimaFormacao"
+          [obrigatorio]="true"
+          [opcoes]="opcoesFormacao"
+        ></app-campo>
+
+        <app-campo
+          *ngIf="formulario.get('tipoConta')?.value !== 'Empresa'"
+          rotulo="Status da Formação"
+          tipo="select"
+          placeholder="Selecione o status"
+          icone="documento"
+          formControlName="statusFormacao"
+          [obrigatorio]="true"
+          [opcoes]="opcoesStatusFormacao"
+        ></app-campo>
+
+        <app-campo
+          [rotulo]="formulario.get('tipoConta')?.value === 'Empresa' ? 'CNPJ' : 'CPF'"
+          tipo="text"
+          placeholder="Digite apenas números"
+          icone="documento"
+          formControlName="documento"
+          [maxlength]="formulario.get('tipoConta')?.value === 'Empresa' ? 18 : 14"
+          [obrigatorio]="true"
         ></app-campo>
 
         <app-campo
@@ -160,6 +233,7 @@
           placeholder="seu@email.com"
           icone="email"
           formControlName="email"
+          [obrigatorio]="true"
         ></app-campo>
 
         <app-campo
@@ -168,6 +242,8 @@
           placeholder="(11) 99999-9999"
           icone="telefone"
           formControlName="telefone"
+          [maxlength]="15"
+          [obrigatorio]="true"
         ></app-campo>
 
         <app-campo
@@ -177,6 +253,7 @@
           icone="senha"
           [mostrarAlternarSenha]="true"
           formControlName="senha"
+          [obrigatorio]="true"
         ></app-campo>
 
         <app-campo
@@ -186,6 +263,7 @@
           icone="senha"
           [mostrarAlternarSenha]="true"
           formControlName="confirmarSenha"
+          [obrigatorio]="true"
         ></app-campo>
 
         <div class="formulario__linha">

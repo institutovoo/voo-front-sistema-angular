@@ -1,0 +1,10 @@
+<div class="atividade">
+  <div class="atividade__icone" [style.background-color]="atividade.cor">
+    <app-header-icone [nome]="atividade.icone" [tamanho]="16" cor="white"></app-header-icone>
+  </div>
+  <div class="atividade__info">
+    <span class="atividade__titulo">{{ atividade.titulo }}</span>
+    <span class="atividade__descricao">{{ atividade.descricao }}</span>
+    <span class="atividade__tempo">{{ atividade.tempo }}</span>
+  </div>
+</div>

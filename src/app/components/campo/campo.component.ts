@@ -1,6 +1,11 @@
-import { Component, Input, forwardRef, signal } from '@angular/core';
+import { Component, Input, forwardRef, signal, inject, Optional, Self } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+  NgControl,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-campo',
@@ -8,24 +13,26 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './campo.component.html',
   styleUrl: './campo.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CampoComponent),
-      multi: true,
-    },
-  ],
 })
 export class CampoComponent implements ControlValueAccessor {
-  @Input() tipo: 'text' | 'email' | 'password' | 'tel' | 'number' = 'text';
+  @Input() tipo: 'text' | 'email' | 'password' | 'tel' | 'number' | 'select' = 'text';
   @Input() placeholder: string = '';
   @Input() rotulo: string = '';
-  @Input() icone: 'email' | 'senha' | 'usuario' | 'telefone' | 'busca' | null = null;
+  @Input() icone: 'email' | 'senha' | 'usuario' | 'telefone' | 'busca' | 'documento' | null = null;
   @Input() mostrarAlternarSenha: boolean = false;
+  @Input() maxlength: number | null = null;
+  @Input() obrigatorio: boolean = false;
+  @Input() opcoes: string[] = [];
 
   valor = signal<string>('');
   senhaVisivel = signal<boolean>(false);
   desabilitado = signal<boolean>(false);
+
+  constructor(@Optional() @Self() public ngControl: NgControl) {
+    if (this.ngControl) {
+      this.ngControl.valueAccessor = this;
+    }
+  }
 
   private aoMudar: (valor: string) => void = () => {};
   private aoTocar: () => void = () => {};
@@ -65,5 +72,13 @@ export class CampoComponent implements ControlValueAccessor {
       return 'text';
     }
     return this.tipo;
+  }
+
+  get temErro(): boolean {
+    return !!(
+      this.ngControl &&
+      this.ngControl.invalid &&
+      (this.ngControl.touched || this.ngControl.dirty)
+    );
   }
 }

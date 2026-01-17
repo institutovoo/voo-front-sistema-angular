@@ -1,0 +1,86 @@
+<div class="filtros-barra">
+  <!-- Tabs/Categorias -->
+  <div class="filtros-barra__tabs" *ngIf="tabs.length > 0">
+    <button
+      *ngFor="let tab of tabs"
+      class="filtros-barra__tab"
+      [class.filtros-barra__tab--ativo]="tabAtiva === tab.id"
+      (click)="onTabClick(tab.id)"
+    >
+      <!-- Ícone (estilo icone) -->
+      <app-header-icone
+        *ngIf="tabEstilo === 'icone' && tab.icone"
+        [nome]="tab.icone"
+        [tamanho]="16"
+      ></app-header-icone>
+
+      <!-- Dot colorido (estilo dot) -->
+      <span
+        *ngIf="tabEstilo === 'dot' && tab.cor"
+        class="filtros-barra__tab-dot"
+        [style.background-color]="tab.cor"
+      ></span>
+
+      {{ tab.nome }}
+      <span class="filtros-barra__tab-count">{{ tab.quantidade }}</span>
+    </button>
+  </div>
+
+  <!-- Controles -->
+  <div class="filtros-barra__controles">
+    <!-- Busca -->
+    <div class="filtros-barra__busca" *ngIf="mostrarBusca">
+      <app-header-icone nome="busca" [tamanho]="18" cor="#64748b"></app-header-icone>
+      <input
+        type="text"
+        [placeholder]="placeholderBusca"
+        [value]="termoBusca"
+        (input)="onBuscaInput($event)"
+        class="filtros-barra__busca-input"
+      />
+    </div>
+
+    <!-- Ordenação -->
+    <div
+      class="filtros-barra__select-wrapper"
+      *ngIf="mostrarOrdenacao && opcoesOrdenacao.length > 0"
+    >
+      <app-header-icone nome="sort" [tamanho]="16" cor="#64748b"></app-header-icone>
+      <select
+        [value]="ordenacao"
+        (change)="onOrdenacaoChange($event)"
+        class="filtros-barra__select"
+      >
+        <option *ngFor="let opcao of opcoesOrdenacao" [value]="opcao.valor">
+          {{ opcao.label }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Visualização -->
+    <div class="filtros-barra__visualizacao" *ngIf="mostrarVisualizacao">
+      <button
+        class="filtros-barra__viz-btn"
+        [class.filtros-barra__viz-btn--ativo]="visualizacao === 'grid'"
+        (click)="onVisualizacaoClick('grid')"
+        title="Visualização em grade"
+      >
+        <app-header-icone nome="grid" [tamanho]="18"></app-header-icone>
+      </button>
+      <button
+        class="filtros-barra__viz-btn"
+        [class.filtros-barra__viz-btn--ativo]="visualizacao === 'lista'"
+        (click)="onVisualizacaoClick('lista')"
+        title="Visualização em lista"
+      >
+        <app-header-icone nome="menu" [tamanho]="18"></app-header-icone>
+      </button>
+    </div>
+
+    <!-- Limpar filtros -->
+    <button class="filtros-barra__limpar" *ngIf="mostrarLimpar" (click)="onLimparClick()">
+      <app-header-icone nome="x" [tamanho]="14"></app-header-icone>
+      Limpar
+    </button>
+  </div>
+</div>

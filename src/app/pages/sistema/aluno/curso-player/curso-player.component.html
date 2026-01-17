@@ -1,0 +1,215 @@
+<div class="player-layout" [class.player-layout--sidebar-fechada]="!sidebarAberta()">
+  <!-- Header -->
+  <header class="player-header">
+    <div class="player-header__left">
+      <button class="btn-icon" (click)="voltarParaCurso()" title="Voltar para o curso">
+        <app-header-icone nome="seta-esquerda" [tamanho]="20"></app-header-icone>
+      </button>
+      <app-logo tema="dark" [linkHome]="false" class="player-header__logo"></app-logo>
+      <div class="player-header__divider"></div>
+      <div class="player-header__info">
+        <span class="player-header__categoria" [style.background-color]="curso.categoriaColor">
+          {{ curso.categoria }}
+        </span>
+        <h1 class="player-header__titulo">{{ curso.titulo }}</h1>
+      </div>
+    </div>
+
+    <div class="player-header__right">
+      <div class="player-header__progresso">
+        <span>{{ totalAulasConcluidas }}/{{ totalAulas }} aulas</span>
+        <div class="player-header__progresso-bar">
+          <div class="player-header__progresso-fill" [style.width.%]="progresso"></div>
+        </div>
+      </div>
+      <button class="btn-icon" (click)="toggleSidebar()" title="Toggle módulos">
+        <app-header-icone
+          [nome]="sidebarAberta() ? 'fechar' : 'menu'"
+          [tamanho]="20"
+        ></app-header-icone>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="player-content">
+    <!-- Video Player -->
+    <main class="player-main">
+      <div class="video-container">
+        <div class="video-placeholder">
+          <app-header-icone nome="play" [tamanho]="64"></app-header-icone>
+          <p>{{ aulaAtual?.titulo || 'Selecione uma aula' }}</p>
+        </div>
+      </div>
+
+      <!-- Controles da Aula -->
+      <div class="aula-info">
+        <div class="aula-info__header">
+          <div>
+            <span class="aula-info__modulo" *ngIf="moduloAtual">{{ moduloAtual.titulo }}</span>
+            <h2 class="aula-info__titulo">{{ aulaAtual?.titulo }}</h2>
+          </div>
+          <div class="aula-info__duracao">
+            <app-header-icone nome="relogio" [tamanho]="16"></app-header-icone>
+            {{ aulaAtual?.duracao }}
+          </div>
+        </div>
+
+        <div class="aula-info__acoes">
+          <button class="btn btn--outline" [disabled]="!temAulaAnterior" (click)="aulaAnterior()">
+            <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
+            Anterior
+          </button>
+
+          <button
+            class="btn btn--success"
+            (click)="marcarComoConcluida()"
+            *ngIf="aulaAtual && !aulaAtual.concluida"
+          >
+            <app-header-icone nome="check" [tamanho]="18"></app-header-icone>
+            Marcar como concluída
+          </button>
+
+          <span class="aula-concluida" *ngIf="aulaAtual?.concluida">
+            <app-header-icone nome="check-circle" [tamanho]="20" cor="#22c55e"></app-header-icone>
+            Aula concluída
+          </span>
+
+          <button class="btn btn--primary" [disabled]="!temProximaAula" (click)="proximaAula()">
+            Próxima
+            <app-header-icone nome="seta-direita" [tamanho]="18"></app-header-icone>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Sidebar - Lista de Módulos -->
+    <aside class="player-sidebar" *ngIf="sidebarAberta()">
+      <!-- Tabs -->
+      <div class="sidebar-tabs">
+        <button
+          class="sidebar-tab"
+          [class.sidebar-tab--ativa]="tabAtiva() === 'conteudo'"
+          (click)="setTab('conteudo')"
+        >
+          <app-header-icone nome="cursos" [tamanho]="16"></app-header-icone>
+          Conteúdo
+        </button>
+        <button
+          class="sidebar-tab"
+          [class.sidebar-tab--ativa]="tabAtiva() === 'duvidas'"
+          (click)="setTab('duvidas')"
+        >
+          <app-header-icone nome="mensagem" [tamanho]="16"></app-header-icone>
+          Dúvidas
+          <span class="sidebar-tab__badge" *ngIf="duvidas.length > 0">{{ duvidas.length }}</span>
+        </button>
+      </div>
+
+      <!-- Tab Conteúdo -->
+      <div class="sidebar-content" *ngIf="tabAtiva() === 'conteudo'">
+        <div class="sidebar-header">
+          <h3>Conteúdo do curso</h3>
+          <span class="sidebar-header__progresso">{{ progresso }}% concluído</span>
+        </div>
+
+        <div class="sidebar-modulos">
+          <div *ngFor="let modulo of modulos; let i = index" class="sidebar-modulo">
+            <div class="sidebar-modulo__header">
+              <span class="sidebar-modulo__numero">{{ i + 1 }}</span>
+              <div class="sidebar-modulo__info">
+                <h4>{{ modulo.titulo }}</h4>
+                <span>{{ getAulasConcluidas(modulo) }}/{{ modulo.aulas.length }} aulas</span>
+              </div>
+            </div>
+
+            <div class="sidebar-modulo__aulas">
+              <div
+                *ngFor="let aula of modulo.aulas"
+                class="sidebar-aula"
+                [class.sidebar-aula--ativa]="aula.id === aulaAtualId()"
+                [class.sidebar-aula--concluida]="aula.concluida"
+                (click)="selecionarAula(aula)"
+              >
+                <span class="sidebar-aula__icone">
+                  <app-header-icone
+                    [nome]="getAulaIcone(aula)"
+                    [tamanho]="14"
+                    [cor]="
+                      aula.concluida ? '#22c55e' : aula.id === aulaAtualId() ? '#21b7cd' : '#64748b'
+                    "
+                  ></app-header-icone>
+                </span>
+                <span class="sidebar-aula__titulo">{{ aula.titulo }}</span>
+                <span class="sidebar-aula__duracao">{{ aula.duracao }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Dúvidas -->
+      <div class="sidebar-content sidebar-content--duvidas" *ngIf="tabAtiva() === 'duvidas'">
+        <div class="sidebar-header">
+          <h3>Dúvidas da Aula</h3>
+        </div>
+
+        <!-- Formulário de nova dúvida -->
+        <div class="nova-duvida">
+          <textarea
+            [ngModel]="novaDuvida()"
+            (ngModelChange)="novaDuvida.set($event)"
+            placeholder="Tem alguma dúvida sobre esta aula? Pergunte aqui..."
+            rows="3"
+          ></textarea>
+          <button
+            class="btn btn--primary btn--sm"
+            (click)="enviarDuvida()"
+            [disabled]="!novaDuvida().trim()"
+          >
+            <app-header-icone nome="enviar" [tamanho]="16"></app-header-icone>
+            Enviar dúvida
+          </button>
+        </div>
+
+        <!-- Lista de dúvidas -->
+        <div class="duvidas-lista">
+          <div class="duvida-vazia" *ngIf="duvidas.length === 0">
+            <app-header-icone nome="mensagem" [tamanho]="32" cor="#cbd5e1"></app-header-icone>
+            <p>Nenhuma dúvida ainda.<br />Seja o primeiro a perguntar!</p>
+          </div>
+
+          <div class="duvida-item" *ngFor="let duvida of duvidas">
+            <div class="duvida-item__header">
+              <span class="duvida-item__autor">{{ duvida.autor }}</span>
+              <span class="duvida-item__data">{{ formatarData(duvida.data) }}</span>
+            </div>
+            <p class="duvida-item__texto">{{ duvida.texto }}</p>
+
+            <!-- Respostas -->
+            <div class="duvida-respostas" *ngIf="duvida.respostas.length > 0">
+              <div class="resposta-item" *ngFor="let resposta of duvida.respostas">
+                <div class="resposta-item__header">
+                  <span
+                    class="resposta-item__autor"
+                    [class.resposta-item__autor--instrutor]="resposta.isInstrutor"
+                  >
+                    {{ resposta.autor }}
+                    <span class="resposta-item__badge" *ngIf="resposta.isInstrutor">Instrutor</span>
+                  </span>
+                  <span class="resposta-item__data">{{ formatarData(resposta.data) }}</span>
+                </div>
+                <p class="resposta-item__texto">{{ resposta.texto }}</p>
+              </div>
+            </div>
+
+            <span class="duvida-item__aguardando" *ngIf="duvida.respostas.length === 0">
+              <app-header-icone nome="relogio" [tamanho]="12"></app-header-icone>
+              Aguardando resposta
+            </span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

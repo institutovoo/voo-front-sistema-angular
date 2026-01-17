@@ -54,3 +54,23 @@
   text-align: center;
   margin-top: 8px;
 }
+
+.mensagem-erro {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+}
+
+.mensagem-sucesso {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #dcfce7;
+  color: #16a34a;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #bbf7d0;
+}

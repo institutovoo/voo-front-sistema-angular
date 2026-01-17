@@ -10,6 +10,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/institucional/institucional.component').then((m) => m.InstitucionalComponent),
   },
+  {
+    path: 'instrutores',
+    title: 'Institucional - Instrutores',
+    loadComponent: () =>
+      import('./pages/institucional-instrutor/institucional-instrutor.component').then(
+        (m) => m.InstitucionalInstrutorComponent
+      ),
+  },
 
   // ========================================
   // AUTENTICAÇÃO

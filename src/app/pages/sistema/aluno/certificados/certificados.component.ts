@@ -2,33 +2,22 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import {
-  SistemaHeaderComponent,
-  Usuario,
-} from '../../../../components/sistema/header/header.component';
+import { Usuario } from '../../../../components/sistema/header/header.component';
+import { SistemaLayoutComponent } from '../../../../components/sistema/layout/layout.component';
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
 import {
   CertificadoCardComponent,
   Certificado,
 } from '../../../../components/sistema/certificado-card/certificado-card.component';
-
-interface Metrica {
-  icone: string;
-  valor: string | number;
-  label: string;
-  cor: 'primary' | 'success' | 'warning' | 'info';
-  tendencia?: {
-    valor: number;
-    tipo: 'up' | 'down';
-  };
-}
-
-interface Categoria {
-  id: string;
-  nome: string;
-  cor: string;
-  quantidade: number;
-}
+import {
+  CardKpiComponent,
+  Estatistica,
+} from '../../../../components/sistema/kpi-card/kpi-card.component';
+import {
+  FiltrosBarraComponent,
+  FiltroTab,
+  OpcaoOrdenacao,
+} from '../../../../components/sistema/filtros-barra/filtros-barra.component';
 
 @Component({
   selector: 'app-certificados',
@@ -37,9 +26,11 @@ interface Categoria {
     CommonModule,
     FormsModule,
     RouterLink,
-    SistemaHeaderComponent,
+    SistemaLayoutComponent,
     HeaderIconeComponent,
     CertificadoCardComponent,
+    CardKpiComponent,
+    FiltrosBarraComponent,
   ],
   templateUrl: './certificados.component.html',
   styleUrl: './certificados.component.scss',
@@ -50,8 +41,6 @@ export class CertificadosComponent {
     email: 'joao@email.com',
   };
 
-  sidebarAberta = true;
-
   // Filtros
   termoBusca = '';
   categoriaFiltro = 'todas';
@@ -59,7 +48,7 @@ export class CertificadosComponent {
   visualizacao: 'grid' | 'lista' = 'grid';
 
   // Métricas
-  metricas: Metrica[] = [
+  metricas: Estatistica[] = [
     {
       icone: 'certificados',
       valor: 12,
@@ -88,13 +77,21 @@ export class CertificadosComponent {
     },
   ];
 
-  // Categorias
-  categorias: Categoria[] = [
-    { id: 'todas', nome: 'Todas', cor: '#64748b', quantidade: 12 },
+  // Categorias (tabs)
+  categorias: FiltroTab[] = [
+    { id: 'todas', nome: 'Todas', quantidade: 12 },
     { id: 'desenvolvimento', nome: 'Desenvolvimento', cor: '#3b82f6', quantidade: 5 },
     { id: 'design', nome: 'Design', cor: '#ec4899', quantidade: 3 },
     { id: 'marketing', nome: 'Marketing', cor: '#f59e0b', quantidade: 2 },
     { id: 'negocios', nome: 'Negócios', cor: '#22c55e', quantidade: 2 },
+  ];
+
+  // Opções de ordenação
+  opcoesOrdenacao: OpcaoOrdenacao[] = [
+    { valor: 'recentes', label: 'Mais recentes' },
+    { valor: 'antigos', label: 'Mais antigos' },
+    { valor: 'nome', label: 'Nome A-Z' },
+    { valor: 'nota', label: 'Maior nota' },
   ];
 
   // Certificados
@@ -239,10 +236,6 @@ export class CertificadosComponent {
     return resultado;
   }
 
-  onSidebarMudou(aberta: boolean) {
-    this.sidebarAberta = aberta;
-  }
-
   onVisualizarCertificado(certificado: Certificado) {
     console.log('Visualizar certificado:', certificado);
     // Implementar modal ou navegação para visualização
@@ -262,8 +255,16 @@ export class CertificadosComponent {
     this.visualizacao = tipo;
   }
 
-  setCategoria(categoriaId: string) {
-    this.categoriaFiltro = categoriaId;
+  onTabChange(tabId: string) {
+    this.categoriaFiltro = tabId;
+  }
+
+  onBuscaChange(termo: string) {
+    this.termoBusca = termo;
+  }
+
+  onOrdenacaoChange(ordem: string) {
+    this.ordenacao = ordem;
   }
 
   limparFiltros() {

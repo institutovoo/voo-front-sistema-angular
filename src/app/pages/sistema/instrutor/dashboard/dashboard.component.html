@@ -1,0 +1,214 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="instrutor">
+  <!-- Banner de Boas-vindas -->
+  <section class="boas-vindas">
+    <div class="boas-vindas__texto">
+      <h1 class="boas-vindas__titulo">Olá, {{ nomeInstrutor }}! 👋</h1>
+      <p class="boas-vindas__subtitulo">
+        Gerencie seus cursos e acompanhe o progresso dos seus alunos.
+      </p>
+    </div>
+    <div class="boas-vindas__acoes">
+      <a routerLink="/instrutor/cursos/novo" class="btn btn--primary">
+        <app-header-icone nome="mais" [tamanho]="18"></app-header-icone>
+        Criar Novo Curso
+      </a>
+    </div>
+  </section>
+
+  <!-- Estatísticas -->
+  <section class="estatisticas">
+    <div class="estatisticas__grid">
+      <app-card-kpi *ngFor="let stat of estatisticas" [estatistica]="stat"></app-card-kpi>
+    </div>
+  </section>
+
+  <!-- Grid Principal -->
+  <div class="grid-principal">
+    <!-- Coluna Principal -->
+    <div class="coluna-principal">
+      <!-- Ações Rápidas -->
+      <section class="acoes-rapidas">
+        <h2 class="secao__titulo">Ações Rápidas</h2>
+        <div class="acoes-rapidas__grid">
+          <a routerLink="/instrutor/cursos/novo" class="acao-card">
+            <div class="acao-card__icone acao-card__icone--primary">
+              <app-header-icone nome="mais" [tamanho]="24"></app-header-icone>
+            </div>
+            <span class="acao-card__texto">Criar Novo Curso</span>
+          </a>
+          <a routerLink="/instrutor/cursos" class="acao-card">
+            <div class="acao-card__icone acao-card__icone--success">
+              <app-header-icone nome="editar" [tamanho]="24"></app-header-icone>
+            </div>
+            <span class="acao-card__texto">Editar Cursos</span>
+          </a>
+          <a routerLink="/instrutor/avaliacoes" class="acao-card">
+            <div class="acao-card__icone acao-card__icone--info">
+              <app-header-icone nome="certificados" [tamanho]="24"></app-header-icone>
+            </div>
+            <span class="acao-card__texto">Avaliações e Provas</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Meus Cursos -->
+      <section class="secao">
+        <div class="secao__header">
+          <h2 class="secao__titulo">Meus Cursos</h2>
+          <a routerLink="/instrutor/cursos" class="secao__link">Ver todos ›</a>
+        </div>
+
+        <!-- Filtros por Status -->
+        <div class="status-tabs">
+          <button class="status-tab status-tab--active">
+            Todos <span class="status-tab__count">{{ cursos.length }}</span>
+          </button>
+          <button class="status-tab">
+            Publicados <span class="status-tab__count">{{ cursosPublicados.length }}</span>
+          </button>
+          <button class="status-tab">
+            Rascunhos <span class="status-tab__count">{{ cursosRascunho.length }}</span>
+          </button>
+          <button class="status-tab">
+            Em Revisão <span class="status-tab__count">{{ cursosRevisao.length }}</span>
+          </button>
+          <button class="status-tab">
+            Pausados <span class="status-tab__count">{{ cursosPausados.length }}</span>
+          </button>
+        </div>
+
+        <!-- Lista de Cursos -->
+        <div class="cursos-lista">
+          <div *ngFor="let curso of cursos" class="curso-item">
+            <div class="curso-item__imagem">
+              <img [src]="curso.imagem" [alt]="curso.titulo" />
+              <span class="curso-item__status" [ngClass]="getStatusClass(curso.status)">
+                {{ getStatusLabel(curso.status) }}
+              </span>
+            </div>
+
+            <div class="curso-item__info">
+              <h3 class="curso-item__titulo">{{ curso.titulo }}</h3>
+              <p class="curso-item__data">Atualizado em {{ curso.ultimaAtualizacao }}</p>
+            </div>
+
+            <div class="curso-item__metricas" *ngIf="curso.status === 'publicado'">
+              <div class="metrica">
+                <span class="metrica__valor">{{ curso.totalAlunos }}</span>
+                <span class="metrica__label">Alunos</span>
+              </div>
+              <div class="metrica">
+                <span class="metrica__valor">{{ curso.progressoMedio }}%</span>
+                <span class="metrica__label">Progresso médio</span>
+              </div>
+              <div class="metrica">
+                <span class="metrica__valor">
+                  <app-header-icone
+                    nome="estrela"
+                    [tamanho]="14"
+                    preenchimento="#f59e0b"
+                  ></app-header-icone>
+                  {{ curso.avaliacaoMedia }}
+                </span>
+                <span class="metrica__label">{{ curso.totalAvaliacoes }} avaliações</span>
+              </div>
+              <div class="metrica">
+                <span class="metrica__valor metrica__valor--destaque">
+                  {{ formatarMoeda(curso.receitaMensal) }}
+                </span>
+                <span class="metrica__label">Receita mensal</span>
+              </div>
+            </div>
+
+            <div class="curso-item__acoes">
+              <a
+                [routerLink]="['/instrutor/cursos', curso.id, 'editar']"
+                class="btn-icon"
+                title="Editar"
+              >
+                <app-header-icone nome="editar" [tamanho]="18"></app-header-icone>
+              </a>
+              <button class="btn-icon" title="Mais opções">
+                <app-header-icone nome="menu" [tamanho]="18"></app-header-icone>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Coluna Lateral -->
+    <aside class="coluna-lateral">
+      <!-- Receita Mensal -->
+      <div class="card-lateral">
+        <h3 class="card-lateral__titulo">Receita Mensal</h3>
+        <div class="receita-total">
+          <span class="receita-total__valor">{{ formatarMoeda(3050) }}</span>
+          <span class="receita-total__periodo">Janeiro 2026</span>
+        </div>
+        <div class="grafico-barras">
+          <div
+            *ngFor="let item of receitaMensal"
+            class="barra-item"
+            [class.barra-item--atual]="item.mes === 'Jan'"
+          >
+            <div class="barra-item__barra">
+              <div
+                class="barra-item__preenchimento"
+                [style.height.%]="(item.valor / maxReceita) * 100"
+              ></div>
+            </div>
+            <span class="barra-item__label">{{ item.mes }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dúvidas Recentes -->
+      <div class="card-lateral">
+        <div class="card-lateral__header">
+          <h3 class="card-lateral__titulo">Dúvidas Recentes</h3>
+          <a routerLink="/instrutor/duvidas" class="card-lateral__link">Ver todas</a>
+        </div>
+        <div class="duvidas-lista">
+          <div *ngFor="let duvida of duvidasRecentes" class="duvida-item">
+            <div class="duvida-item__avatar">
+              {{ duvida.aluno.charAt(0) }}
+            </div>
+            <div class="duvida-item__info">
+              <p class="duvida-item__aluno">{{ duvida.aluno }}</p>
+              <p class="duvida-item__pergunta">{{ duvida.pergunta }}</p>
+              <span class="duvida-item__meta"> {{ duvida.curso }} • {{ duvida.tempo }} </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumo Rápido -->
+      <div class="card-lateral">
+        <h3 class="card-lateral__titulo">Resumo dos Cursos</h3>
+        <div class="resumo-lista">
+          <div class="resumo-item">
+            <span class="resumo-item__dot resumo-item__dot--publicado"></span>
+            <span class="resumo-item__label">Publicados</span>
+            <span class="resumo-item__valor">{{ cursosPublicados.length }}</span>
+          </div>
+          <div class="resumo-item">
+            <span class="resumo-item__dot resumo-item__dot--rascunho"></span>
+            <span class="resumo-item__label">Rascunhos</span>
+            <span class="resumo-item__valor">{{ cursosRascunho.length }}</span>
+          </div>
+          <div class="resumo-item">
+            <span class="resumo-item__dot resumo-item__dot--revisao"></span>
+            <span class="resumo-item__label">Em Revisão</span>
+            <span class="resumo-item__valor">{{ cursosRevisao.length }}</span>
+          </div>
+          <div class="resumo-item">
+            <span class="resumo-item__dot resumo-item__dot--pausado"></span>
+            <span class="resumo-item__label">Pausados</span>
+            <span class="resumo-item__valor">{{ cursosPausados.length }}</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</app-sistema-layout>

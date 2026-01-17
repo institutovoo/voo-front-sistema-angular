@@ -17,16 +17,17 @@ $text-dark: #0b1b2b;
     flex-shrink: 0;
 
     svg {
-      width: 20px;
-      height: 20px;
+      width: 26px;
+      height: 26px;
+      stroke-width: 1.8px;
     }
   }
 
   &__nome {
-    font-weight: 800;
-    font-size: 20px;
+    font-weight: 700;
+    font-size: 22px;
     color: $text-dark;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
   }
 
   &__cursos {

@@ -1,0 +1,133 @@
+// ========================================
+// VARIÁVEIS GLOBAIS DO SISTEMA
+// ========================================
+
+// Cores primárias
+$primary: #21b7cd;
+$primary-dark: #1a9aab;
+$primary-light: #e0f7fa;
+
+// Cores de texto
+$text-dark: #0b1b2b;
+$text-muted: #64748b;
+$text-light: #94a3b8;
+
+// Cores de fundo
+$bg-light: #f8fafb;
+$bg-dark: #0b1b2b;
+$white: #fff;
+
+// Cores de borda
+$border: #e2e8f0;
+$border-light: #f1f5f9;
+
+// Cores de status
+$success: #22c55e;
+$success-light: #dcfce7;
+$warning: #f59e0b;
+$warning-light: #fef3c7;
+$info: #3b82f6;
+$info-light: #dbeafe;
+$danger: #ef4444;
+$danger-light: #fee2e2;
+
+// ========================================
+// DIMENSÕES DO LAYOUT
+// ========================================
+$header-height: 64px;
+$sidebar-width: 260px;
+$sidebar-width-fechada: 72px;
+
+// ========================================
+// MIXINS PARA PÁGINAS DO SISTEMA
+// ========================================
+
+// Layout principal da página (wrapper)
+@mixin pagina-sistema {
+  min-height: 100vh;
+  background: $bg-light;
+  padding-top: $header-height;
+}
+
+// Área principal (main) que fica ao lado do sidebar
+@mixin main-area {
+  flex: 1;
+  margin-left: $sidebar-width;
+  min-width: 0; // Importante para flex não estourar
+  transition: margin-left 0.3s ease;
+
+  @media (max-width: 1024px) {
+    margin-left: 0;
+  }
+
+  &--expandido {
+    margin-left: $sidebar-width-fechada;
+
+    @media (max-width: 1024px) {
+      margin-left: 0;
+    }
+  }
+}
+
+// Container de conteúdo com padding
+@mixin conteudo-container($max-width: none) {
+  padding: 2rem;
+  width: 100%;
+
+  @if $max-width != none {
+    max-width: $max-width;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+// Card/Box padrão
+@mixin card-box {
+  background: $white;
+  border-radius: 12px;
+  border: 1px solid $border;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+// Título de página
+@mixin page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $text-dark;
+  margin: 0 0 0.25rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+}
+
+// Subtítulo de página
+@mixin page-subtitle {
+  color: $text-muted;
+  margin: 0;
+  font-size: 1rem;
+}
+
+// Grid responsivo
+@mixin grid-responsivo($colunas: 4, $gap: 1rem) {
+  display: grid;
+  grid-template-columns: repeat($colunas, 1fr);
+  gap: $gap;
+
+  @if $colunas >= 4 {
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  } @else if $colunas == 3 {
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}

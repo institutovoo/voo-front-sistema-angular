@@ -209,15 +209,15 @@ $danger: #ef4444;
     }
 
     .btn-aprovar {
-      background: $text-dark;
+      background: $primary;
       color: $white;
       border: none;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 25px rgba($primary, 0.3);
 
       &:hover {
-        background: lighten($text-dark, 5%);
+        background: $primary-dark;
         transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 15px 35px rgba($primary, 0.4);
       }
     }
   }

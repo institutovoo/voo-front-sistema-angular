@@ -343,7 +343,7 @@ $info-light: #dbeafe;
 }
 
 .btn-continuar {
-  background: $text-dark;
+  background: $primary;
   color: $white;
   border: none;
   padding: 0.875rem 1.5rem;
@@ -356,9 +356,8 @@ $info-light: #dbeafe;
   margin-top: auto;
 
   &:hover {
-    background: lighten($text-dark, 5%);
+    background: $primary-dark;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 }
 
@@ -413,7 +412,7 @@ $info-light: #dbeafe;
   justify-content: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: $text-dark;
+  background: $primary;
   color: $white;
   border: none;
   border-radius: 14px;
@@ -421,12 +420,12 @@ $info-light: #dbeafe;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba($primary, 0.2);
 
   &:hover {
-    background: lighten($text-dark, 5%);
+    background: $primary-dark;
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 25px rgba($primary, 0.3);
   }
 
   &:active {

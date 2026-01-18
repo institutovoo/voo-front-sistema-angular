@@ -20,21 +20,21 @@
 
   // Variantes
   &--primario {
-    background: #0b1b2b;
+    background: #21b7cd;
     color: #ffffff;
     border: none;
 
     &:hover:not(:disabled) {
-      background: lighten(#0b1b2b, 5%);
-      box-shadow: 0 8px 16px rgba(11, 27, 43, 0.2);
+      background: #1a9aab;
+      box-shadow: 0 8px 16px rgba(33, 183, 205, 0.2);
     }
     &:active:not(:disabled) {
       transform: translateY(1px);
-      background: darken(#0b1b2b, 2%);
+      background: #148191;
     }
     &:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(11, 27, 43, 0.2), 0 0 0 1px #0b1b2b;
+      box-shadow: 0 0 0 3px rgba(33, 183, 205, 0.2), 0 0 0 1px #21b7cd;
     }
   }
 

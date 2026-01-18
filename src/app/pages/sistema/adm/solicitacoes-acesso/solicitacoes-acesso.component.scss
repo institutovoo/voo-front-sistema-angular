@@ -1,0 +1,224 @@
+$primary: #21b7cd;
+$primary-dark: #1a9aab;
+$primary-light: #e0f7fa;
+$text-dark: #0b1b2b;
+$text-muted: #64748b;
+$white: #fff;
+$bg-light: #f8fafb;
+$border: #e2e8f0;
+$success: #22c55e;
+$danger: #ef4444;
+
+.solicitacoes {
+  padding: 0; // Removido o padding pois o layout já tem
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+
+  &__titulo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0 0 0.5rem;
+  }
+
+  &__subtitulo {
+    color: $text-muted;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .contador {
+    background: $white;
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid $border;
+
+    .numero {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: $primary;
+    }
+
+    .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: $text-muted;
+      letter-spacing: 0.05em;
+    }
+  }
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.solicitacao-card {
+  background: $white;
+  border-radius: 24px;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1.2fr 1.5fr 1fr;
+  align-items: center;
+  gap: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid $border;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.saindo {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  &__usuario {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      background: $primary-light;
+      color: $primary;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    .detalhes {
+      display: flex;
+      flex-direction: column;
+
+      .nome {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: $text-dark;
+        margin: 0;
+      }
+
+      .email {
+        font-size: 0.875rem;
+        color: $text-muted;
+      }
+    }
+  }
+
+  &__info {
+    display: flex;
+    gap: 3rem;
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      .label {
+        font-size: 0.6875rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: $text-muted;
+        letter-spacing: 0.05em;
+      }
+
+      .valor {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: $text-dark;
+      }
+    }
+  }
+
+  &__acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    button {
+      height: 48px;
+      padding: 0 1.5rem;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-rejeitar {
+      background: $white;
+      color: $danger;
+      border: 1px solid rgba($danger, 0.2);
+
+      &:hover {
+        background: #fff5f5;
+        border-color: $danger;
+      }
+    }
+
+    .btn-aprovar {
+      background: $primary;
+      color: $white;
+      border: none;
+      box-shadow: 0 8px 15px rgba($primary, 0.2);
+
+      &:hover {
+        background: $primary-dark;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 20px rgba($primary, 0.3);
+      }
+    }
+  }
+}
+
+.card-vazio {
+  padding: 5rem 2rem;
+  background: $white;
+  border-radius: 32px;
+  border: 2px dashed $border;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  .icone-vazio {
+    width: 80px;
+    height: 80px;
+    background: $bg-light;
+    color: $text-muted;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    color: $text-muted;
+    margin: 0;
+  }
+}

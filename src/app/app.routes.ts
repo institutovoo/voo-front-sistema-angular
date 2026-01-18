@@ -50,22 +50,6 @@ export const routes: Routes = [
         (m) => m.ResetSenhaComponent,
       ),
   },
-  {
-    path: 'admin/login',
-    title: 'Login Administrativo',
-    loadComponent: () =>
-      import('./pages/autenticacao/admin-login/admin-login.component').then(
-        (m) => m.AdminLoginComponent,
-      ),
-  },
-  {
-    path: 'admin/cadastro',
-    title: 'Cadastro Administrativo',
-    loadComponent: () =>
-      import('./pages/autenticacao/admin-cadastro/admin-cadastro.component').then(
-        (m) => m.AdminCadastroComponent,
-      ),
-  },
 
   // ========================================
   // SISTEMA - ALUNO (Pessoa Física / PJ)
@@ -195,6 +179,25 @@ export const routes: Routes = [
   {
     path: 'admin',
     children: [
+      // Autenticação Administrativa
+      {
+        path: 'login',
+        title: 'Login Administrativo',
+        loadComponent: () =>
+          import('./pages/autenticacao/admin-login/admin-login.component').then(
+            (m) => m.AdminLoginComponent,
+          ),
+      },
+      {
+        path: 'cadastro',
+        title: 'Cadastro Administrativo',
+        loadComponent: () =>
+          import('./pages/autenticacao/admin-cadastro/admin-cadastro.component').then(
+            (m) => m.AdminCadastroComponent,
+          ),
+      },
+
+      // Área Logada
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'dashboard',
@@ -248,6 +251,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/sistema/adm/auditoria/auditoria.component').then(
             (m) => m.AdmAuditoriaComponent,
+          ),
+      },
+      {
+        path: 'solicitacoes',
+        title: 'Aprovações de Acesso',
+        loadComponent: () =>
+          import('./pages/sistema/adm/solicitacoes-acesso/solicitacoes-acesso.component').then(
+            (m) => m.AdmSolicitacoesAcessoComponent,
           ),
       },
       {

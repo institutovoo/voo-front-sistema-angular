@@ -32,6 +32,7 @@
         
         <div class="acoes-grid">
           <a *ngFor="let acao of acoesRapidas" [routerLink]="acao.rota" class="acao-card">
+            <div class="acao-card__badge" *ngIf="acao.badge">{{ acao.badge }}</div>
             <div class="acao-card__icone" [ngClass]="'acao-card__icone--' + acao.cor">
               <app-header-icone [nome]="acao.icone" [tamanho]="24"></app-header-icone>
             </div>

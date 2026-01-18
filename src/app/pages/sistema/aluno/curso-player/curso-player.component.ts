@@ -1,9 +1,8 @@
 import { Component, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
-import { BarraProgressoComponent } from '../../../../components/sistema/barra-progresso/barra-progresso.component';
 import { LogoComponent } from '../../../../components/logo/logo.component';
 
 export interface Duvida {
@@ -43,9 +42,7 @@ export interface Modulo {
   imports: [
     CommonModule,
     FormsModule,
-    RouterLink,
     HeaderIconeComponent,
-    BarraProgressoComponent,
     LogoComponent,
   ],
   templateUrl: './curso-player.component.html',

@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { Usuario } from '../../../../components/sistema/header/header.component';
 import { SistemaLayoutComponent } from '../../../../components/sistema/layout/layout.component';
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
@@ -44,7 +44,6 @@ export interface CursoLoja {
   imports: [
     CommonModule,
     FormsModule,
-    RouterLink,
     SistemaLayoutComponent,
     HeaderIconeComponent,
     CardKpiComponent,

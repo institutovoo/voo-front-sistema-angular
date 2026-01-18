@@ -6,6 +6,11 @@
   [attr.stroke]="cor"
   [attr.stroke-width]="espessura"
 >
+  <!-- Verificar / Aprovações -->
+  <ng-container *ngIf="nome === 'verificar'">
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="9 12 12 15 17 10" />
+  </ng-container>
   <!-- Dashboard -->
   <ng-container *ngIf="nome === 'dashboard'">
     <rect x="3" y="3" width="7" height="7" rx="1" />

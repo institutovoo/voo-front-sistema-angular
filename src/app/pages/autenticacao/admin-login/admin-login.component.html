@@ -1,13 +1,29 @@
-<div class="admin-autenticacao">
-  <div class="cartao">
+<div class="autenticacao">
+  <div class="autenticacao__esquerda">
     <app-logo tema="light"></app-logo>
 
-    <h1 class="titulo titulo--centro">Acesso administrativo</h1>
-    <p class="subtitulo subtitulo--centro">Entre para gerenciar cursos, provas e usuários.</p>
+    <h1 class="titulo">Acesso administrativo</h1>
+    <p class="subtitulo">Entre para gerenciar cursos, provas e usuários.</p>
 
-    <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
+    <div *ngIf="erro" class="mensagem-erro">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      {{ erro }}
+    </div>
 
-    <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
+    <form class="formulario" [formGroup]="formulario" (ngSubmit)="login()">
       <app-campo
         rotulo="Email"
         tipo="email"
@@ -21,16 +37,57 @@
         tipo="password"
         placeholder="••••••••"
         icone="senha"
-        [mostrarAlternarSenha]="true"
         formControlName="senha"
       ></app-campo>
 
-      <app-botao tipo="submit" variante="primario">Entrar</app-botao>
+      <app-botao tipo="submit" variante="primario" [desabilitado]="!formulario.valid">
+        Entrar
+      </app-botao>
     </form>
 
-    <div class="rodape-login">
-      Não possui uma conta administrativa?
-      <a routerLink="/admin/cadastro">Solicitar acesso</a>
+    <div class="rodape">
+      <span>Não possui uma conta administrativa?</span>
+      <a class="atalho" (click)="navegarParaCadastro()">Solicitar acesso</a>
+    </div>
+  </div>
+
+  <div class="autenticacao__direita">
+    <div class="destaque">
+      <div class="destaque__icone">
+        <svg
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#fff"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+      </div>
+      <h2 class="destaque__titulo">Painel Administrativo</h2>
+      <p class="destaque__descricao">
+        Gerencie cursos, instrutores e acompanhe o crescimento do ecossistema VooCursos em tempo
+        real.
+      </p>
+      <div class="destaque__stats">
+        <div class="stat">
+          <span class="stat__numero">500+</span>
+          <span class="stat__label">Cursos</span>
+        </div>
+        <div class="stat">
+          <span class="stat__numero">50k+</span>
+          <span class="stat__label">Alunos</span>
+        </div>
+        <div class="stat">
+          <span class="stat__numero">98%</span>
+          <span class="stat__label">Eficiência</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

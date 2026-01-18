@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LogoComponent } from '../../../components/logo/logo.component';
 import { BotaoComponent } from '../../../components/botao/botao.component';
 import { CampoComponent } from '../../../components/campo/campo.component';
-import { AutenticacaoController } from '../../../core/controller/autenticacao.controller';
 
 @Component({
   selector: 'app-admin-login',
@@ -13,36 +13,32 @@ import { AutenticacaoController } from '../../../core/controller/autenticacao.co
   templateUrl: './admin-login.component.html',
   styleUrl: './admin-login.component.scss',
 })
-export class AdminLoginComponent {
-  private authController = inject(AutenticacaoController);
-
-  formulario = new FormGroup({
-    email: new FormControl('', {
-      validators: [Validators.required, Validators.email],
-      nonNullable: true,
-    }),
-    senha: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(6)],
-      nonNullable: true,
-    }),
-  });
-
+export class AdminLoginComponent implements OnInit {
+  formulario!: FormGroup;
   erro = '';
 
-  async enviar() {
-    if (this.formulario.invalid) {
-      this.formulario.markAllAsTouched();
-      return;
-    }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+  ) {}
 
-    this.erro = '';
-    const { email, senha } = this.formulario.getRawValue();
-    
-    // Mapeando o valor do campo email para identificador para satisfazer o contrato da API
-    const resultado = await this.authController.login({ identificador: email, senha });
+  ngOnInit(): void {
+    this.formulario = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
 
-    if (!resultado.sucesso) {
-      this.erro = resultado.mensagem || 'Erro ao realizar login';
+  login(): void {
+    if (this.formulario.valid) {
+      console.log('Login administrativo:', this.formulario.value);
+      this.router.navigate(['/admin/dashboard']);
+    } else {
+      this.erro = 'Por favor, preencha os campos corretamente.';
     }
+  }
+
+  navegarParaCadastro(): void {
+    this.router.navigate(['/admin/cadastro']);
   }
 }

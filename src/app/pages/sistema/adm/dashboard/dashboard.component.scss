@@ -147,6 +147,21 @@ $danger-light: #fee2e2;
   border-radius: 20px;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative; // Adicionado para o badge
+
+  &__badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: $danger;
+    color: $white;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba($danger, 0.3);
+    border: 2px solid $white;
+  }
 
   &:hover {
     transform: translateY(-4px);

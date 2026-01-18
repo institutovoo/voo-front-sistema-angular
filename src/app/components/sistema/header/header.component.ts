@@ -84,10 +84,11 @@ export class SistemaHeaderComponent implements OnInit, OnChanges {
         case 'admin':
           this.menuPrincipal = [
             { label: 'Dashboard', rota: '/admin/dashboard', icone: 'dashboard' },
+            { label: 'Solicitações', rota: '/admin/solicitacoes', icone: 'verificar' },
             { label: 'Usuários', rota: '/admin/usuarios', icone: 'usuarios' },
             { label: 'Cursos', rota: '/admin/cursos', icone: 'cursos' },
-            { label: 'Relatórios', rota: '/admin/relatorios', icone: 'relatorios' },
-            { label: 'Auditoria', rota: '/admin/auditoria', icone: 'config' },
+            { label: 'Instrutores', rota: '/admin/instrutores', icone: 'usuarios' },
+            { label: 'Auditoria', rota: '/admin/auditoria', icone: 'documento' },
           ];
           break;
         default:

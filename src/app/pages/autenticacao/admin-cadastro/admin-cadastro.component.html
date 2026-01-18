@@ -1,55 +1,161 @@
-<div class="admin-autenticacao">
-  <div class="cartao">
-    <app-logo tema="light"></app-logo>
+<div class="autenticacao">
+  <div class="autenticacao__esquerda">
+    <div class="destaque">
+      <div class="destaque__icone">
+        <svg
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#fff"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </div>
+      <h2 class="destaque__titulo">Faça parte da nossa equipe</h2>
+      <p class="destaque__descricao">
+        Solicite seu acesso administrativo para gerenciar conteúdos e transformar vidas através da
+        educação online.
+      </p>
 
-    <h1 class="titulo titulo--centro">Solicitar Acesso</h1>
-    <p class="subtitulo subtitulo--centro">Cadastre seus dados para análise da diretoria.</p>
+      <div class="destaque__lista">
+        <div class="item-lista">
+          <div class="item-lista__check">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <span>Gestão completa de cursos e provas</span>
+        </div>
+        <div class="item-lista">
+          <div class="item-lista__check">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <span>Controle de instrutores e parceiros</span>
+        </div>
+        <div class="item-lista">
+          <div class="item-lista__check">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <span>Relatórios estratégicos em tempo real</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
+  <div class="autenticacao__direita">
+    <div class="autenticacao__container">
+      <app-logo tema="light"></app-logo>
 
-    <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
-      <app-campo
-        rotulo="Nome Completo"
-        tipo="text"
-        placeholder="Seu nome aqui"
-        icone="usuario"
-        formControlName="nome"
-      ></app-campo>
+      <ng-container *ngIf="!enviado; else sucesso">
+        <h1 class="titulo">Solicitar Acesso</h1>
+        <p class="subtitulo">Preencha os dados abaixo para começar</p>
 
-      <app-campo
-        rotulo="E-mail Institucional"
-        tipo="email"
-        placeholder="admin@voocursos.com.br"
-        icone="email"
-        formControlName="email"
-      ></app-campo>
+        <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
 
-      <app-campo
-        rotulo="Defina sua Senha"
-        tipo="password"
-        placeholder="••••••••"
-        icone="senha"
-        [mostrarAlternarSenha]="true"
-        formControlName="senha"
-      ></app-campo>
+        <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
+          <app-campo
+            rotulo="Nome Completo"
+            tipo="text"
+            placeholder="Ex: João Silva"
+            icone="usuario"
+            formControlName="nome"
+          ></app-campo>
 
-      <app-campo
-        rotulo="Confirme sua Senha"
-        tipo="password"
-        placeholder="••••••••"
-        icone="senha"
-        [mostrarAlternarSenha]="true"
-        formControlName="confirmarSenha"
-      ></app-campo>
+          <app-campo
+            rotulo="E-mail Institucional"
+            tipo="email"
+            placeholder="seuemail@voocursos.com.br"
+            icone="email"
+            formControlName="email"
+          ></app-campo>
 
-      <app-botao tipo="submit" variante="primario" [desabilitado]="!formulario.valid">
-        Enviar Solicitação
-      </app-botao>
-    </form>
+          <app-campo
+            rotulo="Cargo / Função"
+            tipo="text"
+            placeholder="Ex: Gerente de Operações"
+            icone="usuario"
+            formControlName="cargo"
+          ></app-campo>
 
-    <div class="rodape-login">
-      Já possui acesso?
-      <a routerLink="/admin/login">Fazer login</a>
+          <app-botao tipo="submit" variante="primario" [desabilitado]="!formulario.valid">
+            Enviar Solicitação
+          </app-botao>
+        </form>
+
+        <div class="rodape">
+          <span>Já possui acesso?</span>
+          <a class="atalho" (click)="voltar()">Fazer login</a>
+        </div>
+      </ng-container>
+
+      <ng-template #sucesso>
+        <div class="sucesso-container">
+          <div class="icone-sucesso">
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h1 class="titulo">Solicitação Enviada!</h1>
+          <p class="subtitulo">
+            Recebemos seu pedido. Nossa equipe revisará seus dados e enviará uma resposta para seu
+            e-mail institucional em até 24h.
+          </p>
+
+          <app-botao (click)="voltar()" variante="primario"> Voltar para o Login </app-botao>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

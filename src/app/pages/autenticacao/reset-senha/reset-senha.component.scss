@@ -1,0 +1,147 @@
+.autenticacao {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+
+  &__esquerda {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #21b7cd 0%, #1fa8bd 100%);
+    color: #fff;
+    padding: 48px;
+  }
+
+  &__direita {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafb;
+    padding: 48px;
+  }
+
+  &__formulario {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.titulo {
+  margin-top: 8px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #0b1b2b;
+}
+
+.subtitulo {
+  color: #607081;
+  margin-bottom: 8px;
+  line-height: 1.5;
+
+  strong {
+    color: #0b1b2b;
+  }
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rodape {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #607081;
+}
+
+.atalho, .atalho-btn {
+  color: var(--color-primary);
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+
+  &:hover:not(:disabled) {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    color: #a0aec0;
+    cursor: not-allowed;
+  }
+}
+
+.destaque {
+  max-width: 480px;
+  text-align: center;
+
+  &__icone {
+    width: 72px;
+    height: 72px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    color: #fff;
+  }
+
+  &__titulo {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+
+  &__descricao {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+.mensagem-erro {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+}
+
+.mensagem-sucesso {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #dcfce7;
+  color: #16a34a;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #bbf7d0;
+}
+
+@media (max-width: 1024px) {
+  .autenticacao {
+    grid-template-columns: 1fr;
+  }
+
+  .autenticacao__esquerda {
+    display: none;
+  }
+
+  .autenticacao__direita {
+    padding: 32px 24px;
+  }
+}

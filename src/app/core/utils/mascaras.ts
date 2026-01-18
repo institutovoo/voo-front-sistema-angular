@@ -57,3 +57,11 @@ export function mascaraDocumento(valor: string): string {
   }
   return mascaraCnpj(numeros);
 }
+
+/**
+ * Formata um número para o padrão CEP: XXXXX-XXX
+ */
+export function mascaraCep(valor: string): string {
+  let numeros = apenasNumeros(valor).substring(0, 8);
+  return numeros.replace(/(\d{5})(\d)/, '$1-$2');
+}

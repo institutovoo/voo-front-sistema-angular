@@ -1,3 +1,12 @@
+export type TipoConta =
+  | 'Admin'
+  | 'Aluno'
+  | 'Pessoa jurídica conveniados'
+  | 'Instituição parceira (pessoa juridica)'
+  | 'Instrutor'
+  | 'Instrutor (Pessoa física)'
+  | 'Instrutor (Pessoa jurídica)';
+
 export interface Usuario {
   id: string;
   nome_completo: string;
@@ -9,13 +18,13 @@ export interface Usuario {
   nome_mae?: string;
   ultima_formacao?: string;
   status_ultima_formacao?: string;
-  indicador_tipo_conta: 'PF' | 'PJ';
+  indicador_tipo_conta: TipoConta;
   criadoEm: string;
   atualizadoEm: string;
 }
 
 export interface LoginRequest {
-  cpf_cnpj: string;
+  identificador: string;
   senha: string;
 }
 
@@ -25,7 +34,7 @@ export interface CadastroRequest {
   endereco?: string;
   email: string;
   senha: string;
-  indicador_tipo_conta: 'PF' | 'PJ' | 'Aluno' | 'Instrutor' | 'Empresa';
+  indicador_tipo_conta: TipoConta;
   whatsapp?: string;
   cpf_cnpj: string;
   nome_mae?: string;

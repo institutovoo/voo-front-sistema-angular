@@ -1,8 +1,7 @@
-import { Component, Input, forwardRef, signal, inject, Optional, Self } from '@angular/core';
+import { Component, Input, signal, Optional, Self, HostListener, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
   NgControl,
 } from '@angular/forms';
@@ -13,8 +12,14 @@ import {
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './campo.component.html',
   styleUrl: './campo.component.scss',
+  host: {
+    class: 'app-campo',
+    style: 'display: block;'
+  }
 })
 export class CampoComponent implements ControlValueAccessor {
+  private elementRef = inject(ElementRef);
+
   @Input() tipo: 'text' | 'email' | 'password' | 'tel' | 'number' | 'select' = 'text';
   @Input() placeholder: string = '';
   @Input() rotulo: string = '';
@@ -27,6 +32,7 @@ export class CampoComponent implements ControlValueAccessor {
   valor = signal<string>('');
   senhaVisivel = signal<boolean>(false);
   desabilitado = signal<boolean>(false);
+  dropdownAberto = signal<boolean>(false);
 
   constructor(@Optional() @Self() public ngControl: NgControl) {
     if (this.ngControl) {
@@ -36,6 +42,13 @@ export class CampoComponent implements ControlValueAccessor {
 
   private aoMudar: (valor: string) => void = () => {};
   private aoTocar: () => void = () => {};
+
+  @HostListener('document:click', ['$event'])
+  aoClicarFora(event: MouseEvent) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.dropdownAberto.set(false);
+    }
+  }
 
   writeValue(valor: string): void {
     this.valor.set(valor || '');
@@ -67,6 +80,18 @@ export class CampoComponent implements ControlValueAccessor {
     this.senhaVisivel.update((v) => !v);
   }
 
+  alternarDropdown(): void {
+    if (this.desabilitado()) return;
+    this.dropdownAberto.update(v => !v);
+    this.aoTocar();
+  }
+
+  selecionarOpcao(opcao: string): void {
+    this.valor.set(opcao);
+    this.aoMudar(opcao);
+    this.dropdownAberto.set(false);
+  }
+
   get tipoCampo(): string {
     if (this.tipo === 'password' && this.senhaVisivel()) {
       return 'text';
@@ -80,5 +105,22 @@ export class CampoComponent implements ControlValueAccessor {
       this.ngControl.invalid &&
       (this.ngControl.touched || this.ngControl.dirty)
     );
+  }
+
+  get mensagemDeErro(): string {
+    if (!this.temErro || !this.ngControl?.errors) return '';
+
+    const erros = this.ngControl.errors;
+
+    if (erros['required']) return 'Este campo é obrigatório.';
+    if (erros['email']) return 'E-mail inválido.';
+    if (erros['minlength'])
+      return `Mínimo de ${erros['minlength'].requiredLength} caracteres.`;
+    if (erros['maxlength'])
+      return `Máximo de ${erros['maxlength'].requiredLength} caracteres.`;
+    if (erros['pattern']) return 'Formato inválido.';
+    if (erros['requiredTrue']) return 'Você deve aceitar os termos.';
+
+    return 'Campo inválido.';
   }
 }

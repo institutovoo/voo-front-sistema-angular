@@ -36,7 +36,7 @@ $radius-full: 9999px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 32px;
+    gap: 20px;
   }
 
   &__acoes {
@@ -44,7 +44,7 @@ $radius-full: 9999px;
     align-items: center;
     gap: 12px;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       display: none;
     }
   }
@@ -57,7 +57,7 @@ $radius-full: 9999px;
     cursor: pointer;
     padding: 8px;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       display: flex;
     }
   }
@@ -102,7 +102,7 @@ $radius-full: 9999px;
   align-items: center;
   gap: 32px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: none;
   }
 

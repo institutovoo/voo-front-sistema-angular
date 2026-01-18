@@ -222,6 +222,12 @@ a {
       outline: none;
       box-shadow: 0 0 0 3px rgba(33, 183, 205, 0.25), 0 0 0 1px var(--color-primary);
     }
+
+    &.ng-invalid.ng-touched,
+    &.ng-invalid.ng-dirty {
+      border-color: #dc2626 !important;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2) !important;
+    }
   }
 
   span {

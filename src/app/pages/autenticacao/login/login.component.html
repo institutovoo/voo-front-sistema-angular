@@ -9,11 +9,11 @@
 
     <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
       <app-campo
-        rotulo="CPF ou CNPJ"
+        rotulo="CPF, CNPJ ou E-mail"
         tipo="text"
-        placeholder="Digite apenas números"
-        icone="email"
-        formControlName="cpf_cnpj"
+        placeholder="Digite seu documento ou e-mail"
+        icone="usuario"
+        formControlName="identificador"
       ></app-campo>
 
       <app-campo

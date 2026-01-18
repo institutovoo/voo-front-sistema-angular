@@ -41,6 +41,67 @@
   margin-bottom: 8px;
 }
 
+.tipo-conta {
+  margin-bottom: 24px;
+
+  &__rotulo {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0b1b2b;
+    margin-bottom: 12px;
+  }
+
+  &__opcoes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__opcao {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    color: #607081;
+    background: white;
+
+    input {
+      display: none;
+    }
+
+    svg {
+      flex-shrink: 0;
+      color: #94a3b8;
+      transition: all 0.2s;
+    }
+
+    &:hover {
+      border-color: var(--color-primary);
+      background: rgba(33, 183, 205, 0.02);
+    }
+
+    &--ativo {
+      border-color: var(--color-primary);
+      background: rgba(33, 183, 205, 0.05);
+      color: var(--color-primary);
+
+      svg {
+        color: var(--color-primary);
+      }
+    }
+  }
+}
+
 .formulario {
   display: flex;
   flex-direction: column;
@@ -53,64 +114,59 @@
     font-size: 14px;
     color: #607081;
   }
-}
 
-.tipo-conta {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  &__rotulo {
-    font-size: 14px;
-    font-weight: 500;
-    color: #0b1b2b;
-  }
-
-  &__opcoes {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  &__opcao {
+  &__grid-endereco {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 16px;
-    border: 2px solid #e0e6eb;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: #fff;
-    font-size: 14px;
-    font-weight: 500;
-    color: #607081;
+    flex-wrap: wrap;
+    gap: 12px;
+    position: relative;
 
-    input[type='radio'] {
-      display: none;
-    }
+    .buscando-cep {
+      position: absolute;
+      top: -20px;
+      right: 0;
+      font-size: 12px;
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      z-index: 1;
 
-    svg {
-      flex-shrink: 0;
-      color: #9ca3af;
-      transition: color 0.2s ease;
-    }
-
-    &:hover {
-      border-color: var(--color-primary);
-      background: rgba(33, 183, 205, 0.04);
-    }
-
-    &--ativo {
-      border-color: var(--color-primary);
-      background: rgba(33, 183, 205, 0.08);
-      color: #0b1b2b;
-
-      svg {
-        color: var(--color-primary);
+      &::after {
+        content: "";
+        width: 12px;
+        height: 12px;
+        border: 2px solid var(--color-primary);
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: rotate 0.8s linear infinite;
       }
     }
+
+    .campo-cep,
+    .campo-logradouro,
+    .campo-estado {
+      flex: 1 1 100%;
+    }
+
+    .campo-numero {
+      flex: 1 1 calc(30% - 8px);
+    }
+
+    .campo-complemento {
+      flex: 1 1 calc(70% - 8px);
+    }
+
+    .campo-bairro,
+    .campo-cidade {
+      flex: 1 1 calc(50% - 6px);
+    }
   }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 // Usa o estilo global de .caixa do styles.scss

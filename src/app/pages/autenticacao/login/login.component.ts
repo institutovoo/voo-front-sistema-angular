@@ -25,7 +25,7 @@ export class LoginComponent {
   private authController = inject(AutenticacaoController);
 
   formulario = new FormGroup({
-    cpf_cnpj: new FormControl('', {
+    identificador: new FormControl('', {
       validators: [Validators.required],
       nonNullable: true,
     }),
@@ -45,13 +45,9 @@ export class LoginComponent {
     }
 
     this.erro = '';
-    const { cpf_cnpj, senha } = this.formulario.getRawValue();
+    const { identificador, senha } = this.formulario.getRawValue();
 
-    // Como revertemos a API para aceitar APENAS cpf_cnpj, removemos a lógica de email
-    // e enviamos tudo como cpf_cnpj (removendo não-numéricos se necessário, ou enviando direto)
-    const documentoLimpo = cpf_cnpj.replace(/\D/g, ''); // Remove formatação se houver
-    
-    const resultado = await this.authController.login({ cpf_cnpj: documentoLimpo, senha });
+    const resultado = await this.authController.login({ identificador, senha });
     
     if (!resultado.sucesso) {
       this.erro = resultado.mensagem || 'Erro desconhecido';

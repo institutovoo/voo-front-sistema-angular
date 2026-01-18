@@ -1,0 +1,82 @@
+<div class="autenticacao">
+  <div class="autenticacao__esquerda">
+    <div class="destaque">
+      <div class="destaque__icone">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </div>
+      <h2 class="destaque__titulo">Segurança em primeiro lugar</h2>
+      <p class="destaque__descricao">Sua conta protegida com as melhores práticas de segurança do mercado.</p>
+    </div>
+  </div>
+
+  <div class="autenticacao__direita">
+    <div class="autenticacao__formulario">
+      <app-logo tema="light"></app-logo>
+
+      <h1 class="titulo">Redefinir senha</h1>
+      <p class="subtitulo">Insira o código enviado para <strong>{{ email }}</strong> e sua nova senha.</p>
+
+      <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
+      <div *ngIf="mensagem" class="mensagem-sucesso">{{ mensagem }}</div>
+
+      <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()" *ngIf="!senhaResetada">
+        <app-campo
+          rotulo="Código de Verificação"
+          tipo="text"
+          placeholder="000000"
+          icone="busca"
+          formControlName="codigo"
+          [maxlength]="6"
+          [obrigatorio]="true"
+        ></app-campo>
+
+        <app-campo
+          rotulo="Nova Senha"
+          tipo="password"
+          placeholder="••••••••"
+          icone="senha"
+          [mostrarAlternarSenha]="true"
+          formControlName="novaSenha"
+          [obrigatorio]="true"
+        ></app-campo>
+
+        <app-campo
+          rotulo="Confirmar Nova Senha"
+          tipo="password"
+          placeholder="••••••••"
+          icone="senha"
+          [mostrarAlternarSenha]="true"
+          formControlName="confirmarSenha"
+          [obrigatorio]="true"
+        ></app-campo>
+
+        <app-botao
+          tipo="submit"
+          variante="primario"
+          [larguraTotal]="true"
+          [carregando]="enviando"
+          [desabilitado]="enviando"
+        >
+          {{ enviando ? 'Redefinindo...' : 'Alterar Senha' }}
+        </app-botao>
+
+        <div class="rodape">
+          <button 
+            type="button" 
+            class="atalho-btn" 
+            (click)="reenviar()" 
+            [disabled]="reenviando || cooldownReenvio > 0"
+          >
+            {{ reenviando ? 'Enviando...' : (cooldownReenvio > 0 ? 'Aguarde ' + cooldownReenvio + 's' : 'Reenviar código') }}
+          </button>
+        </div>
+      </form>
+
+      <div class="rodape" *ngIf="senhaResetada">
+        <a class="atalho" routerLink="/login">Ir para o Login</a>
+      </div>
+    </div>
+  </div>
+</div>

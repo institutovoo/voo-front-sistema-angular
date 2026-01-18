@@ -21,18 +21,28 @@
       (blur)="aoPerderFoco()"
     />
 
-    <select
+    <div
       *ngIf="tipo === 'select'"
       class="campo__controle campo__controle--select"
-      [value]="valor()"
-      [disabled]="desabilitado()"
-      (change)="aoDigitar($event)"
-      (blur)="aoPerderFoco()"
       [class.campo__controle--vazio]="!valor()"
+      [class.campo__controle--aberto]="dropdownAberto()"
+      (click)="alternarDropdown()"
     >
-      <option value="" disabled selected hidden>{{ placeholder }}</option>
-      <option *ngFor="let opcao of opcoes" [value]="opcao">{{ opcao }}</option>
-    </select>
+      <span class="campo__valor-selecionado">
+        {{ valor() || placeholder }}
+      </span>
+      
+      <div class="campo__dropdown" *ngIf="dropdownAberto()">
+        <div 
+          *ngFor="let opcao of opcoes" 
+          class="campo__opcao"
+          [class.campo__opcao--selecionada]="valor() === opcao"
+          (click)="selecionarOpcao(opcao); $event.stopPropagation()"
+        >
+          {{ opcao }}
+        </div>
+      </div>
+    </div>
 
     <!-- Ícone esquerda -->
     <span class="campo__icone campo__icone--esquerda" *ngIf="icone" aria-hidden="true">
@@ -178,4 +188,9 @@
       </svg>
     </button>
   </div>
+
+  <!-- Mensagem de erro -->
+  <span class="campo__erro-msg" *ngIf="temErro">
+    {{ mensagemDeErro }}
+  </span>
 </div>

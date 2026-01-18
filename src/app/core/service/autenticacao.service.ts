@@ -32,6 +32,10 @@ export class AutenticacaoService {
     return this.api.esqueciSenha({ email });
   }
 
+  resetSenha(dados: { email: string; codigo: string; novaSenha: string }) {
+    return this.api.resetSenha(dados);
+  }
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');

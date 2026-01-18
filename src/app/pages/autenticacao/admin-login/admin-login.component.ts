@@ -38,8 +38,8 @@ export class AdminLoginComponent {
     this.erro = '';
     const { email, senha } = this.formulario.getRawValue();
     
-    // Mapeando o valor do campo email para cpf_cnpj para satisfazer o contrato da API
-    const resultado = await this.authController.login({ cpf_cnpj: email, senha });
+    // Mapeando o valor do campo email para identificador para satisfazer o contrato da API
+    const resultado = await this.authController.login({ identificador: email, senha });
 
     if (!resultado.sucesso) {
       this.erro = resultado.mensagem || 'Erro ao realizar login';

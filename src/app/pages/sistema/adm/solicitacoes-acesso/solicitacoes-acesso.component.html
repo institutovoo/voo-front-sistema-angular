@@ -4,7 +4,8 @@
       <div class="info">
         <h1 class="solicitacoes__titulo">Aprovações de Acesso</h1>
         <p class="solicitacoes__subtitulo">
-          Gerencie as solicitações de acesso administrativo pendentes.
+          Gerencie as solicitações de acesso administrativo pendentes. Revise cuidadosamente as
+          informações antes de conceder permissões de alto nível.
         </p>
       </div>
       <div class="contador">
@@ -19,7 +20,10 @@
           <app-header-icone nome="verificar" [tamanho]="48"></app-header-icone>
         </div>
         <h3>Tudo em dia!</h3>
-        <p>Não há solicitações de acesso pendentes no momento.</p>
+        <p>
+          Não há solicitações de acesso pendentes no momento. O ecossistema administrativo está
+          atualizado.
+        </p>
       </div>
 
       <div
@@ -43,7 +47,7 @@
             <span class="valor">{{ s.cargo }}</span>
           </div>
           <div class="item">
-            <span class="label">Data do Pedido</span>
+            <span class="label">Solicitado em</span>
             <span class="valor">{{ s.data }}</span>
           </div>
         </div>

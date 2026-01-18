@@ -170,7 +170,7 @@
         ></app-campo>
 
         <app-campo
-          rotulo="Nome Social"
+          rotulo="Nome social"
           tipo="text"
           placeholder="Como gostaria de ser chamado(a)"
           icone="usuario"
@@ -179,7 +179,7 @@
 
         <app-campo
           *ngIf="formulario.get('tipoConta')?.value === 'Aluno' || (formulario.get('tipoConta')?.value === 'Instrutor' && formulario.get('tipoPessoaInstrutor')?.value === 'Pessoa Física')"
-          rotulo="Nome da Mãe"
+          rotulo="Nome da mãe"
           tipo="text"
           placeholder="Nome completo da mãe"
           icone="usuario"
@@ -263,7 +263,7 @@
 
         <app-campo
           *ngIf="formulario.get('tipoConta')?.value === 'Aluno' || formulario.get('tipoConta')?.value === 'Instrutor'"
-          rotulo="Última Formação"
+          rotulo="Última formação"
           tipo="select"
           placeholder="Selecione sua formação"
           icone="documento"
@@ -274,7 +274,7 @@
 
         <app-campo
           *ngIf="formulario.get('tipoConta')?.value === 'Aluno' || formulario.get('tipoConta')?.value === 'Instrutor'"
-          rotulo="Status da Formação"
+          rotulo="Status da formação"
           tipo="select"
           placeholder="Selecione o status"
           icone="documento"

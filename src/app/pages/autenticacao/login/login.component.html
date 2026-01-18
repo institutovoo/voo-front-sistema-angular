@@ -2,7 +2,7 @@
   <div class="autenticacao__esquerda">
     <app-logo tema="light"></app-logo>
 
-    <h1 class="titulo">Bem-vindo de volta!</h1>
+    <h1 class="titulo">Bem-vindo(a) de volta!</h1>
     <p class="subtitulo">Entre na sua conta para continuar aprendendo</p>
 
     <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
@@ -28,7 +28,7 @@
       <div class="formulario__linha">
         <label class="caixa">
           <input type="checkbox" formControlName="lembrar" />
-          <span>Lembrar de mim</span>
+          <span>Manter conectado</span>
         </label>
         <a class="atalho" routerLink="/esqueci-senha">Esqueci minha senha</a>
       </div>

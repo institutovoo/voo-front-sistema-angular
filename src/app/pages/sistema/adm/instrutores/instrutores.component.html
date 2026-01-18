@@ -1,0 +1,50 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="admin">
+  <div class="gestao-instrutores">
+    <div class="gestao-instrutores__header">
+      <div>
+        <h1 class="gestao-instrutores__titulo">Gestão de Instrutores</h1>
+        <p class="gestao-instrutores__subtitulo">Gerencie parceiros, comissões e novos cadastros</p>
+      </div>
+    </div>
+
+    <div class="tabela-container">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Instrutor</th>
+            <th>Total Alunos</th>
+            <th>Comissão (%)</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let inst of instrutores()">
+            <td>
+              <div class="inst-info">
+                <div class="inst-info__avatar">{{ inst.nome.charAt(0) }}</div>
+                <div>
+                  <p class="inst-info__nome">{{ inst.nome }}</p>
+                  <p class="inst-info__email">{{ inst.email }}</p>
+                </div>
+              </div>
+            </td>
+            <td>{{ inst.totalAlunos }}</td>
+            <td>{{ inst.comissao }}%</td>
+            <td>
+              <span class="badge-status" [ngClass]="'badge-status--' + inst.status">
+                {{ inst.status === 'ativo' ? 'Ativo' : 'Em Análise' }}
+              </span>
+            </td>
+            <td>
+              <div class="acoes-btns">
+                <button class="btn-acao" title="Ver Detalhes"><app-header-icone nome="olho" [tamanho]="16"></app-header-icone></button>
+                <button class="btn-acao btn-acao--excluir" title="Remover"><app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</app-sistema-layout>

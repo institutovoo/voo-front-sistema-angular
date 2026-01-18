@@ -1,0 +1,107 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="admin">
+  <!-- Banner de Boas-vindas -->
+  <section class="boas-vindas">
+    <div class="boas-vindas__texto">
+      <h1 class="boas-vindas__titulo">Painel Administrativo 👋</h1>
+      <p class="boas-vindas__subtitulo">Gestão centralizada do ecossistema VooCursos.</p>
+    </div>
+    <div class="boas-vindas__acoes">
+      <button class="btn btn--dark">
+        <app-header-icone nome="relatorios" [tamanho]="18"></app-header-icone>
+        Relatório Global
+      </button>
+    </div>
+  </section>
+
+  <!-- Estatísticas -->
+  <section class="estatisticas">
+    <div class="estatisticas__grid">
+      <app-card-kpi *ngFor="let stat of estatisticas()" [estatistica]="stat"></app-card-kpi>
+    </div>
+  </section>
+
+  <!-- Grid Principal -->
+  <div class="grid-principal">
+    <!-- Coluna Principal -->
+    <div class="coluna-principal">
+      <!-- Gestão do Sistema -->
+      <section class="secao">
+        <div class="secao__header">
+          <h2 class="secao__titulo">Gestão do Sistema</h2>
+        </div>
+        
+        <div class="acoes-grid">
+          <a *ngFor="let acao of acoesRapidas" [routerLink]="acao.rota" class="acao-card">
+            <div class="acao-card__icone" [ngClass]="'acao-card__icone--' + acao.cor">
+              <app-header-icone [nome]="acao.icone" [tamanho]="24"></app-header-icone>
+            </div>
+            <div class="acao-card__info">
+              <h3 class="acao-card__titulo">{{ acao.titulo }}</h3>
+              <p class="acao-card__desc">{{ acao.desc }}</p>
+            </div>
+            <app-header-icone nome="seta-direita" [tamanho]="16" class="acao-card__seta"></app-header-icone>
+          </a>
+        </div>
+      </section>
+
+      <!-- Atalhos de Auditoria -->
+      <section class="secao">
+        <div class="secao__header">
+          <h2 class="secao__titulo">Auditoria e Segurança</h2>
+          <a routerLink="/admin/auditoria" class="secao__link">Ver todos os logs ›</a>
+        </div>
+        
+        <div class="auditoria-atalho">
+          <div class="auditoria-atalho__item" *ngFor="let log of atividadesRecentes">
+            <div class="log-status" [ngClass]="'log-status--' + log.status"></div>
+            <div class="log-info">
+              <span class="log-info__texto">{{ log.texto }}</span>
+              <span class="log-info__tempo">{{ log.tempo }}</span>
+            </div>
+            <button class="btn-ver-log">Detalhes</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Coluna Lateral -->
+    <aside class="coluna-lateral">
+      <!-- Suporte Rápido -->
+      <div class="card-lateral suporte-card">
+        <div class="suporte-card__icone">
+          <app-header-icone nome="config" [tamanho]="32" cor="#21b7cd"></app-header-icone>
+        </div>
+        <div class="suporte-card__info">
+          <h3 class="suporte-card__titulo">Configurações Globais</h3>
+          <p class="suporte-card__texto">Ajuste as diretrizes e permissões do sistema.</p>
+        </div>
+        <button class="btn-config-lateral" routerLink="/admin/configuracoes">
+          <app-header-icone nome="config" [tamanho]="18" cor="white"></app-header-icone>
+          Acessar Ajustes
+        </button>
+      </div>
+
+      <!-- Resumo da Infraestrutura -->
+      <div class="card-lateral">
+        <h3 class="card-lateral__titulo">Resumo da Plataforma</h3>
+        <div class="status-servidor">
+          <div class="servidor-item">
+            <div class="servidor-item__ponto servidor-item__ponto--online"></div>
+            <span class="servidor-item__label">Plataforma Voo</span>
+            <span class="servidor-item__valor">Operacional</span>
+          </div>
+          <div class="servidor-item">
+            <div class="servidor-item__ponto servidor-item__ponto--online"></div>
+            <span class="servidor-item__label">Certificados</span>
+            <span class="servidor-item__valor">Em dia</span>
+          </div>
+          <div class="servidor-item">
+            <div class="servidor-item__ponto servidor-item__ponto--online"></div>
+            <span class="servidor-item__label">Backup Global</span>
+            <span class="servidor-item__valor">Concluído</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</app-sistema-layout>

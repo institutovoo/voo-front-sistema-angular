@@ -1,5 +1,5 @@
 @if (linkHome) {
-<a class="marca" [class.marca--dark]="tema === 'dark'" routerLink="/">
+<a class="marca" [class.marca--dark]="tema === 'dark'" [routerLink]="homeRoute">
   <ng-container *ngTemplateOutlet="conteudo"></ng-container>
 </a>
 } @else {

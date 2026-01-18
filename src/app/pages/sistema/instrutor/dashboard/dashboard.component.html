@@ -1,8 +1,8 @@
-<app-sistema-layout [usuario]="usuario" tipoUsuario="instrutor">
+<app-sistema-layout [usuario]="usuario()" tipoUsuario="instrutor">
   <!-- Banner de Boas-vindas -->
   <section class="boas-vindas">
     <div class="boas-vindas__texto">
-      <h1 class="boas-vindas__titulo">Olá, {{ nomeInstrutor }}! 👋</h1>
+      <h1 class="boas-vindas__titulo">Olá, {{ nomeInstrutor() }}! 👋</h1>
       <p class="boas-vindas__subtitulo">
         Gerencie seus cursos e acompanhe o progresso dos seus alunos.
       </p>
@@ -48,6 +48,12 @@
             </div>
             <span class="acao-card__texto">Avaliações e Provas</span>
           </a>
+          <a routerLink="/instrutor/duvidas" class="acao-card">
+            <div class="acao-card__icone acao-card__icone--warning">
+              <app-header-icone nome="mensagem" [tamanho]="24"></app-header-icone>
+            </div>
+            <span class="acao-card__texto">Responder Dúvidas</span>
+          </a>
         </div>
       </section>
 
@@ -80,51 +86,61 @@
         <!-- Lista de Cursos -->
         <div class="cursos-lista">
           <div *ngFor="let curso of cursos" class="curso-item">
-            <div class="curso-item__imagem">
-              <img [src]="curso.imagem" [alt]="curso.titulo" />
-              <span class="curso-item__status" [ngClass]="getStatusClass(curso.status)">
-                {{ getStatusLabel(curso.status) }}
-              </span>
-            </div>
+            <div class="curso-item__corpo">
+              <div class="curso-item__imagem" [style.background-color]="curso.categoriaColor">
+                <div class="curso-item__placeholder">
+                  <app-header-icone nome="curso" [tamanho]="32" cor="rgba(255,255,255,0.5)"></app-header-icone>
+                </div>
+              </div>
 
-            <div class="curso-item__info">
-              <h3 class="curso-item__titulo">{{ curso.titulo }}</h3>
-              <p class="curso-item__data">Atualizado em {{ curso.ultimaAtualizacao }}</p>
-            </div>
-
-            <div class="curso-item__metricas" *ngIf="curso.status === 'publicado'">
-              <div class="metrica">
-                <span class="metrica__valor">{{ curso.totalAlunos }}</span>
-                <span class="metrica__label">Alunos</span>
-              </div>
-              <div class="metrica">
-                <span class="metrica__valor">{{ curso.progressoMedio }}%</span>
-                <span class="metrica__label">Progresso médio</span>
-              </div>
-              <div class="metrica">
-                <span class="metrica__valor">
-                  <app-header-icone
-                    nome="estrela"
-                    [tamanho]="14"
-                    preenchimento="#f59e0b"
-                  ></app-header-icone>
-                  {{ curso.avaliacaoMedia }}
-                </span>
-                <span class="metrica__label">{{ curso.totalAvaliacoes }} avaliações</span>
-              </div>
-              <div class="metrica">
-                <span class="metrica__valor metrica__valor--destaque">
-                  {{ formatarMoeda(curso.receitaMensal) }}
-                </span>
-                <span class="metrica__label">Receita mensal</span>
+              <div class="curso-item__detalhes">
+                <div class="curso-item__header-top">
+                  <span class="curso-item__status" [ngClass]="getStatusClass(curso.status)">
+                    {{ getStatusLabel(curso.status) }}
+                  </span>
+                  <span class="curso-item__data">Atualizado em {{ curso.ultimaAtualizacao }}</span>
+                </div>
+                <h3 class="curso-item__titulo">{{ curso.titulo }}</h3>
+                
+                <div class="curso-item__metricas" *ngIf="curso.status === 'publicado'">
+                  <div class="metrica">
+                    <span class="metrica__valor">{{ curso.totalAlunos }}</span>
+                    <span class="metrica__label">Alunos</span>
+                  </div>
+                  <div class="metrica-divider"></div>
+                  <div class="metrica">
+                    <span class="metrica__valor">{{ curso.progressoMedio }}%</span>
+                    <span class="metrica__label">Média</span>
+                  </div>
+                  <div class="metrica-divider"></div>
+                  <div class="metrica">
+                    <span class="metrica__valor">
+                      <app-header-icone
+                        nome="estrela"
+                        [tamanho]="12"
+                        preenchimento="#f59e0b"
+                        cor="none"
+                      ></app-header-icone>
+                      {{ curso.avaliacaoMedia }}
+                    </span>
+                    <span class="metrica__label">{{ curso.totalAvaliacoes }} aval.</span>
+                  </div>
+                  <div class="metrica-divider"></div>
+                  <div class="metrica">
+                    <span class="metrica__valor metrica__valor--receita">
+                      {{ formatarMoeda(curso.receitaMensal) }}
+                    </span>
+                    <span class="metrica__label">Receita</span>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div class="curso-item__acoes">
               <a
                 [routerLink]="['/instrutor/cursos', curso.id, 'editar']"
-                class="btn-icon"
-                title="Editar"
+                class="btn-icon btn-icon--edit"
+                title="Editar Curso"
               >
                 <app-header-icone nome="editar" [tamanho]="18"></app-header-icone>
               </a>

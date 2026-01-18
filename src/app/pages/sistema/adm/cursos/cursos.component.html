@@ -1,0 +1,64 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="admin">
+  <div class="gestao-cursos">
+    <div class="gestao-cursos__header">
+      <div>
+        <h1 class="gestao-cursos__titulo">Gestão de Cursos</h1>
+        <p class="gestao-cursos__subtitulo">Aprove novos cursos e gerencie o catálogo global</p>
+      </div>
+    </div>
+
+    <div class="gestao-cursos__filtros">
+      <div class="busca">
+        <app-header-icone nome="busca" [tamanho]="18"></app-header-icone>
+        <input type="text" placeholder="Buscar por título ou instrutor..." />
+      </div>
+      <div class="opcoes">
+        <select class="select-filtro">
+          <option>Todos os status</option>
+          <option>Publicados</option>
+          <option>Pendentes</option>
+          <option>Bloqueados</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="tabela-container">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Curso</th>
+            <th>Instrutor</th>
+            <th>Preço</th>
+            <th>Criação</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let curso of cursos()">
+            <td>
+              <div class="curso-info">
+                <div class="curso-info__thumb"></div>
+                <span class="curso-info__titulo">{{ curso.titulo }}</span>
+              </div>
+            </td>
+            <td>{{ curso.instrutor }}</td>
+            <td>{{ formatarMoeda(curso.preco) }}</td>
+            <td>{{ curso.dataCriacao }}</td>
+            <td>
+              <span class="badge-status" [ngClass]="'badge-status--' + curso.status">
+                {{ curso.status === 'publicado' ? 'Ativo' : curso.status === 'pendente' ? 'Revisão' : 'Bloqueado' }}
+              </span>
+            </td>
+            <td>
+              <div class="acoes-btns">
+                <button class="btn-acao btn-acao--primary" title="Aprovar/Revisar"><app-header-icone nome="olho" [tamanho]="16"></app-header-icone></button>
+                <button class="btn-acao btn-acao--excluir" title="Remover"><app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</app-sistema-layout>

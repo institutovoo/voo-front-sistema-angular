@@ -1,0 +1,233 @@
+$primary: #21b7cd;
+$primary-dark: #1a9aab;
+$primary-light: #e0f7fa;
+$text-dark: #0b1b2b;
+$text-muted: #64748b;
+$bg-light: #f8fafb;
+$white: #fff;
+$border: #e2e8f0;
+$success: #22c55e;
+$success-light: #dcfce7;
+$warning: #f59e0b;
+$warning-light: #fef3c7;
+$info: #3b82f6;
+$info-light: #dbeafe;
+
+.receitas {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    gap: 1.5rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  &__titulo {
+    font-size: 2rem;
+    font-weight: 800;
+    color: $text-dark;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.5px;
+  }
+
+  &__subtitulo {
+    color: $text-muted;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  &__grid-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__acoes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.btn-saque {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  background: $primary;
+  color: $white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba($primary, 0.2);
+
+  &:hover {
+    background: $primary-dark;
+    transform: translateY(-2px);
+  }
+}
+
+// ========== KPI CARDS ==========
+.kpi-card {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+
+  &__icone {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--primary { background: $primary-light; color: $primary; }
+    &--warning { background: $warning-light; color: $warning; }
+    &--success { background: $success-light; color: $success; }
+    &--info { background: $info-light; color: $info; }
+  }
+
+  &__label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  &__valor {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: $text-dark;
+    margin: 0;
+  }
+}
+
+.secao-titulo {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: $text-dark;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.filtro-select {
+  padding: 0.625rem 1.25rem;
+  background: $white;
+  border: 1px solid $border;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: $text-dark;
+  outline: none;
+  cursor: pointer;
+
+  &:focus {
+    border-color: $primary;
+  }
+}
+
+// ========== TABELA ==========
+.tabela-container {
+  background: $white;
+  border-radius: 20px;
+  border: 1px solid $border;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th {
+    padding: 1.25rem 1.5rem;
+    background: $bg-light;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid $border;
+  }
+
+  td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid $border;
+    font-size: 0.9375rem;
+    color: $text-dark;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background: rgba($primary, 0.02);
+  }
+}
+
+.venda-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+
+  &__curso {
+    font-weight: 700;
+    color: $text-dark;
+  }
+
+  &__aluno {
+    font-size: 0.8125rem;
+    color: $text-muted;
+  }
+}
+
+.taxa-valor { color: #ef4444; font-weight: 600; }
+.liquido-valor { color: $success; font-weight: 800; }
+
+.status-badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 100px;
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  
+  &--concluido {
+    background: $success-light;
+    color: $success;
+  }
+
+  &--pendente {
+    background: $warning-light;
+    color: $warning;
+  }
+}

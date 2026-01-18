@@ -1,0 +1,72 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="instrutor">
+  <div class="cursos">
+    <div class="cursos__header">
+      <div class="cursos__header-info">
+        <h1 class="cursos__titulo">Meus Cursos</h1>
+        <p class="cursos__subtitulo">Gerencie seus conteúdos e acompanhe o desempenho</p>
+      </div>
+      <button class="btn-novo" routerLink="/instrutor/cursos/novo">
+        <app-header-icone nome="mais" [tamanho]="20" cor="white"></app-header-icone>
+        Criar Novo Curso
+      </button>
+    </div>
+
+    <!-- Filtros e Busca -->
+    <div class="cursos__acoes">
+      <div class="busca">
+        <app-header-icone nome="busca" [tamanho]="18" cor="#64748b"></app-header-icone>
+        <input type="text" placeholder="Buscar curso pelo nome..." class="busca__input" />
+      </div>
+      
+      <div class="filtros">
+        <button class="filtro-btn filtro-btn--ativo">Todos</button>
+        <button class="filtro-btn">Publicados</button>
+        <button class="filtro-btn">Rascunhos</button>
+        <button class="filtro-btn">Em Revisão</button>
+      </div>
+    </div>
+
+    <!-- Lista de Cursos -->
+    <div class="cursos__grid">
+      <div *ngFor="let curso of cursos()" class="curso-card">
+        <div class="curso-card__imagem" [style.background-color]="curso.categoriaColor">
+          <div class="curso-card__placeholder">
+            <app-header-icone nome="curso" [tamanho]="48" cor="rgba(255,255,255,0.3)"></app-header-icone>
+          </div>
+          <span class="status-badge" [ngClass]="'status-badge--' + curso.status">
+            {{ getStatusLabel(curso.status) }}
+          </span>
+        </div>
+
+        <div class="curso-card__corpo">
+          <div class="curso-card__info">
+            <span class="curso-card__categoria">{{ curso.categoria }}</span>
+            <h3 class="curso-card__titulo">{{ curso.titulo }}</h3>
+            <p class="curso-card__data">Atualizado em {{ curso.ultimaAtualizacao }}</p>
+          </div>
+
+          <div class="curso-card__stats" *ngIf="curso.status === 'publicado'">
+            <div class="stat">
+              <span class="stat__valor">{{ curso.totalAlunos }}</span>
+              <span class="stat__label">Alunos</span>
+            </div>
+            <div class="stat">
+              <span class="stat__valor stat__valor--receita">{{ formatarMoeda(curso.receitaTotal) }}</span>
+              <span class="stat__label">Receita Total</span>
+            </div>
+          </div>
+
+          <div class="curso-card__footer">
+            <button class="btn-acao btn-acao--primario" [routerLink]="['/instrutor/cursos', curso.id, 'editar']">
+              <app-header-icone nome="editar" [tamanho]="16"></app-header-icone>
+              Editar Curso
+            </button>
+            <button class="btn-acao btn-acao--outline">
+              <app-header-icone nome="menu" [tamanho]="16"></app-header-icone>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-sistema-layout>

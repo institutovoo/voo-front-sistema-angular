@@ -1,4 +1,4 @@
-<app-sistema-layout [usuario]="usuario" tipoUsuario="aluno" conteudoMaxWidth="1400px">
+<app-sistema-layout [usuario]="usuario()" tipoUsuario="aluno" conteudoMaxWidth="1400px">
   <!-- Header da página -->
   <div class="page-header">
     <div class="page-header__info">
@@ -16,13 +16,13 @@
   <!-- KPIs -->
   <section class="kpis">
     <div class="kpis__grid">
-      <app-card-kpi *ngFor="let kpi of kpis" [estatistica]="kpi"></app-card-kpi>
+      <app-card-kpi *ngFor="let kpi of kpis()" [estatistica]="kpi"></app-card-kpi>
     </div>
   </section>
 
   <!-- Filtros -->
   <app-filtros-barra
-    [tabs]="filtroTabs"
+    [tabs]="filtroTabs()"
     [tabAtiva]="filtroAtivo()"
     [termoBusca]="termoBusca()"
     placeholderBusca="Buscar curso..."
@@ -40,7 +40,7 @@
   <!-- Lista de Cursos -->
   <section class="cursos">
     <!-- Estado vazio -->
-    <div *ngIf="cursosFiltrados.length === 0" class="cursos__vazio">
+    <div *ngIf="cursosFiltrados().length === 0" class="cursos__vazio">
       <app-header-icone nome="cursos" [tamanho]="48" cor="#cbd5e1"></app-header-icone>
       <h3>Nenhum curso encontrado</h3>
       <p>Tente ajustar os filtros ou explore novos cursos.</p>
@@ -51,17 +51,19 @@
     <div
       class="cursos__grid"
       [class.cursos__grid--lista]="visualizacao() === 'lista'"
-      *ngIf="cursosFiltrados.length > 0"
+      *ngIf="cursosFiltrados().length > 0"
     >
       <div
-        *ngFor="let curso of cursosFiltrados"
+        *ngFor="let curso of cursosFiltrados()"
         class="curso-card"
         [class.curso-card--lista]="visualizacao() === 'lista'"
         [class.curso-card--vencido]="curso.status === 'vencido'"
       >
         <!-- Imagem -->
-        <div class="curso-card__imagem">
-          <img [src]="curso.imagem" [alt]="curso.titulo" />
+        <div class="curso-card__imagem" [style.background-color]="curso.categoriaColor">
+          <div class="curso-card__placeholder">
+            <app-header-icone [nome]="'curso'" [tamanho]="visualizacao() === 'lista' ? 32 : 48" cor="rgba(255,255,255,0.5)"></app-header-icone>
+          </div>
           <span class="curso-card__categoria" [style.background-color]="curso.categoriaColor">
             {{ curso.categoria }}
           </span>

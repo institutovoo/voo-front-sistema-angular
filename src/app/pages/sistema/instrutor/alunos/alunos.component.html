@@ -1,0 +1,83 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="instrutor">
+  <div class="alunos">
+    <div class="alunos__header">
+      <div class="alunos__header-info">
+        <h1 class="alunos__titulo">Meus Alunos</h1>
+        <p class="alunos__subtitulo">Acompanhe o engajamento e progresso da sua turma</p>
+      </div>
+      <button class="btn-exportar" (click)="enviarRelatorioEmail()">
+        <app-header-icone nome="enviar" [tamanho]="18" cor="#64748b"></app-header-icone>
+        Enviar para o e-mail
+      </button>
+    </div>
+
+    <!-- Filtros e Busca -->
+    <div class="alunos__acoes">
+      <div class="busca">
+        <app-header-icone nome="busca" [tamanho]="18" cor="#64748b"></app-header-icone>
+        <input type="text" placeholder="Buscar aluno por nome ou e-mail..." class="busca__input" />
+      </div>
+      
+      <div class="filtros">
+        <button class="filtro-btn filtro-btn--ativo">Todos</button>
+        <button class="filtro-btn">Ativos</button>
+        <button class="filtro-btn">Concluídos</button>
+      </div>
+    </div>
+
+    <!-- Tabela de Alunos -->
+    <div class="tabela-container">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Aluno</th>
+            <th>Curso</th>
+            <th>Progresso</th>
+            <th>Matrícula</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let aluno of alunos()">
+            <td>
+              <div class="aluno-info">
+                <div class="aluno-info__avatar">
+                  {{ aluno.nome.charAt(0) }}
+                </div>
+                <div class="aluno-info__detalhes">
+                  <span class="aluno-info__nome">{{ aluno.nome }}</span>
+                  <span class="aluno-info__email">{{ aluno.email }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="curso-nome">{{ aluno.curso }}</span>
+            </td>
+            <td>
+              <div class="progresso-wrapper">
+                <div class="progresso-barra">
+                  <div class="progresso-fill" [style.width.%]="aluno.progresso"></div>
+                </div>
+                <span class="progresso-valor">{{ aluno.progresso }}%</span>
+              </div>
+            </td>
+            <td>
+              <span class="data-matricula">{{ aluno.dataMatricula }}</span>
+            </td>
+            <td>
+              <span class="status-badge" [ngClass]="'status-badge--' + aluno.status">
+                {{ getStatusLabel(aluno.status) }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-icon">
+                <app-header-icone nome="mensagem" [tamanho]="18"></app-header-icone>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</app-sistema-layout>

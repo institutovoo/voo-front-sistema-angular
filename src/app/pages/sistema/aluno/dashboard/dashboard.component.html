@@ -82,6 +82,26 @@
 
     <!-- Coluna Lateral -->
     <aside class="coluna-lateral">
+      <!-- Suporte Rápido -->
+      <section class="secao">
+        <div class="secao__header">
+          <h2 class="secao__titulo">Suporte</h2>
+        </div>
+        <div class="card-lateral suporte-card">
+          <div class="suporte-card__icone">
+            <app-header-icone nome="duvida" [tamanho]="32" cor="#21b7cd"></app-header-icone>
+          </div>
+          <div class="suporte-card__info">
+            <h3 class="suporte-card__titulo">Precisa de ajuda?</h3>
+            <p class="suporte-card__texto">Nossa equipe está pronta para tirar suas dúvidas.</p>
+          </div>
+          <button class="btn-suporte-lateral">
+            <app-header-icone nome="mensagem" [tamanho]="18" cor="white"></app-header-icone>
+            Falar com Suporte
+          </button>
+        </div>
+      </section>
+
       <!-- Atividade Recente -->
       <section class="secao">
         <div class="secao__header">
@@ -93,52 +113,6 @@
               *ngFor="let atividade of atividadesRecentes"
               [atividade]="atividade"
             ></app-atividade-item>
-          </div>
-        </div>
-      </section>
-
-      <!-- Meta Semanal -->
-      <section class="secao">
-        <div class="secao__header">
-          <h2 class="secao__titulo">Meta Semanal</h2>
-        </div>
-        <div class="card-lateral">
-          <div class="meta">
-            <div class="meta__circulo">
-              <svg viewBox="0 0 100 100" class="meta__svg">
-                <circle cx="50" cy="50" r="45" class="meta__fundo" />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  class="meta__progresso"
-                  [style.stroke-dasharray]="'283'"
-                  [style.stroke-dashoffset]="283 - (283 * metaSemanal.porcentagem) / 100"
-                />
-              </svg>
-              <span class="meta__valor">{{ metaSemanal.porcentagem }}%</span>
-            </div>
-            <p class="meta__texto">
-              {{ metaSemanal.horasConcluidas }} de {{ metaSemanal.horasAlvo }} horas concluídas
-            </p>
-          </div>
-
-          <div class="meta__dias">
-            <div
-              *ngFor="let dia of diasSemana"
-              class="meta__dia"
-              [class.meta__dia--atual]="dia.atual"
-            >
-              <span class="meta__dia-nome">{{ dia.dia }}</span>
-              <app-barra-progresso
-                [valor]="(dia.horas / 6) * 100"
-                tamanho="pequeno"
-                class="meta__dia-barra"
-              ></app-barra-progresso>
-              <span class="meta__dia-horas" [class.meta__dia-horas--destaque]="dia.atual">
-                {{ dia.horas }}h
-              </span>
-            </div>
           </div>
         </div>
       </section>

@@ -1,0 +1,77 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="admin">
+  <div class="gestao-usuarios">
+    <div class="gestao-usuarios__header">
+      <div>
+        <h1 class="gestao-usuarios__titulo">Gestão de Usuários</h1>
+        <p class="gestao-usuarios__subtitulo">Administre os perfis e permissões de todos os usuários do sistema</p>
+      </div>
+      <button class="btn-novo" routerLink="/admin/usuarios/novo">
+        <app-header-icone nome="mais" [tamanho]="18"></app-header-icone>
+        Novo Usuário
+      </button>
+    </div>
+
+    <!-- Filtros -->
+    <div class="gestao-usuarios__filtros">
+      <div class="busca">
+        <app-header-icone nome="busca" [tamanho]="18"></app-header-icone>
+        <input type="text" placeholder="Nome, e-mail ou ID..." />
+      </div>
+      <div class="opcoes">
+        <select class="select-filtro">
+          <option>Todos os tipos</option>
+          <option>Alunos</option>
+          <option>Instrutores</option>
+          <option>Admins</option>
+        </select>
+        <select class="select-filtro">
+          <option>Todos os status</option>
+          <option>Ativos</option>
+          <option>Bloqueados</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tabela -->
+    <div class="tabela-container">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Usuário</th>
+            <th>Tipo</th>
+            <th>Data Cadastro</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of usuarios()">
+            <td>
+              <div class="user-info">
+                <div class="user-info__avatar">{{ user.nome.charAt(0) }}</div>
+                <div>
+                  <p class="user-info__nome">{{ user.nome }}</p>
+                  <p class="user-info__email">{{ user.email }}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="badge-tipo" [ngClass]="'badge-tipo--' + user.tipo">{{ user.tipo }}</span>
+            </td>
+            <td>{{ user.dataCadastro }}</td>
+            <td>
+              <span class="badge-status" [ngClass]="'badge-status--' + user.status">{{ getStatusLabel(user.status) }}</span>
+            </td>
+            <td>
+              <div class="acoes-btns">
+                <button class="btn-acao" title="Editar"><app-header-icone nome="editar" [tamanho]="16"></app-header-icone></button>
+                <button class="btn-acao btn-acao--bloquear" title="Bloquear"><app-header-icone nome="bloquear" [tamanho]="16"></app-header-icone></button>
+                <button class="btn-acao btn-acao--excluir" title="Excluir"><app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</app-sistema-layout>

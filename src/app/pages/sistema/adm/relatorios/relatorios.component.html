@@ -1,0 +1,81 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="admin">
+  <div class="relatorios">
+    <div class="relatorios__header">
+      <div>
+        <h1 class="relatorios__titulo">Relatórios Globais</h1>
+        <p class="relatorios__subtitulo">Acompanhe a saúde financeira e o volume de transações da plataforma</p>
+      </div>
+      <div class="relatorios__acoes">
+        <button class="btn-secundario">
+          <app-header-icone nome="calendario" [tamanho]="18"></app-header-icone>
+          Últimos 30 dias
+        </button>
+        <button class="btn-primario">
+          <app-header-icone nome="download" [tamanho]="18"></app-header-icone>
+          Exportar CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- KPIs Financeiros -->
+    <div class="relatorios__kpis">
+      <app-card-kpi *ngFor="let stat of estatisticas()" [estatistica]="stat"></app-card-kpi>
+    </div>
+
+    <!-- Histórico de Transações -->
+    <div class="secao-tabela">
+      <div class="secao-tabela__header">
+        <h2 class="secao-tabela__titulo">Transações Recentes</h2>
+        <div class="busca-simples">
+          <app-header-icone nome="busca" [tamanho]="16"></app-header-icone>
+          <input type="text" placeholder="Filtrar transações..." />
+        </div>
+      </div>
+
+      <div class="tabela-container">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>ID / Data</th>
+              <th>Item / Usuário</th>
+              <th>Valor Bruto</th>
+              <th>Taxa Plataforma</th>
+              <th>Líquido Instrutor</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tx of transacoes()">
+              <td>
+                <div class="cell-id">
+                  <span class="id">{{ tx.id }}</span>
+                  <span class="data">{{ tx.data }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="cell-info">
+                  <span class="item">{{ tx.item }}</span>
+                  <span class="user">{{ tx.usuario }}</span>
+                </div>
+              </td>
+              <td class="valor-bruto">{{ formatarMoeda(tx.valor) }}</td>
+              <td class="valor-taxa">{{ formatarMoeda(tx.plataforma) }}</td>
+              <td class="valor-liquido">{{ formatarMoeda(tx.liquido) }}</td>
+              <td>
+                <span class="badge-status" [ngClass]="'badge-status--' + tx.status">
+                  {{ getStatusLabel(tx.status) }}
+                </span>
+              </td>
+              <td>
+                <button class="btn-acao-tabela" title="Ver detalhes">
+                  <app-header-icone nome="olho" [tamanho]="16"></app-header-icone>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</app-sistema-layout>

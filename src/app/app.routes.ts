@@ -15,7 +15,7 @@ export const routes: Routes = [
     title: 'Institucional - Instrutores',
     loadComponent: () =>
       import('./pages/institucional-instrutor/institucional-instrutor.component').then(
-        (m) => m.InstitucionalInstrutorComponent
+        (m) => m.InstitucionalInstrutorComponent,
       ),
   },
 
@@ -39,7 +39,7 @@ export const routes: Routes = [
     title: 'Recuperar Senha',
     loadComponent: () =>
       import('./pages/autenticacao/esqueci-senha/esqueci-senha.component').then(
-        (m) => m.EsqueciSenhaComponent
+        (m) => m.EsqueciSenhaComponent,
       ),
   },
   {
@@ -47,7 +47,7 @@ export const routes: Routes = [
     title: 'Redefinir Senha',
     loadComponent: () =>
       import('./pages/autenticacao/reset-senha/reset-senha.component').then(
-        (m) => m.ResetSenhaComponent
+        (m) => m.ResetSenhaComponent,
       ),
   },
   {
@@ -55,7 +55,15 @@ export const routes: Routes = [
     title: 'Login Administrativo',
     loadComponent: () =>
       import('./pages/autenticacao/admin-login/admin-login.component').then(
-        (m) => m.AdminLoginComponent
+        (m) => m.AdminLoginComponent,
+      ),
+  },
+  {
+    path: 'admin/cadastro',
+    title: 'Cadastro Administrativo',
+    loadComponent: () =>
+      import('./pages/autenticacao/admin-cadastro/admin-cadastro.component').then(
+        (m) => m.AdminCadastroComponent,
       ),
   },
 
@@ -71,7 +79,7 @@ export const routes: Routes = [
         title: 'Dashboard',
         loadComponent: () =>
           import('./pages/sistema/aluno/dashboard/dashboard.component').then(
-            (m) => m.AlunoDashboardComponent
+            (m) => m.AlunoDashboardComponent,
           ),
       },
       {
@@ -79,7 +87,7 @@ export const routes: Routes = [
         title: 'Configurações',
         loadComponent: () =>
           import('./pages/sistema/aluno/configuracoes/configuracoes.component').then(
-            (m) => m.ConfiguracoesComponent
+            (m) => m.ConfiguracoesComponent,
           ),
       },
       {
@@ -87,7 +95,7 @@ export const routes: Routes = [
         title: 'Meus Certificados',
         loadComponent: () =>
           import('./pages/sistema/aluno/certificados/certificados.component').then(
-            (m) => m.CertificadosComponent
+            (m) => m.CertificadosComponent,
           ),
       },
       {
@@ -95,7 +103,7 @@ export const routes: Routes = [
         title: 'Meus Cursos',
         loadComponent: () =>
           import('./pages/sistema/aluno/meus-cursos/meus-cursos.component').then(
-            (m) => m.MeusCursosComponent
+            (m) => m.MeusCursosComponent,
           ),
       },
       {
@@ -103,7 +111,7 @@ export const routes: Routes = [
         title: 'Loja de Cursos',
         loadComponent: () =>
           import('./pages/sistema/aluno/loja-cursos/loja-cursos.component').then(
-            (m) => m.LojaCursosComponent
+            (m) => m.LojaCursosComponent,
           ),
       },
       {
@@ -111,7 +119,7 @@ export const routes: Routes = [
         title: 'Detalhes do Curso',
         loadComponent: () =>
           import('./pages/sistema/aluno/curso-detalhe/curso-detalhe.component').then(
-            (m) => m.CursoDetalheComponent
+            (m) => m.CursoDetalheComponent,
           ),
       },
       {
@@ -119,7 +127,7 @@ export const routes: Routes = [
         title: 'Aula',
         loadComponent: () =>
           import('./pages/sistema/aluno/curso-player/curso-player.component').then(
-            (m) => m.CursoPlayerComponent
+            (m) => m.CursoPlayerComponent,
           ),
       },
       {
@@ -143,7 +151,7 @@ export const routes: Routes = [
         title: 'Dashboard do Instrutor',
         loadComponent: () =>
           import('./pages/sistema/instrutor/dashboard/dashboard.component').then(
-            (m) => m.InstrutorDashboardComponent
+            (m) => m.InstrutorDashboardComponent,
           ),
       },
       {
@@ -151,14 +159,38 @@ export const routes: Routes = [
         title: 'Configurações do Instrutor',
         loadComponent: () =>
           import('./pages/sistema/instrutor/configuracoes/configuracoes.component').then(
-            (m) => m.ConfiguracoesComponent
+            (m) => m.ConfiguracoesComponent,
+          ),
+      },
+      {
+        path: 'cursos',
+        title: 'Meus Cursos - Instrutor',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/cursos/cursos.component').then(
+            (m) => m.InstrutorCursosComponent,
+          ),
+      },
+      {
+        path: 'alunos',
+        title: 'Meus Alunos',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/alunos/alunos.component').then(
+            (m) => m.InstrutorAlunosComponent,
+          ),
+      },
+      {
+        path: 'receitas',
+        title: 'Minhas Receitas',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/receitas/receitas.component').then(
+            (m) => m.InstrutorReceitasComponent,
           ),
       },
     ],
   },
 
   // ========================================
-  // SISTEMA - ADMIN
+  // SISTEMA - ADM
   // ========================================
   {
     path: 'admin',
@@ -168,10 +200,72 @@ export const routes: Routes = [
         path: 'dashboard',
         title: 'Painel Administrativo',
         loadComponent: () =>
-          import('./pages/sistema/aluno/dashboard/dashboard.component').then(
-            (m) => m.AlunoDashboardComponent
+          import('./pages/sistema/adm/dashboard/dashboard.component').then(
+            (m) => m.AdmDashboardComponent,
+          ),
+      },
+      {
+        path: 'usuarios',
+        title: 'Gestão de Usuários',
+        loadComponent: () =>
+          import('./pages/sistema/adm/usuarios/usuarios.component').then(
+            (m) => m.AdmUsuariosComponent,
+          ),
+      },
+      {
+        path: 'usuarios/novo',
+        title: 'Cadastrar Novo Usuário',
+        loadComponent: () =>
+          import('./pages/sistema/adm/usuarios/cadastro/cadastro.component').then(
+            (m) => m.AdmCadastroUsuarioComponent,
+          ),
+      },
+      {
+        path: 'cursos',
+        title: 'Gestão de Cursos',
+        loadComponent: () =>
+          import('./pages/sistema/adm/cursos/cursos.component').then((m) => m.AdmCursosComponent),
+      },
+      {
+        path: 'instrutores',
+        title: 'Gestão de Instrutores',
+        loadComponent: () =>
+          import('./pages/sistema/adm/instrutores/instrutores.component').then(
+            (m) => m.AdmInstrutoresComponent,
+          ),
+      },
+      {
+        path: 'relatorios',
+        title: 'Relatórios Globais',
+        loadComponent: () =>
+          import('./pages/sistema/adm/relatorios/relatorios.component').then(
+            (m) => m.AdmRelatoriosComponent,
+          ),
+      },
+      {
+        path: 'auditoria',
+        title: 'Auditoria do Sistema',
+        loadComponent: () =>
+          import('./pages/sistema/adm/auditoria/auditoria.component').then(
+            (m) => m.AdmAuditoriaComponent,
+          ),
+      },
+      {
+        path: 'configuracoes',
+        title: 'Configurações do Sistema',
+        loadComponent: () =>
+          import('./pages/sistema/adm/configuracoes/configuracoes.component').then(
+            (m) => m.AdmConfiguracoesComponent,
           ),
       },
     ],
+  },
+
+  // ========================================
+  // FALLBACK (Redireciona para home)
+  // ========================================
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];

@@ -1,85 +1,19 @@
 <!-- Overlay Mobile -->
-<div class="sidebar-overlay" *ngIf="menuMobileAberto" (click)="fecharMenuMobile()"></div>
+<div class="header-overlay" *ngIf="menuMobileAberto" (click)="fecharMenuMobile()"></div>
 
-<!-- Sidebar -->
-<aside
-  class="sidebar"
-  [class.sidebar--fechada]="!sidebarAberta"
-  [class.sidebar--mobile-aberta]="menuMobileAberto"
->
-  <div class="sidebar__conteudo">
-    <!-- Logo -->
-    <div class="sidebar__logo">
-      <app-logo [linkHome]="false" tema="light" [class.logo--compacto]="!sidebarAberta"></app-logo>
-
-      <!-- Botão Toggle Desktop -->
-      <button class="sidebar__toggle" (click)="toggleSidebar()">
-        <app-header-icone
-          [nome]="sidebarAberta ? 'seta-esquerda-dupla' : 'seta-direita-dupla'"
-          [tamanho]="20"
-        >
-        </app-header-icone>
-      </button>
-    </div>
-
-    <!-- Navegação Principal -->
-    <nav class="sidebar__nav">
-      <app-header-menu-item
-        *ngFor="let item of menuPrincipal"
-        [item]="item"
-        [compacto]="!sidebarAberta"
-        (itemClick)="fecharMenuMobile()"
-      ></app-header-menu-item>
-    </nav>
-
-    <!-- Menu Rodapé -->
-    <div class="sidebar__footer">
-      <app-header-menu-item
-        *ngFor="let item of menuRodape"
-        [item]="item"
-        [compacto]="!sidebarAberta"
-        (itemClick)="fecharMenuMobile()"
-      ></app-header-menu-item>
-
-      <button
-        class="sidebar__item sidebar__item--sair"
-        (click)="onLogout()"
-        [title]="!sidebarAberta ? 'Sair' : ''"
-      >
-        <app-header-icone nome="sair" [tamanho]="20"></app-header-icone>
-        <span class="sidebar__label" *ngIf="sidebarAberta">Sair</span>
-      </button>
-    </div>
-  </div>
-</aside>
-
-<!-- Header Superior -->
-<header class="header" [class.header--expandido]="!sidebarAberta">
+<!-- Header Principal -->
+<header class="header">
   <div class="header__left">
-    <!-- Botão Toggle Desktop (quando sidebar fechada) -->
-    <button 
-      class="header__toggle-desktop" 
-      (click)="toggleSidebar()" 
-      [style.display]="!sidebarAberta ? 'flex' : 'none'"
-    >
-      <app-header-icone nome="menu" [tamanho]="24"></app-header-icone>
-    </button>
-
-    <!-- Logo (quando sidebar fechada) -->
-    <app-logo 
-      [linkHome]="false" 
-      tema="light" 
-      [style.display]="!sidebarAberta ? 'block' : 'none'" 
-      class="header__logo"
-    ></app-logo>
+    <!-- Logo -->
+    <app-logo [linkHome]="'/' + tipoUsuario + '/dashboard'" tema="light" class="header__logo"></app-logo>
 
     <!-- Botão Menu Mobile -->
     <button class="header__menu-mobile" (click)="toggleMenuMobile()">
       <app-header-icone nome="menu" [tamanho]="24"></app-header-icone>
     </button>
 
-    <!-- Menu Horizontal (quando sidebar fechada) -->
-    <nav class="header__nav" [style.display]="!sidebarAberta ? 'flex' : 'none'">
+    <!-- Menu Horizontal (Desktop) -->
+    <nav class="header__nav">
       <app-header-menu-item
         *ngFor="let item of menuPrincipal"
         [item]="item"
@@ -89,23 +23,75 @@
     </nav>
   </div>
 
-  <!-- Busca -->
-  <div class="header__busca">
-    <app-header-icone nome="busca" [tamanho]="20" cor="#64748b"></app-header-icone>
-    <input
-      type="text"
-      placeholder="Buscar cursos, aulas..."
-      class="header__input"
-      (input)="onBuscar($event)"
-    />
-  </div>
-
   <!-- Ações -->
   <div class="header__acoes">
-    <app-header-usuario-avatar
-      [nome]="usuario.nome"
-      [avatar]="usuario.avatar"
-      [mostrarNome]="true"
-    ></app-header-usuario-avatar>
+    <!-- Perfil do Usuário com Dropdown -->
+    <div class="header__usuario">
+      <button class="header__usuario-trigger" (click)="toggleMenuUsuario()">
+        <app-header-usuario-avatar
+          [nome]="usuario.nome"
+          [avatar]="usuario.avatar"
+          [mostrarNome]="true"
+        ></app-header-usuario-avatar>
+        <app-header-icone
+          [nome]="'seta-baixo'"
+          [tamanho]="14"
+          [class.header__usuario-seta--aberta]="menuUsuarioAberto"
+          class="header__usuario-seta"
+        ></app-header-icone>
+      </button>
+
+      <!-- Dropdown de Usuário -->
+      <div class="header__dropdown" *ngIf="menuUsuarioAberto">
+        <div class="header__dropdown-header">
+          <span class="header__dropdown-nome">{{ usuario.nome }}</span>
+          <span class="header__dropdown-email" *ngIf="usuario.email">{{ usuario.email }}</span>
+        </div>
+
+        <div class="header__dropdown-body">
+          <a
+            [routerLink]="['/' + tipoUsuario + '/configuracoes']"
+            class="header__dropdown-item"
+            (click)="fecharMenuUsuario()"
+          >
+            <app-header-icone nome="config" [tamanho]="18"></app-header-icone>
+            <span>Configurações</span>
+          </a>
+
+          <div class="header__dropdown-divider"></div>
+
+          <button class="header__dropdown-item header__dropdown-item--sair" (click)="onLogout()">
+            <app-header-icone nome="sair" [tamanho]="18"></app-header-icone>
+            <span>Sair da conta</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
+
+<!-- Menu Mobile (Gaveta Lateral) -->
+<aside class="mobile-nav" [class.mobile-nav--aberto]="menuMobileAberto">
+  <div class="mobile-nav__header">
+    <app-logo [linkHome]="'/' + tipoUsuario + '/dashboard'" tema="light"></app-logo>
+    <button class="mobile-nav__fechar" (click)="fecharMenuMobile()">
+      <app-header-icone nome="x" [tamanho]="24"></app-header-icone>
+    </button>
+  </div>
+
+  <nav class="mobile-nav__corpo">
+    <app-header-menu-item
+      *ngFor="let item of menuPrincipal"
+      [item]="item"
+      [compacto]="false"
+      (itemClick)="fecharMenuMobile()"
+    ></app-header-menu-item>
+  </nav>
+
+  <div class="mobile-nav__footer">
+    <button class="mobile-nav__item mobile-nav__item--sair" (click)="onLogout()">
+      <app-header-icone nome="sair" [tamanho]="20"></app-header-icone>
+      <span>Sair</span>
+    </button>
+  </div>
+</aside>

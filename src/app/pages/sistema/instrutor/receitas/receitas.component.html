@@ -1,0 +1,79 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="instrutor">
+  <div class="receitas">
+    <div class="receitas__header">
+      <div class="receitas__header-info">
+        <h1 class="receitas__titulo">Minhas Receitas</h1>
+        <p class="receitas__subtitulo">Gerencie seus ganhos e acompanhe suas vendas</p>
+      </div>
+      <button class="btn-saque" (click)="enviarRelatorioFinanceiro()">
+        <app-header-icone nome="enviar" [tamanho]="18" cor="white"></app-header-icone>
+        Enviar relatório para o e-mail
+      </button>
+    </div>
+
+    <!-- KPIs de Receita -->
+    <div class="receitas__grid-kpis">
+      <app-card-kpi
+        *ngFor="let stat of estatisticas()"
+        [estatistica]="stat"
+      ></app-card-kpi>
+    </div>
+
+    <!-- Gráfico Simulado / Filtros -->
+    <div class="receitas__acoes">
+      <h2 class="secao-titulo">Histórico de Transações</h2>
+      <div class="filtros">
+        <select class="filtro-select">
+          <option>Últimos 30 dias</option>
+          <option>Últimos 90 dias</option>
+          <option>Ano atual</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tabela de Transações -->
+    <div class="tabela-container">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>ID</th>
+            <th>Curso / Aluno</th>
+            <th>Valor Bruto</th>
+            <th>Taxas</th>
+            <th>Valor Líquido</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let trx of transacoes()">
+            <td>
+              <span class="data-trx">{{ trx.data }}</span>
+            </td>
+            <td>
+              <span class="id-trx">{{ trx.id }}</span>
+            </td>
+            <td>
+              <div class="venda-info">
+                <span class="venda-info__curso">{{ trx.curso }}</span>
+                <span class="venda-info__aluno">{{ trx.aluno }}</span>
+              </div>
+            </td>
+            <td>{{ formatarMoeda(trx.valor) }}</td>
+            <td>
+              <span class="taxa-valor">- {{ formatarMoeda(trx.taxa) }}</span>
+            </td>
+            <td>
+              <span class="liquido-valor">{{ formatarMoeda(trx.liquido) }}</span>
+            </td>
+            <td>
+              <span class="status-badge" [ngClass]="'status-badge--' + trx.status">
+                {{ trx.status === 'concluido' ? 'Concluído' : 'Pendente' }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</app-sistema-layout>

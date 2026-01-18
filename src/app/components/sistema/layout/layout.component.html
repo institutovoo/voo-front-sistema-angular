@@ -1,13 +1,12 @@
 <app-sistema-header
   [usuario]="usuario"
   [tipoUsuario]="tipoUsuario"
-  (sidebarMudou)="onSidebarMudou($event)"
   (logout)="onLogout()"
   (buscar)="onBuscar($event)"
 ></app-sistema-header>
 
 <div class="sistema-layout">
-  <main class="main" [class.main--expandido]="!sidebarAberta">
+  <main class="main">
     <div class="conteudo" [style.max-width]="conteudoMaxWidth">
       <ng-content></ng-content>
     </div>

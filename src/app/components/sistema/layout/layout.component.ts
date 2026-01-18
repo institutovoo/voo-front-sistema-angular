@@ -18,13 +18,7 @@ export class SistemaLayoutComponent {
   @Output() logout = new EventEmitter<void>();
   @Output() buscar = new EventEmitter<string>();
 
-  sidebarAberta = true;
-
   constructor(private readonly router: Router) {}
-
-  onSidebarMudou(aberta: boolean) {
-    this.sidebarAberta = aberta;
-  }
 
   onLogout() {
     this.logout.emit();

@@ -1,0 +1,64 @@
+// Layout específico da página de cadastro admin
+.admin-autenticacao {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #0b1b2b;
+  background: radial-gradient(1000px 300px at 20% -50%, rgba(33, 183, 205, 0.12), transparent 60%),
+    #0b1b2b;
+  padding: 2rem;
+}
+
+.cartao {
+  background: #ffffff;
+  padding: 4rem 3rem;
+  border-radius: 32px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .marca {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.titulo {
+  margin-bottom: 0.5rem !important;
+}
+
+.subtitulo {
+  margin-bottom: 2.5rem !important;
+}
+
+.mensagem-erro {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+  text-align: center;
+}
+
+.rodape-login {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #64748b;
+
+  a {
+    color: #21b7cd;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 0.5rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

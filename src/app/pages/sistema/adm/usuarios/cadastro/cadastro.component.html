@@ -1,0 +1,74 @@
+<div class="admin-autenticacao">
+  <div class="cartao">
+    <app-logo tema="light" [linkHome]="'/admin/dashboard'"></app-logo>
+
+    <div class="header-cadastro">
+      <h1 class="titulo">Novo Usuário</h1>
+      <p class="subtitulo">Cadastre um novo perfil no ecossistema VooCursos</p>
+    </div>
+
+    <form (ngSubmit)="cadastrar()" #cadastroForm="ngForm" class="formulario">
+      <div class="campo">
+        <label for="nome">Nome Completo</label>
+        <div class="input-wrapper">
+          <app-header-icone nome="usuario" [tamanho]="18"></app-header-icone>
+          <input 
+            type="text" 
+            id="nome" 
+            name="nome" 
+            [(ngModel)]="usuario.nome" 
+            placeholder="Ex: João da Silva" 
+            required
+          />
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="email">E-mail</label>
+        <div class="input-wrapper">
+          <app-header-icone nome="email" [tamanho]="18"></app-header-icone>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            [(ngModel)]="usuario.email" 
+            placeholder="usuario@email.com" 
+            required
+          />
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="senha">Senha Temporária</label>
+        <div class="input-wrapper">
+          <app-header-icone nome="bloquear" [tamanho]="18"></app-header-icone>
+          <input 
+            type="password" 
+            id="senha" 
+            name="senha" 
+            [(ngModel)]="usuario.senha" 
+            placeholder="••••••••" 
+            required
+          />
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="tipo">Tipo de Usuário</label>
+        <div class="input-wrapper">
+          <app-header-icone nome="usuarios" [tamanho]="18"></app-header-icone>
+          <select id="tipo" name="tipo" [(ngModel)]="usuario.tipo" required>
+            <option value="aluno">Aluno</option>
+            <option value="instrutor">Instrutor</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="acoes">
+        <button type="button" class="btn-cancelar" routerLink="/admin/usuarios">Cancelar</button>
+        <button type="submit" class="btn-cadastrar" [disabled]="!cadastroForm.form.valid">Cadastrar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -7,212 +7,13 @@ $bg-light: #f8fafb;
 $white: #fff;
 $border: #e2e8f0;
 
-$sidebar-width: 260px;
-$sidebar-width-fechada: 72px;
-$header-height: 64px;
-
-// ========== SIDEBAR ==========
-.sidebar-overlay {
-  display: none;
-
-  @media (max-width: 1024px) {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 95;
-    animation: fadeIn 0.2s ease-out;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: $sidebar-width;
-  background: $white;
-  border-right: 1px solid $border;
-  z-index: 100;
-  transition: transform 0.3s ease;
-
-  @media (max-width: 1024px) {
-    width: $sidebar-width;
-    transform: translateX(-100%);
-
-    &--mobile-aberta {
-      transform: translateX(0);
-    }
-  }
-
-  &--fechada {
-    display: none; // Remove do layout desktop quando fechada
-
-    @media (max-width: 1024px) {
-      display: flex; // Mantém no mobile para o menu overlay
-      width: $sidebar-width;
-      visibility: visible;
-      overflow: visible;
-      transform: translateX(-100%);
-      border-right: 1px solid $border;
-
-      .sidebar__logo {
-        justify-content: space-between;
-        padding: 1.5rem;
-      }
-
-      .sidebar__item {
-        justify-content: flex-start;
-        padding: 0.875rem 1.5rem;
-      }
-
-      .sidebar__nav,
-      .sidebar__footer {
-        padding: 1rem 0;
-      }
-
-      .sidebar__label {
-        display: inline !important;
-      }
-    }
-  }
-
-  &__conteudo {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  &__logo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.5rem;
-    border-bottom: 1px solid $border;
-    min-height: $header-height;
-  }
-
-  &__toggle {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: $bg-light;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: $text-muted;
-    transition: all 0.2s ease;
-    opacity: 0;
-
-    &:hover {
-      background: $primary-light;
-      color: $primary;
-    }
-
-    @media (max-width: 1024px) {
-      display: none;
-    }
-  }
-
-  &:hover &__toggle {
-    opacity: 1;
-  }
-
-  &__nav {
-    flex: 1;
-    padding: 1rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    overflow-y: auto;
-  }
-
-  &__footer {
-    padding: 1rem 0;
-    border-top: 1px solid $border;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  &__item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.875rem 1.5rem;
-    color: $text-muted;
-    text-decoration: none;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    border: none;
-    background: none;
-    width: 100%;
-    cursor: pointer;
-    text-align: left;
-
-    svg {
-      flex-shrink: 0;
-    }
-
-    &:hover {
-      background: $bg-light;
-      color: $text-dark;
-    }
-
-    &--ativo {
-      background: $primary-light;
-      color: $primary;
-
-      &:hover {
-        background: $primary-light;
-        color: $primary;
-      }
-    }
-
-    &--sair {
-      color: #ef4444;
-
-      &:hover {
-        background: #fef2f2;
-        color: #dc2626;
-      }
-    }
-  }
-
-  &__label {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-// Ajuste para a logo quando sidebar está compacta
-.logo--compacto {
-  ::ng-deep .marca__nome {
-    display: none;
-  }
-}
+$header-height: 72px;
 
 // ========== HEADER ==========
 .header {
   position: fixed;
   top: 0;
-  left: $sidebar-width;
+  left: 0;
   right: 0;
   height: $header-height;
   background: $white;
@@ -221,40 +22,22 @@ $header-height: 64px;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
-  z-index: 90;
-  transition: left 0.3s ease, padding 0.3s ease;
-
-  &--expandido {
-    left: 0;
-  }
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
 
   &__left {
     display: flex;
     align-items: center;
-    gap: 2rem;
-  }
+    gap: 3rem;
 
-  &__toggle-desktop {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: $bg-light;
-    border: none;
-    cursor: pointer;
-    color: $text-dark;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: $primary-light;
-      color: $primary;
+    @media (max-width: 1024px) {
+      gap: 1rem;
     }
   }
 
   &__logo {
-    margin-right: 1rem;
+    display: block;
+    flex-shrink: 0;
   }
 
   &__nav {
@@ -262,32 +45,27 @@ $header-height: 64px;
     align-items: center;
     gap: 0.5rem;
 
-    @media (max-width: 1200px) {
-      display: none; // Esconde menu horizontal em telas menores que 1200px
+    @media (max-width: 1024px) {
+      display: none; // Esconde menu horizontal em mobile
     }
   }
 
   &__nav-item {
     ::ng-deep .menu-item {
       width: auto;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-size: 0.875rem;
+      padding: 0.625rem 1.25rem;
+      border-radius: 12px;
+      font-size: 0.9375rem;
+      font-weight: 600;
 
       &--ativo {
         background: $primary-light;
         color: $primary;
       }
-    }
-  }
 
-  @media (max-width: 1024px) {
-    left: 0 !important;
-    padding: 0 1rem;
-    gap: 1rem;
-
-    &__left {
-      gap: 1rem;
+      &:hover:not(.menu-item--ativo) {
+        background: $bg-light;
+      }
     }
   }
 
@@ -308,53 +86,225 @@ $header-height: 64px;
     }
   }
 
-  &__busca {
-    flex: 1;
-    max-width: 400px;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: #f1f5f9;
-    padding: 0.625rem 1.25rem;
-    border-radius: 100px;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-
-    &:focus-within {
-      background: $white;
-      border-color: $primary;
-      box-shadow: 0 4px 12px rgba($primary, 0.08);
-    }
-
-    svg {
-      color: #94a3b8;
-      flex-shrink: 0;
-    }
-  }
-
-  &__input {
-    border: none;
-    background: transparent;
-    outline: none;
-    width: 100%;
-    font-size: 0.875rem;
-    color: $text-dark;
-    font-weight: 500;
-
-    &::placeholder {
-      color: #94a3b8;
-      font-weight: 400;
-    }
-  }
-
   &__acoes {
     display: flex;
     align-items: center;
     gap: 1.5rem;
   }
+
+  // ========== USUÁRIO & DROPDOWN ==========
+  &__usuario {
+    position: relative;
+  }
+
+  &__usuario-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &__usuario-seta {
+    color: $text-muted;
+    transition: transform 0.2s ease;
+
+    &--aberta {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 240px;
+    background: $white;
+    border: 1px solid $border;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    animation: slideDown 0.2s ease-out;
+    z-index: 110;
+    overflow: hidden;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &__dropdown-header {
+    padding: 1.25rem;
+    background: $bg-light;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    border-bottom: 1px solid $border;
+  }
+
+  &__dropdown-nome {
+    font-weight: 700;
+    color: $text-dark;
+    font-size: 0.9375rem;
+  }
+
+  &__dropdown-email {
+    font-size: 0.8125rem;
+    color: $text-muted;
+  }
+
+  &__dropdown-body {
+    padding: 0.5rem;
+  }
+
+  &__dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    color: $text-muted;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+
+    &:hover {
+      background: rgba($primary, 0.05);
+      color: $primary;
+    }
+
+    &--sair {
+      color: #ef4444;
+      &:hover {
+        background: #fff1f2;
+        color: #e11d48;
+      }
+    }
+  }
+
+  &__dropdown-divider {
+    height: 1px;
+    background: $border;
+    margin: 0.5rem 0;
+  }
 }
 
-// Host styles para componentes que usam este header
+// ========== MOBILE NAV (Gaveta) ==========
+.header-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 150;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  background: $white;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+
+  &--aberto {
+    transform: translateX(0);
+  }
+
+  &__header {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $border;
+  }
+
+  &__fechar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: $bg-light;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-dark;
+  }
+
+  &__corpo {
+    flex: 1;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+  }
+
+  &__footer {
+    padding: 1.5rem;
+    border-top: 1px solid $border;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    width: 100%;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    color: $text-muted;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &--sair {
+      color: #ef4444;
+      background: #fff1f2;
+    }
+  }
+}
+
 :host {
   display: contents;
 }

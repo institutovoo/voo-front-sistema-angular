@@ -1,0 +1,34 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="admin">
+  <div class="configuracoes">
+    <div class="configuracoes__header">
+      <h1 class="configuracoes__titulo">Configurações do Sistema</h1>
+      <p class="configuracoes__subtitulo">Gerencie suas preferências e a segurança da sua conta administrativa</p>
+    </div>
+
+    <div class="configuracoes__conteudo">
+      <nav class="abas">
+        <button 
+          class="abas__item" 
+          [class.abas__item--ativo]="abaAtiva === 'perfil'"
+          (click)="setAba('perfil')"
+        >
+          <app-header-icone nome="usuario" [tamanho]="20"></app-header-icone>
+          Meu Perfil
+        </button>
+        <button 
+          class="abas__item" 
+          [class.abas__item--ativo]="abaAtiva === 'seguranca'"
+          (click)="setAba('seguranca')"
+        >
+          <app-header-icone nome="bloquear" [tamanho]="20"></app-header-icone>
+          Segurança
+        </button>
+      </nav>
+
+      <div class="aba-painel">
+        <app-config-perfil *ngIf="abaAtiva === 'perfil'"></app-config-perfil>
+        <app-config-seguranca *ngIf="abaAtiva === 'seguranca'"></app-config-seguranca>
+      </div>
+    </div>
+  </div>
+</app-sistema-layout>

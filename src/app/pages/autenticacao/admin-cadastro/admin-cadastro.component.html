@@ -1,0 +1,55 @@
+<div class="admin-autenticacao">
+  <div class="cartao">
+    <app-logo tema="light"></app-logo>
+
+    <h1 class="titulo titulo--centro">Solicitar Acesso</h1>
+    <p class="subtitulo subtitulo--centro">Cadastre seus dados para análise da diretoria.</p>
+
+    <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
+
+    <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
+      <app-campo
+        rotulo="Nome Completo"
+        tipo="text"
+        placeholder="Seu nome aqui"
+        icone="usuario"
+        formControlName="nome"
+      ></app-campo>
+
+      <app-campo
+        rotulo="E-mail Institucional"
+        tipo="email"
+        placeholder="admin@voocursos.com.br"
+        icone="email"
+        formControlName="email"
+      ></app-campo>
+
+      <app-campo
+        rotulo="Defina sua Senha"
+        tipo="password"
+        placeholder="••••••••"
+        icone="senha"
+        [mostrarAlternarSenha]="true"
+        formControlName="senha"
+      ></app-campo>
+
+      <app-campo
+        rotulo="Confirme sua Senha"
+        tipo="password"
+        placeholder="••••••••"
+        icone="senha"
+        [mostrarAlternarSenha]="true"
+        formControlName="confirmarSenha"
+      ></app-campo>
+
+      <app-botao tipo="submit" variante="primario" [desabilitado]="!formulario.valid">
+        Enviar Solicitação
+      </app-botao>
+    </form>
+
+    <div class="rodape-login">
+      Já possui acesso?
+      <a routerLink="/admin/login">Fazer login</a>
+    </div>
+  </div>
+</div>

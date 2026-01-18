@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { BarraProgressoComponent } from '../barra-progresso/barra-progresso.component';
 import { HeaderIconeComponent } from '../header/components/icone/icone.component';
 
@@ -24,7 +23,7 @@ export interface Curso {
 @Component({
   selector: 'app-curso-card',
   standalone: true,
-  imports: [CommonModule, RouterLink, BarraProgressoComponent, HeaderIconeComponent],
+  imports: [CommonModule, BarraProgressoComponent, HeaderIconeComponent],
   templateUrl: './curso-card.component.html',
   styleUrl: './curso-card.component.scss',
 })

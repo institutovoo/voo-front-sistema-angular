@@ -217,6 +217,15 @@ $danger-light: #fef2f2;
     &:hover img {
       transform: scale(1.05);
     }
+
+    .curso-card__placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.1) 100%);
+    }
   }
 
   &__categoria {

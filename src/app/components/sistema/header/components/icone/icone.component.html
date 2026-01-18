@@ -49,7 +49,7 @@
   </ng-container>
 
   <!-- Receitas / Dinheiro -->
-  <ng-container *ngIf="nome === 'receitas' || nome === 'dinheiro'">
+  <ng-container *ngIf="nome === 'receitas' || nome === 'receita' || nome === 'dinheiro'">
     <line x1="12" y1="1" x2="12" y2="23" />
     <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
   </ng-container>
@@ -111,6 +111,36 @@
     <polyline points="9,22 9,12 15,12 15,22" />
   </ng-container>
 
+  <!-- Carteira / Wallet -->
+  <ng-container *ngIf="nome === 'carteira' || nome === 'wallet'">
+    <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4" />
+    <path d="M4 6v12c0 1.1.9 2 2 2h14v-4" />
+    <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z" />
+  </ng-container>
+
+  <!-- Tempo / Clock -->
+  <ng-container *ngIf="nome === 'tempo' || nome === 'clock'">
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12,6 12,12 16,14" />
+  </ng-container>
+
+  <!-- Moeda / Dollar -->
+  <ng-container *ngIf="nome === 'moeda' || nome === 'dollar'">
+    <line x1="12" y1="1" x2="12" y2="23" />
+    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+  </ng-container>
+
+  <!-- Vendas / Trending Up -->
+  <ng-container *ngIf="nome === 'vendas' || nome === 'trending-up'">
+    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+    <polyline points="17 6 23 6 23 12" />
+  </ng-container>
+
+  <!-- Mensagem / Message / Chat -->
+  <ng-container *ngIf="nome === 'mensagem' || nome === 'message' || nome === 'chat'">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+  </ng-container>
+
   <!-- Editar -->
   <ng-container *ngIf="nome === 'editar' || nome === 'edit'">
     <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
@@ -122,6 +152,12 @@
     <path d="M3 6h18" />
     <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
     <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+  </ng-container>
+
+  <!-- Bloquear / Ban -->
+  <ng-container *ngIf="nome === 'bloquear' || nome === 'ban'">
+    <circle cx="12" cy="12" r="10" />
+    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
   </ng-container>
 
   <!-- Check -->
@@ -187,8 +223,8 @@
     <line x1="12" y1="3" x2="12" y2="15" />
   </ng-container>
 
-  <!-- Eye / Visualizar -->
-  <ng-container *ngIf="nome === 'eye' || nome === 'visualizar'">
+  <!-- Olho / Visualizar -->
+  <ng-container *ngIf="nome === 'olho' || nome === 'eye' || nome === 'visualizar'">
     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
     <circle cx="12" cy="12" r="3" />
   </ng-container>

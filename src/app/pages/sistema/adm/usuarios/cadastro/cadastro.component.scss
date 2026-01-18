@@ -1,0 +1,163 @@
+$primary: #21b7cd;
+$primary-dark: #1a9aab;
+$text-dark: #0b1b2b;
+$text-muted: #64748b;
+$white: #fff;
+$border: #e2e8f0;
+$bg-light: #f8fafb;
+
+.admin-autenticacao {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #0b1b2b;
+  background: radial-gradient(1000px 300px at 20% -50%, rgba(33, 183, 205, 0.12), transparent 60%),
+    #0b1b2b;
+  padding: 2rem;
+}
+
+.cartao {
+  background: $white;
+  padding: 3rem;
+  border-radius: 32px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+::ng-deep .marca {
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.header-cadastro {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  .titulo {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: $text-dark;
+    margin: 0 0 0.5rem;
+  }
+
+  .subtitulo {
+    font-size: 0.9375rem;
+    color: $text-muted;
+    margin: 0;
+  }
+}
+
+.formulario {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-dark;
+  }
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 1rem;
+  background: $bg-light;
+  border: 1px solid $border;
+  border-radius: 12px;
+  height: 52px;
+  transition: all 0.2s ease;
+
+  &:focus-within {
+    border-color: $primary;
+    background: $white;
+    box-shadow: 0 0 0 4px rgba($primary, 0.05);
+  }
+
+  app-header-icone {
+    color: #94a3b8;
+  }
+
+  input, select {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 0.9375rem;
+    color: $text-dark;
+    outline: none;
+    height: 100%;
+
+    &::placeholder {
+      color: #94a3b8;
+    }
+  }
+
+  select {
+    cursor: pointer;
+  }
+}
+
+.acoes {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-cadastrar {
+  background: $primary;
+  color: $white;
+  border: none;
+  border-radius: 12px;
+  height: 52px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background: $primary-dark;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-cancelar {
+  background: $white;
+  color: $text-muted;
+  border: 1px solid $border;
+  border-radius: 12px;
+  height: 52px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+
+  &:hover {
+    background: $bg-light;
+    color: $text-dark;
+  }
+}

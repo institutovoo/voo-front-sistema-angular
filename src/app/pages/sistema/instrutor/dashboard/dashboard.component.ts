@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Usuario } from '../../../../components/sistema/header/header.component';
+import { AutenticacaoController } from '../../../../core/controller/autenticacao.controller';
 import { SistemaLayoutComponent } from '../../../../components/sistema/layout/layout.component';
 import {
   CardKpiComponent,
@@ -13,6 +13,7 @@ export interface CursoInstrutor {
   id: number;
   titulo: string;
   imagem: string;
+  categoriaColor: string;
   status: 'rascunho' | 'publicado' | 'revisao' | 'pausado';
   totalAlunos: number;
   progressoMedio: number;
@@ -37,12 +38,21 @@ export interface CursoInstrutor {
   styleUrl: './dashboard.component.scss',
 })
 export class InstrutorDashboardComponent implements OnInit {
-  nomeInstrutor = 'Carlos';
+  private authController = inject(AutenticacaoController);
 
-  usuario: Usuario = {
-    nome: 'Carlos Mendes',
-    email: 'carlos@email.com',
-  };
+  usuarioLogado = this.authController.usuarioLogado;
+
+  nomeInstrutor = computed(() => {
+    return this.usuarioLogado()?.nome_completo?.split(' ')[0] || 'Instrutor';
+  });
+
+  usuario = computed(() => {
+    const user = this.usuarioLogado();
+    return {
+      nome: user?.nome_completo || 'Usuário',
+      email: user?.email || '',
+    };
+  });
 
   estatisticas: Estatistica[] = [];
   cursos: CursoInstrutor[] = [];
@@ -89,6 +99,7 @@ export class InstrutorDashboardComponent implements OnInit {
         id: 1,
         titulo: 'Desenvolvimento Web Fullstack: Do Zero ao Pro',
         imagem: 'assets/cursos/fullstack.jpg',
+        categoriaColor: '#21b7cd',
         status: 'publicado',
         totalAlunos: 456,
         progressoMedio: 68,
@@ -102,6 +113,7 @@ export class InstrutorDashboardComponent implements OnInit {
         id: 2,
         titulo: 'React Avançado com TypeScript',
         imagem: 'assets/cursos/react.jpg',
+        categoriaColor: '#6366f1',
         status: 'publicado',
         totalAlunos: 312,
         progressoMedio: 54,
@@ -115,6 +127,7 @@ export class InstrutorDashboardComponent implements OnInit {
         id: 3,
         titulo: 'Node.js e MongoDB: Backend Completo',
         imagem: 'assets/cursos/nodejs.jpg',
+        categoriaColor: '#10b981',
         status: 'revisao',
         totalAlunos: 0,
         progressoMedio: 0,
@@ -128,6 +141,7 @@ export class InstrutorDashboardComponent implements OnInit {
         id: 4,
         titulo: 'Introdução ao Python para Data Science',
         imagem: 'assets/cursos/python.jpg',
+        categoriaColor: '#f59e0b',
         status: 'rascunho',
         totalAlunos: 0,
         progressoMedio: 0,
@@ -141,6 +155,7 @@ export class InstrutorDashboardComponent implements OnInit {
         id: 5,
         titulo: 'AWS para Desenvolvedores',
         imagem: 'assets/cursos/aws.jpg',
+        categoriaColor: '#f43f5e',
         status: 'pausado',
         totalAlunos: 180,
         progressoMedio: 42,

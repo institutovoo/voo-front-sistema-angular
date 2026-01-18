@@ -18,7 +18,13 @@ export class LogoComponent {
   @Input() tema: 'light' | 'dark' = 'light';
 
   /**
-   * Se true, o logo vira um link para a home
+   * Se true, o logo vira um link para a home. 
+   * Pode ser uma string com a rota específica.
    */
-  @Input() linkHome: boolean = true;
+  @Input() linkHome: boolean | string = true;
+
+  get homeRoute(): string {
+    if (typeof this.linkHome === 'string') return this.linkHome;
+    return '/';
+  }
 }

@@ -21,8 +21,8 @@ $danger-light: #fef2f2;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -30,25 +30,18 @@ $danger-light: #fef2f2;
   }
 
   &__titulo {
-    font-size: 1.75rem;
-    font-weight: 700;
+    font-size: 2.25rem;
+    font-weight: 700; // Alterado de 800 para 700
     color: $text-dark;
-    margin: 0 0 0.25rem;
-
-    @media (max-width: 768px) {
-      font-size: 1.5rem;
-    }
+    letter-spacing: -0.03em;
+    margin: 0 0 0.5rem;
   }
 
   &__subtitulo {
+    font-size: 1.125rem;
     color: $text-muted;
+    font-weight: 500;
     margin: 0;
-    font-size: 1rem;
-  }
-
-  &__acoes {
-    display: flex;
-    gap: 0.75rem;
   }
 }
 
@@ -113,7 +106,7 @@ $danger-light: #fef2f2;
   &__grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
+    gap: 1.5rem;
 
     @media (max-width: 1200px) {
       grid-template-columns: repeat(2, 1fr);
@@ -127,19 +120,18 @@ $danger-light: #fef2f2;
 
 // ========== AÇÕES RÁPIDAS ==========
 .acoes-rapidas {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 
   &__grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 1.5rem;
 
-    @media (max-width: 900px) {
+    @media (max-width: 1200px) {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       grid-template-columns: 1fr;
     }
   }
@@ -149,28 +141,34 @@ $danger-light: #fef2f2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1.5rem 1rem;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 2.5rem 1.5rem;
   background: $white;
   border: 1px solid $border;
-  border-radius: 12px;
+  border-radius: 24px;
   text-decoration: none;
-  transition: all 0.2s ease;
-  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
 
   &:hover {
-    border-color: $primary;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    border-color: rgba($primary, 0.3);
+
+    .acao-card__icone {
+      transform: scale(1.1) rotate(5deg);
+    }
   }
 
   &__icone {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
 
     &--primary {
       background: $primary-light;
@@ -182,22 +180,23 @@ $danger-light: #fef2f2;
       color: $success;
     }
 
-    &--warning {
-      background: $warning-light;
-      color: $warning;
-    }
-
     &--info {
       background: $info-light;
       color: $info;
     }
+
+    &--warning {
+      background: $warning-light;
+      color: $warning;
+    }
   }
 
   &__texto {
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 700; // Reduzido de 800 para 700
     color: $text-dark;
     text-align: center;
+    letter-spacing: -0.02em;
   }
 }
 
@@ -211,10 +210,11 @@ $danger-light: #fef2f2;
   }
 
   &__titulo {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: 1.5rem;
+    font-weight: 700; // Padronizado para 700
     color: $text-dark;
     margin: 0;
+    letter-spacing: -0.5px;
   }
 
   &__link {
@@ -290,159 +290,194 @@ $danger-light: #fef2f2;
 .cursos-lista {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .curso-item {
-  display: grid;
-  grid-template-columns: 120px 1fr auto auto;
-  gap: 1rem;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 1.5rem;
   background: $white;
   border: 1px solid $border;
-  border-radius: 12px;
-  transition: all 0.2s ease;
+  border-radius: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
 
   &:hover {
-    border-color: $primary-light;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    border-color: rgba($primary, 0.3);
   }
 
-  @media (max-width: 900px) {
-    grid-template-columns: 100px 1fr;
-    grid-template-rows: auto auto auto;
-  }
+  &__corpo {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+    min-width: 0;
 
-  @media (max-width: 500px) {
-    grid-template-columns: 1fr;
+    @media (max-width: 600px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 
   &__imagem {
-    position: relative;
-    width: 120px;
-    height: 68px;
-    border-radius: 8px;
+    width: 160px;
+    height: 90px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
     flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       width: 100%;
-      height: 140px;
+      height: 160px;
     }
+  }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+  &__detalhes {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__header-top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   &__status {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.625rem;
-    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.6875rem;
+    font-weight: 700; // Reduzido de 800 para 700
     text-transform: uppercase;
-  }
+    letter-spacing: 0.5px;
 
-  &__info {
-    min-width: 0;
-
-    @media (max-width: 900px) {
-      grid-column: 2;
+    &.status--publicado {
+      background: $success-light;
+      color: $success;
     }
 
-    @media (max-width: 500px) {
-      grid-column: 1;
+    &.status--rascunho {
+      background: $bg-light;
+      color: $text-muted;
     }
-  }
 
-  &__titulo {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: $text-dark;
-    margin: 0 0 0.25rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    &.status--revisao {
+      background: $warning-light;
+      color: $warning;
+    }
+
+    &.status--pausado {
+      background: $danger-light;
+      color: $danger;
+    }
   }
 
   &__data {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: $text-muted;
+    font-weight: 500;
+  }
+
+  &__titulo {
+    font-size: 1.25rem;
+    font-weight: 600; // Reduzido de 700 para 600
+    color: $text-dark;
     margin: 0;
+    letter-spacing: -0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 768px) {
+      font-size: 1.125rem;
+    }
   }
 
   &__metricas {
     display: flex;
+    align-items: center;
     gap: 1.5rem;
+    margin-top: 0.5rem;
 
-    @media (max-width: 900px) {
-      grid-column: 1 / -1;
-      justify-content: space-between;
+    @media (max-width: 768px) {
+      gap: 1rem;
+      flex-wrap: wrap;
     }
   }
 
   &__acoes {
     display: flex;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-left: 1.5rem;
 
-    @media (max-width: 900px) {
-      grid-column: 1 / -1;
+    @media (max-width: 600px) {
+      flex-direction: row;
+      margin-left: 0;
+      margin-top: 1rem;
+      width: 100%;
       justify-content: flex-end;
     }
-  }
-}
 
-// Status colors
-.status {
-  &--publicado {
-    background: $success-light;
-    color: $success;
-  }
+    .btn-icon {
+      &--edit {
+        background: $primary-light;
+        color: $primary;
 
-  &--rascunho {
-    background: $bg-light;
-    color: $text-muted;
-  }
-
-  &--revisao {
-    background: $warning-light;
-    color: $warning;
-  }
-
-  &--pausado {
-    background: $danger-light;
-    color: $danger;
+        &:hover {
+          background: $primary;
+          color: $white;
+        }
+      }
+    }
   }
 }
 
 .metrica {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  gap: 0.125rem;
 
   &__valor {
     display: flex;
     align-items: center;
     gap: 0.25rem;
     font-size: 0.9375rem;
-    font-weight: 600;
+    font-weight: 700; // Padronizado com o aluno
     color: $text-dark;
 
-    &--destaque {
+    &--receita {
       color: $success;
     }
   }
 
   &__label {
     font-size: 0.6875rem;
+    font-weight: 500;
     color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.metrica-divider {
+  width: 1px;
+  height: 24px;
+  background: $border;
+
+  @media (max-width: 768px) {
+    display: none;
   }
 }
 
@@ -477,35 +512,26 @@ $danger-light: #fef2f2;
 // ========== CARD LATERAL ==========
 .card-lateral {
   background: $white;
-  border: 1px solid $border;
-  border-radius: 16px;
-  padding: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   &__titulo {
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 1.125rem;
+    font-weight: 700;
     color: $text-dark;
-    margin: 0 0 1rem;
+    margin: 0 0 1.25rem;
 
     .card-lateral__header & {
       margin: 0;
-    }
-  }
-
-  &__link {
-    font-size: 0.75rem;
-    color: $primary;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
     }
   }
 }

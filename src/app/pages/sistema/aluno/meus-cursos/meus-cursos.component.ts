@@ -1,8 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Usuario } from '../../../../components/sistema/header/header.component';
+import { AutenticacaoController } from '../../../../core/controller/autenticacao.controller';
 import { SistemaLayoutComponent } from '../../../../components/sistema/layout/layout.component';
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
 import {
@@ -53,12 +53,18 @@ export interface MeuCurso {
   styleUrl: './meus-cursos.component.scss',
 })
 export class MeusCursosComponent {
-  usuario: Usuario = {
-    nome: 'João Silva',
-    email: 'joao@email.com',
-  };
+  private authController = inject(AutenticacaoController);
+  private router = inject(Router);
 
-  constructor(private router: Router) {}
+  usuarioLogado = this.authController.usuarioLogado;
+
+  usuario = computed(() => {
+    const user = this.usuarioLogado();
+    return {
+      nome: user?.nome_completo || 'Usuário',
+      email: user?.email || '',
+    };
+  });
 
   // Filtros e busca
   termoBusca = signal('');
@@ -203,7 +209,7 @@ export class MeusCursosComponent {
   }
 
   // KPIs
-  get kpis(): Estatistica[] {
+  kpis = computed<Estatistica[]>(() => {
     return [
       {
         icone: 'cursos',
@@ -230,10 +236,10 @@ export class MeusCursosComponent {
         cor: 'warning',
       },
     ];
-  }
+  });
 
   // Filtros (tabs)
-  get filtroTabs(): FiltroTab[] {
+  filtroTabs = computed<FiltroTab[]>(() => {
     return [
       { id: 'todos', nome: 'Todos', icone: 'cursos', quantidade: this.totalCursos },
       {
@@ -256,7 +262,7 @@ export class MeusCursosComponent {
       },
       { id: 'vencido', nome: 'Vencidos', icone: 'alerta', quantidade: this.cursosVencidos },
     ];
-  }
+  });
 
   // Opções de ordenação
   opcoesOrdenacao: OpcaoOrdenacao[] = [
@@ -268,12 +274,12 @@ export class MeusCursosComponent {
   ];
 
   // Cursos filtrados
-  get cursosFiltrados(): MeuCurso[] {
+  cursosFiltrados = computed<MeuCurso[]>(() => {
     let resultado = [...this.cursos];
 
     // Filtro por status
     if (this.filtroAtivo() !== 'todos') {
-      resultado = resultado.filter((c) => c.status === this.filtroAtivo());
+      resultado = resultado.filter((c) => c.status === this.filtroAtivo() as any);
     }
 
     // Filtro por busca
@@ -307,7 +313,7 @@ export class MeusCursosComponent {
     }
 
     return resultado;
-  }
+  });
 
   // Métodos para filtros
   onTabChange(tabId: string): void {

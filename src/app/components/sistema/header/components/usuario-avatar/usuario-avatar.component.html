@@ -1,9 +1,7 @@
 <div class="usuario" [class]="'usuario--' + tamanho">
   <span class="usuario__nome" *ngIf="mostrarNome">{{ nome }}</span>
 
-  <div class="usuario__avatar" *ngIf="!avatar">
+  <div class="usuario__avatar">
     <span>{{ inicial }}</span>
   </div>
-
-  <img *ngIf="avatar" [src]="avatar" [alt]="nome" class="usuario__avatar-img" />
 </div>

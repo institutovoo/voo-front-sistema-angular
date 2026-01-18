@@ -10,9 +10,7 @@ export class AutenticacaoController {
   private service = inject(AutenticacaoService);
   private router = inject(Router);
 
-  get usuarioLogado() {
-    return this.service.usuarioLogado;
-  }
+  usuarioLogado = this.service.usuarioLogado;
 
   async login(dados: LoginRequest): Promise<{ sucesso: boolean; mensagem?: string }> {
     try {

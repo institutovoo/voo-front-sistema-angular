@@ -1,0 +1,49 @@
+<app-sistema-layout [usuario]="usuario" tipoUsuario="admin">
+  <div class="auditoria">
+    <div class="auditoria__header">
+      <div>
+        <h1 class="auditoria__titulo">Auditoria do Sistema</h1>
+        <p class="auditoria__subtitulo">Rastreabilidade completa de todas as ações executadas no sistema</p>
+      </div>
+      <button class="btn-exportar">
+        <app-header-icone nome="download" [tamanho]="18"></app-header-icone>
+        Baixar Logs
+      </button>
+    </div>
+
+    <div class="tabela-container">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Data / Hora</th>
+            <th>Usuário</th>
+            <th>Ação Executada</th>
+            <th>Módulo</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of logs()">
+            <td>
+              <span class="data-hora">{{ log.data }}</span>
+            </td>
+            <td>
+              <span class="user-log">{{ log.usuario }}</span>
+            </td>
+            <td>
+              <span class="acao-log">{{ log.acao }}</span>
+            </td>
+            <td>
+              <span class="badge-modulo">{{ log.modulo }}</span>
+            </td>
+            <td>
+              <span class="badge-status" [ngClass]="'badge-status--' + log.status">
+                {{ getStatusLabel(log.status) }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</app-sistema-layout>

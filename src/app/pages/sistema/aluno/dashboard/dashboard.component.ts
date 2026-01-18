@@ -114,20 +114,6 @@ export class AlunoDashboardComponent implements OnInit {
         totalAvaliacoes: 512,
         gratuito: true,
       },
-      {
-        id: 3,
-        titulo: 'Marketing Digital para Iniciantes',
-        categoria: 'Marketing',
-        categoriaColor: '#f59e0b',
-        instrutor: 'Prof. Carlos Mendes',
-        imagem: 'assets/cursos/marketing.jpg',
-        progresso: 15,
-        totalAulas: 20,
-        aulaAtual: 3,
-        duracao: '24h',
-        avaliacao: 4.7,
-        totalAvaliacoes: 389,
-      },
     ];
 
     this.atividadesRecentes = [

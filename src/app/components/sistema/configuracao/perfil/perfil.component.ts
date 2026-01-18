@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MetasService } from '../../../../core/service/metas.service';
 
 @Component({
   selector: 'app-config-perfil',
@@ -10,6 +11,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './perfil.component.scss',
 })
 export class ConfigPerfilComponent {
+  private metasService = inject(MetasService);
+
   formulario = new FormGroup({
     nomeCompleto: new FormControl('João Silva', {
       validators: [Validators.required, Validators.minLength(3)],
@@ -24,6 +27,10 @@ export class ConfigPerfilComponent {
       nonNullable: true,
     }),
     idioma: new FormControl('pt-BR', {
+      nonNullable: true,
+    }),
+    metaSemanal: new FormControl(this.metasService.metaHoras(), {
+      validators: [Validators.required, Validators.min(1)],
       nonNullable: true,
     }),
     bio: new FormControl('Desenvolvedor apaixonado por tecnologia', {
@@ -68,6 +75,9 @@ export class ConfigPerfilComponent {
     this.salvando = true;
     const dados = this.formulario.getRawValue();
     console.log('Salvando perfil:', dados);
+
+    // Atualiza a meta semanal no serviço
+    this.metasService.atualizarMeta(dados.metaSemanal);
 
     setTimeout(() => {
       this.salvando = false;

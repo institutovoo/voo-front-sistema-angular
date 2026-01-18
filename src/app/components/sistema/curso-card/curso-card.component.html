@@ -3,8 +3,10 @@
   [class.curso-card--compacto]="variante === 'compacto'"
   [class.curso-card--destaque]="variante === 'destaque'"
 >
-  <div class="curso-card__imagem">
-    <img [src]="curso.imagem" [alt]="curso.titulo" />
+  <div class="curso-card__imagem" [style.background-color]="curso.categoriaColor">
+    <div class="curso-card__placeholder">
+      <app-header-icone [nome]="'curso'" [tamanho]="48" cor="rgba(255,255,255,0.5)"></app-header-icone>
+    </div>
     <span *ngIf="curso.gratuito" class="curso-card__badge">GRÁTIS</span>
   </div>
 

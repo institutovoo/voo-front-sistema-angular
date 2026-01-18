@@ -107,11 +107,11 @@ $danger-light: #fee2e2;
   }
 
   &__titulo {
-    font-size: 1.5rem;
-    font-weight: 700; // Reduzido de 800 para 700
+    font-size: 1.25rem;
+    font-weight: 700;
     color: $text-dark;
     margin: 0;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.01em;
   }
 
   &__link {

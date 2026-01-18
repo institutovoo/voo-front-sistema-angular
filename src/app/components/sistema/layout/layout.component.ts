@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { SistemaHeaderComponent, Usuario } from '../header/header.component';
+import { AutenticacaoService } from '../../../core/service/autenticacao.service';
 
 @Component({
   selector: 'app-sistema-layout',
@@ -11,6 +12,10 @@ import { SistemaHeaderComponent, Usuario } from '../header/header.component';
   styleUrl: './layout.component.scss',
 })
 export class SistemaLayoutComponent {
+  private authService = inject(AutenticacaoService);
+
+  usuarioLogado = this.authService.usuarioLogado;
+
   @Input() usuario: Usuario = { nome: 'Usuário' };
   @Input() tipoUsuario: 'aluno' | 'instrutor' | 'admin' = 'aluno';
   @Input() conteudoMaxWidth?: string;
@@ -20,8 +25,21 @@ export class SistemaLayoutComponent {
 
   constructor(private readonly router: Router) {}
 
+  get usuarioExibicao(): Usuario {
+    const user = this.usuarioLogado();
+    if (user) {
+      return {
+        nome: user.nome_completo,
+        email: user.email,
+        avatar: '',
+      };
+    }
+    return this.usuario;
+  }
+
   onLogout() {
-    this.logout.emit();
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   onBuscar(valor: string) {

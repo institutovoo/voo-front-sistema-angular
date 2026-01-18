@@ -12,12 +12,12 @@
         <label for="nome">Nome Completo</label>
         <div class="input-wrapper">
           <app-header-icone nome="usuario" [tamanho]="18"></app-header-icone>
-          <input 
-            type="text" 
-            id="nome" 
-            name="nome" 
-            [(ngModel)]="usuario.nome" 
-            placeholder="Ex: João da Silva" 
+          <input
+            type="text"
+            id="nome"
+            name="nome"
+            [(ngModel)]="usuario.nome"
+            placeholder="Ex: João da Silva"
             required
           />
         </div>
@@ -27,27 +27,12 @@
         <label for="email">E-mail</label>
         <div class="input-wrapper">
           <app-header-icone nome="email" [tamanho]="18"></app-header-icone>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            [(ngModel)]="usuario.email" 
-            placeholder="usuario@email.com" 
-            required
-          />
-        </div>
-      </div>
-
-      <div class="campo">
-        <label for="senha">Senha Temporária</label>
-        <div class="input-wrapper">
-          <app-header-icone nome="bloquear" [tamanho]="18"></app-header-icone>
-          <input 
-            type="password" 
-            id="senha" 
-            name="senha" 
-            [(ngModel)]="usuario.senha" 
-            placeholder="••••••••" 
+          <input
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="usuario.email"
+            placeholder="usuario@email.com"
             required
           />
         </div>
@@ -67,7 +52,9 @@
 
       <div class="acoes">
         <button type="button" class="btn-cancelar" routerLink="/admin/usuarios">Cancelar</button>
-        <button type="submit" class="btn-cadastrar" [disabled]="!cadastroForm.form.valid">Cadastrar</button>
+        <button type="submit" class="btn-cadastrar" [disabled]="!cadastroForm.form.valid">
+          Cadastrar
+        </button>
       </div>
     </form>
   </div>

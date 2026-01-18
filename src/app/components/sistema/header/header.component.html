@@ -25,13 +25,51 @@
 
   <!-- Ações -->
   <div class="header__acoes">
+    <!-- Profile Switcher -->
+    <div class="header__perfil" *ngIf="usuarioLogado()">
+      <button 
+        class="header__perfil-trigger" 
+        (click)="toggleMenuPerfil($event)"
+        [ngClass]="{'header__perfil-trigger--aberto': menuPerfilAberto}"
+      >
+        <app-header-icone [nome]="perfilAtual()?.toLowerCase()?.includes('instrutor') ? 'usuario' : 'usuario'" [tamanho]="18"></app-header-icone>
+        <span>{{ perfilAtual() }}</span>
+        <app-header-icone nome="seta-baixo" [tamanho]="14" class="header__usuario-seta" [class.header__usuario-seta--aberta]="menuPerfilAberto"></app-header-icone>
+      </button>
+
+      <div class="header__dropdown header__dropdown--perfil" *ngIf="menuPerfilAberto">
+        <div class="header__dropdown-header">
+          <span class="header__dropdown-label">ALTERNAR PARA</span>
+        </div>
+        <div class="header__dropdown-body">
+          <ng-container *ngFor="let perfil of usuarioLogado()?.perfis">
+            <button 
+              *ngIf="perfil !== perfilAtual()"
+              class="header__dropdown-item" 
+              (click)="alternarPerfil(perfil)"
+            >
+              <app-header-icone [nome]="perfil.toLowerCase().includes('instrutor') ? 'usuario' : 'usuario'" [tamanho]="18"></app-header-icone>
+              {{ perfil }}
+            </button>
+          </ng-container>
+          
+          <div class="header__dropdown-divider"></div>
+          
+          <button class="header__dropdown-item" (click)="abrirModalNovoPerfil()">
+            <div class="header__dropdown-icone-plus">+</div>
+            Criar novo perfil
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Perfil do Usuário com Dropdown -->
     <div class="header__usuario">
       <button class="header__usuario-trigger" (click)="toggleMenuUsuario()">
         <app-header-usuario-avatar
-          [nome]="usuario.nome"
+          [nome]="usuarioLogado()?.nome_completo || usuario.nome"
           [avatar]="usuario.avatar"
-          [mostrarNome]="true"
+          [mostrarNome]="false"
         ></app-header-usuario-avatar>
         <app-header-icone
           [nome]="'seta-baixo'"
@@ -44,8 +82,8 @@
       <!-- Dropdown de Usuário -->
       <div class="header__dropdown" *ngIf="menuUsuarioAberto">
         <div class="header__dropdown-header">
-          <span class="header__dropdown-nome">{{ usuario.nome }}</span>
-          <span class="header__dropdown-email" *ngIf="usuario.email">{{ usuario.email }}</span>
+          <span class="header__dropdown-nome">{{ usuarioLogado()?.nome_completo || usuario.nome }}</span>
+          <span class="header__dropdown-email" *ngIf="usuarioLogado()?.email || usuario.email">{{ usuarioLogado()?.email || usuario.email }}</span>
         </div>
 
         <div class="header__dropdown-body">
@@ -69,6 +107,16 @@
     </div>
   </div>
 </header>
+
+<!-- Modal Novo Perfil -->
+<app-modal-novo-perfil
+  *ngIf="modalNovoPerfilAberto"
+  [perfilAtual]="perfilAtual()"
+  [perfisExistentes]="usuarioLogado()?.perfis || []"
+  [documentos]="usuarioLogado()?.documentos || []"
+  (fechar)="modalNovoPerfilAberto = false"
+  (criar)="aoCriarPerfil($event)"
+></app-modal-novo-perfil>
 
 <!-- Menu Mobile (Gaveta Lateral) -->
 <aside class="mobile-nav" [class.mobile-nav--aberto]="menuMobileAberto">

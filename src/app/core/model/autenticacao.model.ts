@@ -1,11 +1,10 @@
 export type TipoConta =
   | 'Admin'
   | 'Aluno'
-  | 'Pessoa jurídica conveniados'
-  | 'Instituição parceira (pessoa juridica)'
-  | 'Instrutor'
-  | 'Instrutor (Pessoa física)'
-  | 'Instrutor (Pessoa jurídica)';
+  | 'PJ Conveniados'
+  | 'Instituição Parceira (PJ)'
+  | 'Instrutor (PF)'
+  | 'Instrutor (PJ)';
 
 export interface Usuario {
   id: string;
@@ -14,11 +13,14 @@ export interface Usuario {
   endereco?: string;
   email: string;
   whatsapp?: string;
-  cpf_cnpj: string;
+  cpf_cnpj: string; // Documento principal (CPF ou CNPJ de cadastro)
+  documentos: string[]; // Lista de todos os documentos [CPF, CNPJ]
   nome_mae?: string;
   ultima_formacao?: string;
   status_ultima_formacao?: string;
-  indicador_tipo_conta: TipoConta;
+  indicador_tipo_conta: TipoConta; // Perfil principal/primeiro
+  perfis: TipoConta[]; // Lista de todos os perfis do usuário
+  perfilAtual?: TipoConta; // Perfil ativo no momento
   criadoEm: string;
   atualizadoEm: string;
 }

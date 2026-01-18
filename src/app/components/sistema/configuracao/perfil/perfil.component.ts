@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MetasService } from '../../../../core/service/metas.service';
+import { AutenticacaoService } from '../../../../core/service/autenticacao.service';
 
 @Component({
   selector: 'app-config-perfil',
@@ -12,17 +13,18 @@ import { MetasService } from '../../../../core/service/metas.service';
 })
 export class ConfigPerfilComponent {
   private metasService = inject(MetasService);
+  private authService = inject(AutenticacaoService);
 
   formulario = new FormGroup({
-    nomeCompleto: new FormControl('João Silva', {
+    nomeCompleto: new FormControl(this.authService.usuarioLogado()?.nome_completo || '', {
       validators: [Validators.required, Validators.minLength(3)],
       nonNullable: true,
     }),
-    email: new FormControl('joao@aluno.com', {
+    email: new FormControl(this.authService.usuarioLogado()?.email || '', {
       validators: [Validators.required, Validators.email],
       nonNullable: true,
     }),
-    telefone: new FormControl('(11) 99999-9999', {
+    telefone: new FormControl(this.authService.usuarioLogado()?.whatsapp || '', {
       validators: [Validators.required],
       nonNullable: true,
     }),
@@ -33,7 +35,7 @@ export class ConfigPerfilComponent {
       validators: [Validators.required, Validators.min(1)],
       nonNullable: true,
     }),
-    bio: new FormControl('Desenvolvedor apaixonado por tecnologia', {
+    bio: new FormControl('', {
       nonNullable: true,
     }),
   });

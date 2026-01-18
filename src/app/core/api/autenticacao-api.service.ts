@@ -51,4 +51,10 @@ export class AutenticacaoApi {
       headers: this.getHeaders(),
     });
   }
+
+  adicionarPerfil(dados: { cpf_cnpj: string; perfil: string; dadosExtras?: any }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/perfil`, dados, {
+      headers: this.getHeaders(),
+    });
+  }
 }

@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConfigPerfilComponent } from '../../../../components/sistema/configuracao/perfil/perfil.component';
 import { ConfigSegurancaComponent } from '../../../../components/sistema/configuracao/seguranca/seguranca.component';
 import { Usuario } from '../../../../components/sistema/header/header.component';
 import { SistemaLayoutComponent } from '../../../../components/sistema/layout/layout.component';
+import { AutenticacaoService } from '../../../../core/service/autenticacao.service';
 
 type AbaConfig = 'perfil' | 'pagamento' | 'seguranca';
 
@@ -26,9 +27,11 @@ interface Aba {
   styleUrl: './configuracoes.component.scss',
 })
 export class ConfiguracoesComponent {
+  private authService = inject(AutenticacaoService);
+
   usuario: Usuario = {
-    nome: 'João Silva',
-    email: 'joao@email.com',
+    nome: this.authService.usuarioLogado()?.nome_completo || 'Usuário',
+    email: this.authService.usuarioLogado()?.email || '',
   };
 
   abaAtiva: AbaConfig = 'perfil';

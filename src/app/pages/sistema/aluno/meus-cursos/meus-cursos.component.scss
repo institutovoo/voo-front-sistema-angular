@@ -63,11 +63,12 @@ $danger-light: #fef2f2;
   text-decoration: none;
 
   &--primary {
-    background: $primary;
+    background: $text-dark;
     color: $white;
 
     &:hover {
-      background: $primary-dark;
+      background: lighten($text-dark, 5%);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
   }
 

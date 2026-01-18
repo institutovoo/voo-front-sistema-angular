@@ -32,13 +32,13 @@ export class AutenticacaoController {
                 case 'Admin':
                   rotaDestino = '/admin/dashboard';
                   break;
-                case 'Instrutor (Pessoa física)':
-                case 'Instrutor (Pessoa jurídica)':
+                case 'Instrutor (PF)':
+                case 'Instrutor (PJ)':
                   rotaDestino = '/instrutor/dashboard';
                   break;
                 case 'Aluno':
-                case 'Pessoa jurídica conveniados':
-                case 'Instituição parceira (pessoa juridica)':
+                case 'PJ Conveniados':
+                case 'Instituição Parceira (PJ)':
                   rotaDestino = '/aluno/dashboard';
                   break;
                 default:

@@ -194,11 +194,11 @@ $info-light: #dbeafe;
   }
 
   &__titulo {
-    font-size: 1.5rem;
-    font-weight: 700; // Reduzido de 800 para 700 para leveza visual
+    font-size: 1.25rem;
+    font-weight: 700;
     color: $text-dark;
     margin: 0;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.01em;
   }
 
   &__link {
@@ -343,7 +343,7 @@ $info-light: #dbeafe;
 }
 
 .btn-continuar {
-  background: $primary;
+  background: $text-dark;
   color: $white;
   border: none;
   padding: 0.875rem 1.5rem;
@@ -356,8 +356,9 @@ $info-light: #dbeafe;
   margin-top: auto;
 
   &:hover {
-    background: $primary-dark;
+    background: lighten($text-dark, 5%);
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 }
 
@@ -412,7 +413,7 @@ $info-light: #dbeafe;
   justify-content: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: $primary;
+  background: $text-dark;
   color: $white;
   border: none;
   border-radius: 14px;
@@ -420,12 +421,12 @@ $info-light: #dbeafe;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba($primary, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    background: $primary-dark;
+    background: lighten($text-dark, 5%);
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba($primary, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   }
 
   &:active {

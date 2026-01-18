@@ -46,9 +46,9 @@ export class CadastroComponent {
     const tipoPessoa = this.formulario.get('tipoPessoaInstrutor')?.value;
 
     if (
-      tipo === 'Pessoa jurídica conveniados' ||
-      tipo === 'Instituição parceira (pessoa juridica)' ||
-      (tipo === 'Instrutor' && tipoPessoa === 'Pessoa Jurídica')
+      tipo === 'PJ Conveniados' ||
+      tipo === 'Instituição Parceira (PJ)' ||
+      (tipo === 'Instrutor' && tipoPessoa === 'PJ')
     ) {
       return 'Razão Social';
     }
@@ -60,16 +60,16 @@ export class CadastroComponent {
     const tipoPessoa = this.formulario.get('tipoPessoaInstrutor')?.value;
 
     if (
-      tipo === 'Pessoa jurídica conveniados' ||
-      tipo === 'Instituição parceira (pessoa juridica)' ||
-      (tipo === 'Instrutor' && tipoPessoa === 'Pessoa Jurídica')
+      tipo === 'PJ Conveniados' ||
+      tipo === 'Instituição Parceira (PJ)' ||
+      (tipo === 'Instrutor' && tipoPessoa === 'PJ')
     ) {
       return 'Nome da organização';
     }
     return 'João da Silva';
   }
 
-  opcoesTipoPessoa = ['Pessoa Física', 'Pessoa Jurídica'];
+  opcoesTipoPessoa = ['PF', 'PJ'];
 
   opcoesFormacao = [
     'Ensino Fundamental',
@@ -142,7 +142,7 @@ export class CadastroComponent {
       validators: [Validators.required],
       nonNullable: true,
     }),
-    tipoPessoaInstrutor: new FormControl('Pessoa Física', {
+    tipoPessoaInstrutor: new FormControl('PF', {
       nonNullable: true,
     }),
     telefone: new FormControl('', {
@@ -218,13 +218,13 @@ export class CadastroComponent {
 
     // PJ pura (Conveniados/Instituição) ou Instrutor PJ
     const ehPJ =
-      tipo === 'Pessoa jurídica conveniados' ||
-      tipo === 'Instituição parceira (pessoa juridica)' ||
-      (tipo === 'Instrutor' && tipoPessoa === 'Pessoa Jurídica');
+      tipo === 'PJ Conveniados' ||
+      tipo === 'Instituição Parceira (PJ)' ||
+      (tipo === 'Instrutor' && tipoPessoa === 'PJ');
 
     // Nome da mãe é apenas para PF (Aluno ou Instrutor PF)
     const precisaNomeMae =
-      tipo === 'Aluno' || (tipo === 'Instrutor' && tipoPessoa === 'Pessoa Física');
+      tipo === 'Aluno' || (tipo === 'Instrutor' && tipoPessoa === 'PF');
 
     // Formação é para Aluno e TODOS os Instrutores (PF ou PJ) conforme solicitado
     const precisaFormacao = tipo === 'Aluno' || tipo === 'Instrutor';
@@ -344,9 +344,9 @@ export class CadastroComponent {
     let tipoContaFinal = formValue.tipoConta;
     if (tipoContaFinal === 'Instrutor') {
       tipoContaFinal =
-        formValue.tipoPessoaInstrutor === 'Pessoa Jurídica'
-          ? 'Instrutor (Pessoa jurídica)'
-          : 'Instrutor (Pessoa física)';
+        formValue.tipoPessoaInstrutor === 'PJ'
+          ? 'Instrutor (PJ)'
+          : 'Instrutor (PF)';
     }
 
     const dadosCadastro: CadastroRequest = {

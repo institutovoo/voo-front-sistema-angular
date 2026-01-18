@@ -1,0 +1,77 @@
+<div class="modal-overlay" (click)="aoClicarFora($event)">
+  <div class="modal">
+    <div class="modal__header">
+      <div class="modal__info">
+        <h2 class="modal__titulo">Criar novo perfil</h2>
+        <p class="modal__subtitulo">
+          Escolha o tipo de perfil que deseja criar. Você será redirecionado para completar o cadastro.
+        </p>
+      </div>
+      <button class="modal__fechar" (click)="aoFechar()">×</button>
+    </div>
+
+    <div class="modal__corpo">
+      <!-- Passo 1: Seleção -->
+      <div class="selecao" *ngIf="passo === 'selecao'">
+        <div 
+          *ngFor="let opcao of opcoesDisponiveis" 
+          class="opcao-card" 
+          (click)="selecionarPerfil(opcao)"
+        >
+          <div class="opcao-card__icone" [style.background-color]="opcao.cor + '15'" [style.color]="opcao.cor">
+            <app-header-icone [nome]="opcao.icone" [tamanho]="24"></app-header-icone>
+          </div>
+          <div class="opcao-card__info">
+            <h3 class="opcao-card__titulo">{{ opcao.titulo }}</h3>
+            <p class="opcao-card__descricao">{{ opcao.descricao }}</p>
+          </div>
+          <div class="opcao-card__seta">
+            <app-header-icone nome="seta-baixo" [tamanho]="16" class="seta-lateral"></app-header-icone>
+          </div>
+        </div>
+
+        <div *ngIf="opcoesDisponiveis.length === 0" class="sem-opcoes">
+          <app-header-icone nome="bloquear" [tamanho]="48"></app-header-icone>
+          <p>Você já possui todos os perfis disponíveis para sua conta atual.</p>
+        </div>
+      </div>
+
+      <!-- Passo 2: Formulário Dados Extras -->
+      <div class="formulario" *ngIf="passo === 'formulario'">
+        <div class="perfil-selecionado">
+          <div class="perfil-selecionado__icone" [style.background-color]="perfilSelecionado?.cor + '15'" [style.color]="perfilSelecionado?.cor">
+            <app-header-icone [nome]="perfilSelecionado?.icone || 'usuario'" [tamanho]="24"></app-header-icone>
+          </div>
+          <div>
+            <h3 class="perfil-selecionado__titulo">{{ perfilSelecionado?.titulo }}</h3>
+            <p class="perfil-selecionado__descricao">
+              {{ tipoDocumentoNecessario === 'CNPJ' ? 'Complete os dados jurídicos' : 'Complete os dados pessoais' }}
+            </p>
+          </div>
+        </div>
+
+        <form [formGroup]="formularioExtras" (ngSubmit)="confirmarCriacao()" class="forms-container">
+          <app-campo
+            [rotulo]="tipoDocumentoNecessario || 'Documento'"
+            [placeholder]="tipoDocumentoNecessario === 'CNPJ' ? '00.000.000/0000-00' : '000.000.000-00'"
+            formControlName="documento"
+            icone="documento"
+          ></app-campo>
+
+          <app-campo
+            *ngIf="tipoDocumentoNecessario === 'CNPJ'"
+            rotulo="Razão Social"
+            placeholder="Nome da empresa"
+            formControlName="razaoSocial"
+            icone="usuario"
+          ></app-campo>
+
+          <div class="acoes">
+            <app-botao (click)="voltar()" variante="secundario">Voltar</app-botao>
+            <app-botao tipo="submit" [desabilitado]="!formularioExtras.valid">Criar Perfil</app-botao>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

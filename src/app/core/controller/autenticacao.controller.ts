@@ -72,11 +72,10 @@ export class AutenticacaoController {
         next: (response: AuthResponse) => {
           console.log('[AutenticacaoController] Resposta do cadastro:', response);
           if (response.sucesso || (response as any).id) {
-            console.log('[AutenticacaoController] Cadastro OK. Redirecionando para login em 2s...');
-            setTimeout(() => this.router.navigate(['/login']), 2000);
+            console.log('[AutenticacaoController] Cadastro realizado com sucesso.');
             resolve({
               sucesso: true,
-              mensagem: 'Cadastro realizado com sucesso! Redirecionando...',
+              mensagem: response.mensagem || 'Cadastro realizado com sucesso!',
             });
           } else {
             console.warn('[AutenticacaoController] Falha no cadastro:', response.mensagem);

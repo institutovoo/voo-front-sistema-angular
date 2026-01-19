@@ -48,9 +48,9 @@ export class AdmCadastroUsuarioComponent implements OnInit {
     const dadosCadastro: CadastroRequest = {
       nome_completo: this.usuario.nome,
       email: this.usuario.email,
-      senha: this.usuario.senha || undefined, // Se não enviar senha, o back gera uma temporária para Admin
+      senha: this.usuario.senha || undefined,
       indicador_tipo_conta: tipoContaFinal as any,
-      cpf_cnpj: `admin-gen-${Date.now()}`, // CPF temporário para cadastros via Admin (o back trata)
+      cpf_cnpj: `admin-gen-${Date.now()}`,
       aceitouTermos: true
     };
 

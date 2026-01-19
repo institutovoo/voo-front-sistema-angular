@@ -36,7 +36,7 @@ export interface CadastroRequest {
   nome_social?: string;
   endereco?: string;
   email: string;
-  senha: string;
+  senha?: string;
   indicador_tipo_conta: TipoConta;
   whatsapp?: string;
   cpf_cnpj: string;

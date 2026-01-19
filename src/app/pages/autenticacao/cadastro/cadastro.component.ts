@@ -1,7 +1,7 @@
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TermosComponent } from '../../diretrizes/termos/termos.component';
 import { PrivacidadeComponent } from '../../diretrizes/privacidade/privacidade.component';
 import { LogoComponent } from '../../../components/logo/logo.component';
@@ -34,6 +34,7 @@ export class CadastroComponent {
   private cepService = inject(CepService);
   private alertaService = inject(AlertaService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   mostrarTermos = false;
   mostrarPrivacidade = false;
@@ -403,7 +404,8 @@ export class CadastroComponent {
 
       if (resultado.sucesso) {
         this.sucesso = resultado.mensagem || 'Cadastro realizado com sucesso!';
-        console.log('[Cadastro] Sucesso!');
+        console.log('[Cadastro] Sucesso! Redirecionando para login em 2s...');
+        setTimeout(() => this.router.navigate(['/login']), 2000);
       } else {
         this.erro =
           resultado.mensagem || 'Erro ao realizar cadastro. Verifique os dados e tente novamente.';

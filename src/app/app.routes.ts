@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guard/auth.guard';
 
 export const routes: Routes = [
   // ========================================
@@ -64,6 +65,7 @@ export const routes: Routes = [
   // ========================================
   {
     path: 'aluno',
+    canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
@@ -136,6 +138,7 @@ export const routes: Routes = [
   // ========================================
   {
     path: 'instrutor',
+    canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
@@ -206,76 +209,82 @@ export const routes: Routes = [
       },
 
       // Área Logada
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
-        path: 'dashboard',
-        title: 'Painel Administrativo',
-        loadComponent: () =>
-          import('./pages/sistema/adm/dashboard/dashboard.component').then(
-            (m) => m.AdmDashboardComponent,
-          ),
-      },
-      {
-        path: 'usuarios',
-        title: 'Gestão de Usuários',
-        loadComponent: () =>
-          import('./pages/sistema/adm/usuarios/usuarios.component').then(
-            (m) => m.AdmUsuariosComponent,
-          ),
-      },
-      {
-        path: 'usuarios/novo',
-        title: 'Cadastrar Novo Usuário',
-        loadComponent: () =>
-          import('./pages/sistema/adm/usuarios/cadastro/cadastro.component').then(
-            (m) => m.AdmCadastroUsuarioComponent,
-          ),
-      },
-      {
-        path: 'cursos',
-        title: 'Gestão de Cursos',
-        loadComponent: () =>
-          import('./pages/sistema/adm/cursos/cursos.component').then((m) => m.AdmCursosComponent),
-      },
-      {
-        path: 'instrutores',
-        title: 'Gestão de Instrutores',
-        loadComponent: () =>
-          import('./pages/sistema/adm/instrutores/instrutores.component').then(
-            (m) => m.AdmInstrutoresComponent,
-          ),
-      },
-      {
-        path: 'relatorios',
-        title: 'Relatórios Globais',
-        loadComponent: () =>
-          import('./pages/sistema/adm/relatorios/relatorios.component').then(
-            (m) => m.AdmRelatoriosComponent,
-          ),
-      },
-      {
-        path: 'auditoria',
-        title: 'Auditoria do Sistema',
-        loadComponent: () =>
-          import('./pages/sistema/adm/auditoria/auditoria.component').then(
-            (m) => m.AdmAuditoriaComponent,
-          ),
-      },
-      {
-        path: 'solicitacoes',
-        title: 'Aprovações de Acesso',
-        loadComponent: () =>
-          import('./pages/sistema/adm/solicitacoes-acesso/solicitacoes-acesso.component').then(
-            (m) => m.AdmSolicitacoesAcessoComponent,
-          ),
-      },
-      {
-        path: 'configuracoes',
-        title: 'Configurações do Sistema',
-        loadComponent: () =>
-          import('./pages/sistema/adm/configuracoes/configuracoes.component').then(
-            (m) => m.AdmConfiguracoesComponent,
-          ),
+        path: '',
+        canActivate: [authGuard],
+        children: [
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+          {
+            path: 'dashboard',
+            title: 'Painel Administrativo',
+            loadComponent: () =>
+              import('./pages/sistema/adm/dashboard/dashboard.component').then(
+                (m) => m.AdmDashboardComponent,
+              ),
+          },
+          {
+            path: 'usuarios',
+            title: 'Gestão de Usuários',
+            loadComponent: () =>
+              import('./pages/sistema/adm/usuarios/usuarios.component').then(
+                (m) => m.AdmUsuariosComponent,
+              ),
+          },
+          {
+            path: 'usuarios/novo',
+            title: 'Cadastrar Novo Usuário',
+            loadComponent: () =>
+              import('./pages/sistema/adm/usuarios/cadastro/cadastro.component').then(
+                (m) => m.AdmCadastroUsuarioComponent,
+              ),
+          },
+          {
+            path: 'cursos',
+            title: 'Gestão de Cursos',
+            loadComponent: () =>
+              import('./pages/sistema/adm/cursos/cursos.component').then((m) => m.AdmCursosComponent),
+          },
+          {
+            path: 'instrutores',
+            title: 'Gestão de Instrutores',
+            loadComponent: () =>
+              import('./pages/sistema/adm/instrutores/instrutores.component').then(
+                (m) => m.AdmInstrutoresComponent,
+              ),
+          },
+          {
+            path: 'relatorios',
+            title: 'Relatórios Globais',
+            loadComponent: () =>
+              import('./pages/sistema/adm/relatorios/relatorios.component').then(
+                (m) => m.AdmRelatoriosComponent,
+              ),
+          },
+          {
+            path: 'auditoria',
+            title: 'Auditoria do Sistema',
+            loadComponent: () =>
+              import('./pages/sistema/adm/auditoria/auditoria.component').then(
+                (m) => m.AdmAuditoriaComponent,
+              ),
+          },
+          {
+            path: 'solicitacoes',
+            title: 'Aprovações de Acesso',
+            loadComponent: () =>
+              import('./pages/sistema/adm/solicitacoes-acesso/solicitacoes-acesso.component').then(
+                (m) => m.AdmSolicitacoesAcessoComponent,
+              ),
+          },
+          {
+            path: 'configuracoes',
+            title: 'Configurações do Sistema',
+            loadComponent: () =>
+              import('./pages/sistema/adm/configuracoes/configuracoes.component').then(
+                (m) => m.AdmConfiguracoesComponent,
+              ),
+          },
+        ],
       },
     ],
   },

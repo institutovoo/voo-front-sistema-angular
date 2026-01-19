@@ -1,4 +1,5 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
+import { Injectable, inject, signal, computed, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { AutenticacaoApi } from '../api/autenticacao-api.service';
 import {
   CadastroRequest,
@@ -7,11 +8,11 @@ import {
   AuthResponse,
   TipoConta,
 } from '../model/autenticacao.model';
-import { tap } from 'rxjs/operators';
-import { lerJsonDoStorage, salvarJsonNoStorage } from '../utils/armazenamento';
+import { tap, filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AlertaService } from './alerta.service';
 import { Logger } from '../utils/logger';
+import { fromEvent, merge, timer, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,23 +21,43 @@ export class AutenticacaoService {
   private api = inject(AutenticacaoApi);
   private router = inject(Router);
   private alertaService = inject(AlertaService);
+  private platformId = inject(PLATFORM_ID);
 
   usuarioLogado = signal<Usuario | null>(this.obterUsuarioInicial());
+  private inatividadeSub?: Subscription;
+  private timerInatividade?: any;
+  private readonly TEMPO_INATIVIDADE = 30 * 60 * 1000; // 30 minutos em ms
 
   perfilAtual = computed(() => {
     const usuario = this.usuarioLogado();
     return usuario?.perfilAtual || usuario?.indicador_tipo_conta || null;
   });
 
-  private obterUsuarioInicial(): Usuario | null {
-    const usuario = lerJsonDoStorage<Usuario | null>('usuario', null);
-    if (usuario && !usuario.perfilAtual) {
-      usuario.perfilAtual = usuario.indicador_tipo_conta;
-      if (!usuario.perfis) {
-        usuario.perfis = [usuario.indicador_tipo_conta];
-      }
+  constructor() {
+    // Se o usuário já estiver logado e for uma sessão temporária, inicia o timer
+    if (this.estaLogado() && !localStorage.getItem('token')) {
+      this.iniciarMonitoramentoInatividade();
     }
-    return usuario;
+  }
+
+  private obterUsuarioInicial(): Usuario | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
+
+    const raw = localStorage.getItem('usuario') || sessionStorage.getItem('usuario');
+    if (!raw) return null;
+
+    try {
+      const usuario = JSON.parse(raw) as Usuario;
+      if (usuario && !usuario.perfilAtual) {
+        usuario.perfilAtual = usuario.indicador_tipo_conta;
+        if (!usuario.perfis) {
+          usuario.perfis = [usuario.indicador_tipo_conta];
+        }
+      }
+      return usuario;
+    } catch {
+      return null;
+    }
   }
 
   cadastrar(dados: CadastroRequest) {
@@ -49,18 +70,26 @@ export class AutenticacaoService {
       tap((response: AuthResponse) => {
         if (response.sucesso && response.token && response.usuario) {
           const usuario = response.usuario;
+          const manterConectado = !!dados.lembrar;
 
-          // Inicializa perfis se não vierem do back
           if (!usuario.perfis || usuario.perfis.length === 0) {
             usuario.perfis = [usuario.indicador_tipo_conta];
           }
-
-          // Sempre loga com o primeiro perfil que ele recebeu
           usuario.perfilAtual = usuario.indicador_tipo_conta;
 
-          localStorage.setItem('token', response.token);
-          salvarJsonNoStorage('usuario', usuario);
+          // Define onde salvar baseado no "Manter conectado"
+          const storage = manterConectado ? localStorage : sessionStorage;
+          
+          storage.setItem('token', response.token);
+          storage.setItem('usuario', JSON.stringify(usuario));
+          
           this.usuarioLogado.set(usuario);
+
+          if (!manterConectado) {
+            this.iniciarMonitoramentoInatividade();
+          } else {
+            this.pararMonitoramentoInatividade();
+          }
 
           if (usuario.primeiroLogin) {
             this.router.navigate(['/troca-senha-obrigatoria']);
@@ -70,7 +99,8 @@ export class AutenticacaoService {
           Logger.audit(`Usuário logado com sucesso`, 'Auth', { 
             id: usuario.id, 
             email: usuario.email, 
-            perfil: usuario.perfilAtual 
+            perfil: usuario.perfilAtual,
+            manterConectado
           });
         } else {
           Logger.warn(`Falha na tentativa de login`, 'Auth', { 
@@ -82,12 +112,60 @@ export class AutenticacaoService {
     );
   }
 
+  private iniciarMonitoramentoInatividade() {
+    this.pararMonitoramentoInatividade();
+
+    // Eventos que indicam atividade do usuário
+    const atividade$ = merge(
+      fromEvent(document, 'click'),
+      fromEvent(document, 'mousemove'),
+      fromEvent(document, 'keydown'),
+      fromEvent(document, 'scroll'),
+      fromEvent(document, 'touchstart')
+    );
+
+    this.inatividadeSub = atividade$.subscribe(() => {
+      this.resetarTimerInatividade();
+    });
+
+    // Inicia o primeiro timer
+    this.resetarTimerInatividade();
+  }
+
+  private resetarTimerInatividade() {
+    if (this.timerInatividade) {
+      clearTimeout(this.timerInatividade);
+    }
+
+    this.timerInatividade = setTimeout(() => {
+      if (this.estaLogado() && !localStorage.getItem('token')) {
+        Logger.warn('Sessão encerrada por inatividade', 'Auth');
+        this.alertaService.aviso('Sessão encerrada por inatividade. Por favor, faça login novamente.');
+        this.logout();
+      }
+    }, this.TEMPO_INATIVIDADE);
+  }
+
+  private pararMonitoramentoInatividade() {
+    if (this.inatividadeSub) {
+      this.inatividadeSub.unsubscribe();
+      this.inatividadeSub = undefined;
+    }
+    if (this.timerInatividade) {
+      clearTimeout(this.timerInatividade);
+      this.timerInatividade = undefined;
+    }
+  }
+
   alternarPerfil(perfil: TipoConta) {
     const usuario = this.usuarioLogado();
     if (usuario && usuario.perfis.includes(perfil)) {
       const perfilAntigo = usuario.perfilAtual;
       usuario.perfilAtual = perfil;
-      salvarJsonNoStorage('usuario', usuario);
+      
+      const storage = localStorage.getItem('token') ? localStorage : sessionStorage;
+      storage.setItem('usuario', JSON.stringify(usuario));
+      
       this.usuarioLogado.set({ ...usuario });
 
       Logger.audit(`Usuário alterou o perfil ativo`, 'Auth', { 
@@ -97,7 +175,6 @@ export class AutenticacaoService {
         perfilNovo: perfil 
       });
 
-      // Redireciona para o dashboard do novo perfil
       this.redirecionarParaDashboard(perfil);
     }
   }
@@ -135,7 +212,9 @@ export class AutenticacaoService {
             const usuarioAtualizado = response.usuario;
             usuarioAtualizado.perfilAtual = perfil;
             
-            salvarJsonNoStorage('usuario', usuarioAtualizado);
+            const storage = localStorage.getItem('token') ? localStorage : sessionStorage;
+            storage.setItem('usuario', JSON.stringify(usuarioAtualizado));
+
             this.usuarioLogado.set({ ...usuarioAtualizado });
             this.redirecionarParaDashboard(perfil);
             this.alertaService.sucesso('Perfil adicionado com sucesso!');
@@ -175,7 +254,8 @@ export class AutenticacaoService {
       tap(response => {
         if (response.sucesso) {
           usuario.primeiroLogin = false;
-          salvarJsonNoStorage('usuario', usuario);
+          const storage = localStorage.getItem('token') ? localStorage : sessionStorage;
+          storage.setItem('usuario', JSON.stringify(usuario));
           this.usuarioLogado.set({ ...usuario });
         }
       })
@@ -190,12 +270,19 @@ export class AutenticacaoService {
         email: usuario.email 
       });
     }
+    
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('usuario');
+    
     this.usuarioLogado.set(null);
+    this.pararMonitoramentoInatividade();
+    this.router.navigate(['/autenticacao/login']);
   }
 
   estaLogado(): boolean {
-    return !!localStorage.getItem('token');
+    if (!isPlatformBrowser(this.platformId)) return false;
+    return !!localStorage.getItem('token') || !!sessionStorage.getItem('token');
   }
 }

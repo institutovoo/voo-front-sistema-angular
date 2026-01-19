@@ -21,7 +21,7 @@ export interface Usuario {
   indicador_tipo_conta: TipoConta; // Perfil principal/primeiro
   perfis: TipoConta[]; // Lista de todos os perfis do usuário
   perfilAtual?: TipoConta; // Perfil ativo no momento
-  primeiroLogin?: boolean; // Indica se o usuário está no primeiro login com senha temporária
+  primeiroLogin?: boolean;
   criadoEm: string;
   atualizadoEm: string;
 }
@@ -29,6 +29,8 @@ export interface Usuario {
 export interface LoginRequest {
   identificador: string;
   senha: string;
+  portal?: 'admin' | 'publico';
+  lembrar?: boolean;
 }
 
 export interface CadastroRequest {

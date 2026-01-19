@@ -49,9 +49,15 @@ export class LoginComponent {
 
     this.erro = '';
     this.mostrarAlertaBloqueio = false;
-    const { identificador, senha } = this.formulario.getRawValue();
+    const { identificador, senha, lembrar } = this.formulario.getRawValue();
+    const portal = 'publico';
 
-    const resultado = await this.authController.login({ identificador, senha });
+    const resultado = await this.authController.login({ 
+      identificador: identificador.trim(), 
+      senha: senha.trim(), 
+      portal,
+      lembrar
+    });
     
     if (!resultado.sucesso) {
       this.erro = resultado.mensagem || 'Erro desconhecido';

@@ -40,6 +40,13 @@
         formControlName="senha"
       ></app-campo>
 
+      <div class="formulario__linha">
+        <label class="caixa">
+          <input type="checkbox" formControlName="lembrar" />
+          <span>Manter conectado</span>
+        </label>
+      </div>
+
       <app-botao tipo="submit" variante="primario" [desabilitado]="!formulario.valid">
         Entrar
       </app-botao>

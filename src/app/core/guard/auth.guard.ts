@@ -10,7 +10,6 @@ export const authGuard: CanActivateFn = () => {
     return true;
   }
 
-  // Se não estiver logado (sem token), redireciona para o login
   router.navigate(['/login']);
   return false;
 };

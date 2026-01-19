@@ -1,0 +1,56 @@
+<div class="autenticacao">
+  <div class="autenticacao__esquerda">
+    <div class="destaque">
+      <div class="destaque__icone">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </div>
+      <h2 class="destaque__titulo">Primeiro Acesso</h2>
+      <p class="destaque__descricao">Por segurança, você deve alterar sua senha temporária para continuar acessando o sistema.</p>
+    </div>
+  </div>
+
+  <div class="autenticacao__direita">
+    <div class="autenticacao__formulario">
+      <app-logo tema="light"></app-logo>
+
+      <h1 class="titulo">Nova Senha</h1>
+      <p class="subtitulo">Crie uma senha forte e segura para sua conta.</p>
+
+      <div *ngIf="erro()" class="mensagem-erro">{{ erro() }}</div>
+
+      <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
+        <app-campo
+          rotulo="Nova Senha"
+          tipo="password"
+          placeholder="Mínimo 8 caracteres"
+          icone="senha"
+          [mostrarAlternarSenha]="true"
+          formControlName="novaSenha"
+          [obrigatorio]="true"
+        ></app-campo>
+
+        <app-campo
+          rotulo="Confirmar Nova Senha"
+          tipo="password"
+          placeholder="Repita a nova senha"
+          icone="senha"
+          [mostrarAlternarSenha]="true"
+          formControlName="confirmarSenha"
+          [obrigatorio]="true"
+        ></app-campo>
+
+        <app-botao
+          tipo="submit"
+          variante="primario"
+          [larguraTotal]="true"
+          [carregando]="enviando()"
+          [desabilitado]="enviando()"
+        >
+          {{ enviando() ? 'Salvando...' : 'Definir Nova Senha' }}
+        </app-botao>
+      </form>
+    </div>
+  </div>
+</div>

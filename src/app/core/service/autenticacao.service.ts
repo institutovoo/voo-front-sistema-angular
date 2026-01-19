@@ -61,6 +61,11 @@ export class AutenticacaoService {
           localStorage.setItem('token', response.token);
           salvarJsonNoStorage('usuario', usuario);
           this.usuarioLogado.set(usuario);
+
+          if (usuario.primeiroLogin) {
+            this.router.navigate(['/troca-senha-obrigatoria']);
+            return;
+          }
           
           Logger.audit(`Usuário logado com sucesso`, 'Auth', { 
             id: usuario.id, 
@@ -157,6 +162,24 @@ export class AutenticacaoService {
 
   resetSenha(dados: { email: string; codigo: string; novaSenha: string }) {
     return this.api.resetSenha(dados);
+  }
+
+  alterarSenhaObrigatoria(novaSenha: string) {
+    const usuario = this.usuarioLogado();
+    if (!usuario) return;
+
+    return this.api.alterarSenhaObrigatoria({
+      cpf_cnpj: usuario.cpf_cnpj,
+      novaSenha
+    }).pipe(
+      tap(response => {
+        if (response.sucesso) {
+          usuario.primeiroLogin = false;
+          salvarJsonNoStorage('usuario', usuario);
+          this.usuarioLogado.set({ ...usuario });
+        }
+      })
+    );
   }
 
   logout() {

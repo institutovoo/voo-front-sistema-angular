@@ -23,7 +23,13 @@ export class SistemaLayoutComponent {
   @Output() logout = new EventEmitter<void>();
   @Output() buscar = new EventEmitter<string>();
 
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router) {
+    // Bloqueio de acesso se for primeiro login
+    const user = this.authService.usuarioLogado();
+    if (user?.primeiroLogin) {
+      this.router.navigate(['/troca-senha-obrigatoria']);
+    }
+  }
 
   get usuarioExibicao(): Usuario {
     const user = this.usuarioLogado();

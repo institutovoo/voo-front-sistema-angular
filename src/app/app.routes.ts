@@ -50,6 +50,14 @@ export const routes: Routes = [
         (m) => m.ResetSenhaComponent,
       ),
   },
+  {
+    path: 'troca-senha-obrigatoria',
+    title: 'Troca de Senha Obrigatória',
+    loadComponent: () =>
+      import('./pages/autenticacao/troca-senha-obrigatoria/troca-senha-obrigatoria.component').then(
+        (m) => m.TrocaSenhaObrigatoriaComponent,
+      ),
+  },
 
   // ========================================
   // SISTEMA - ALUNO (Pessoa Física / PJ)

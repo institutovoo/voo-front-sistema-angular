@@ -100,4 +100,10 @@ export class AutenticacaoApi {
       headers: this.getHeaders(),
     });
   }
+
+  alterarSenhaObrigatoria(dados: { cpf_cnpj: string; novaSenha: string }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/alterar-senha-obrigatoria`, dados, {
+      headers: this.getHeaders(),
+    });
+  }
 }

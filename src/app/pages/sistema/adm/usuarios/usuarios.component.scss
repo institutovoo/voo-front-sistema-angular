@@ -154,6 +154,21 @@ $danger-light: #fee2e2;
   }
 }
 
+.badge-voce {
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: $primary;
+  background: $primary-light;
+  padding: 0.125rem 0.5rem;
+  border-radius: 100px;
+  text-transform: lowercase;
+  border: 1px solid rgba($primary, 0.2);
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  margin-top: -2px;
+}
+
 /* Detalhes do Usuário no Modal */
 .detalhes-grid {
   display: grid;

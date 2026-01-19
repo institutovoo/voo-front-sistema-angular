@@ -90,14 +90,14 @@
       <app-logo tema="light"></app-logo>
 
       <ng-container *ngIf="!enviado; else sucesso">
-        <h1 class="titulo">Solicitar Acesso</h1>
+        <h1 class="titulo">Solicitar acesso</h1>
         <p class="subtitulo">Preencha os dados abaixo para começar</p>
 
         <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
 
         <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
           <app-campo
-            rotulo="Nome Completo"
+            rotulo="Nome completo"
             tipo="text"
             placeholder="Ex: João Silva"
             icone="usuario"
@@ -105,7 +105,7 @@
           ></app-campo>
 
           <app-campo
-            rotulo="E-mail Institucional"
+            rotulo="E-mail institucional"
             tipo="email"
             placeholder="seuemail@voocursos.com.br"
             icone="email"
@@ -113,7 +113,7 @@
           ></app-campo>
 
           <app-campo
-            rotulo="Cargo / Função"
+            rotulo="Cargo / função"
             tipo="text"
             placeholder="Ex: Gerente de Operações"
             icone="usuario"
@@ -121,7 +121,7 @@
           ></app-campo>
 
           <app-botao tipo="submit" variante="primario" [desabilitado]="!formulario.valid">
-            Enviar Solicitação
+            Enviar solicitação
           </app-botao>
         </form>
 
@@ -147,13 +147,13 @@
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
           </div>
-          <h1 class="titulo">Solicitação Enviada!</h1>
+          <h1 class="titulo">Solicitação enviada!</h1>
           <p class="subtitulo">
             Recebemos seu pedido. Nossa equipe revisará seus dados e enviará uma resposta para seu
             e-mail institucional em até 24h.
           </p>
 
-          <app-botao (click)="voltar()" variante="primario"> Voltar para o Login </app-botao>
+          <app-botao (click)="voltar()" variante="primario"> Voltar para o login </app-botao>
         </div>
       </ng-template>
     </div>

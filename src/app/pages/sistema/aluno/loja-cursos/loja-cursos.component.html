@@ -2,7 +2,7 @@
   <!-- Header da página -->
   <div class="page-header">
     <div class="page-header__info">
-      <h1 class="page-header__titulo">Loja de Cursos</h1>
+      <h1 class="page-header__titulo">Loja de cursos</h1>
       <p class="page-header__subtitulo">
         Explore nossa biblioteca com mais de {{ cursos.length }} cursos para impulsionar sua
         carreira
@@ -37,7 +37,7 @@
           <img [src]="curso.imagem" [alt]="curso.titulo" />
           <div class="curso-card__badges">
             <span *ngIf="curso.gratuito" class="curso-card__badge curso-card__badge--gratis">
-              GRÁTIS
+              Grátis
             </span>
             <span
               *ngIf="!curso.gratuito && curso.precoOriginal"
@@ -48,7 +48,7 @@
                   | number : '1.0-0'
               }}% OFF
             </span>
-            <span *ngIf="curso.novo" class="curso-card__badge curso-card__badge--novo"> NOVO </span>
+            <span *ngIf="curso.novo" class="curso-card__badge curso-card__badge--novo"> Novo </span>
           </div>
         </div>
 
@@ -105,7 +105,7 @@
               </ng-container>
             </div>
             <button class="btn btn--primary" (click)="onComprar(curso); $event.stopPropagation()">
-              {{ curso.gratuito ? 'Acessar Grátis' : 'Comprar Agora' }}
+              {{ curso.gratuito ? 'Acessar grátis' : 'Comprar agora' }}
             </button>
           </div>
         </div>
@@ -186,7 +186,7 @@
       <app-header-icone nome="cursos" [tamanho]="56" cor="#cbd5e1"></app-header-icone>
       <h3>Nenhum curso encontrado</h3>
       <p>Tente ajustar os filtros ou busque por outros termos.</p>
-      <button class="btn btn--primary" (click)="limparFiltros()">Limpar Filtros</button>
+      <button class="btn btn--primary" (click)="limparFiltros()">Limpar filtros</button>
     </div>
 
     <!-- Grid de Cursos -->
@@ -282,7 +282,7 @@
               [class.btn--success]="curso.gratuito"
               (click)="onComprar(curso); $event.stopPropagation()"
             >
-              {{ curso.gratuito ? 'Acessar Grátis' : 'Comprar Agora' }}
+              {{ curso.gratuito ? 'Acessar grátis' : 'Comprar agora' }}
             </button>
           </div>
         </div>

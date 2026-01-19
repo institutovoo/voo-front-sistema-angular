@@ -1,8 +1,11 @@
-<app-sistema-layout [usuario]="{ nome: usuarioLogado()?.nome_completo || 'Administrador' }" tipoUsuario="admin">
+<app-sistema-layout
+  [usuario]="{ nome: usuarioLogado()?.nome_completo || 'Administrador' }"
+  tipoUsuario="admin"
+>
   <div class="solicitacoes">
     <div class="solicitacoes__header">
       <div class="info">
-        <h1 class="solicitacoes__titulo">Aprovações de Acesso</h1>
+        <h1 class="solicitacoes__titulo">Aprovações de acesso</h1>
         <p class="solicitacoes__subtitulo">
           Gerencie as solicitações de acesso administrativo pendentes. Revise cuidadosamente as
           informações antes de conceder permissões de alto nível.
@@ -11,7 +14,7 @@
       @if (!carregando()) {
         <div class="contador">
           <span class="numero">{{ solicitacoes().length }}</span>
-          <span class="label">Pendentes</span>
+          <span class="label">pendentes</span>
         </div>
       }
     </div>
@@ -37,10 +40,7 @@
       }
 
       @for (s of solicitacoes(); track s.id) {
-        <div
-          class="solicitacao-card"
-          [class.saindo]="s.status !== 'pendente'"
-        >
+        <div class="solicitacao-card" [class.saindo]="s.status !== 'pendente'">
           <div class="solicitacao-card__usuario">
             <div class="avatar">
               {{ s.usuario?.nome_completo?.charAt(0) }}
@@ -53,12 +53,12 @@
 
           <div class="solicitacao-card__info">
             <div class="item">
-              <span class="label">Perfil Solicitado</span>
+              <span class="label">Perfil solicitado</span>
               <span class="valor">{{ s.perfil }}</span>
             </div>
             <div class="item">
               <span class="label">Solicitado em</span>
-              <span class="valor">{{ s.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</span>
+              <span class="valor">{{ s.dataCriacao | date: 'dd/MM/yyyy HH:mm' }}</span>
             </div>
           </div>
 
@@ -69,7 +69,7 @@
             </button>
             <button class="btn-aprovar" (click)="aprovar(s.id)">
               <app-header-icone nome="verificar" [tamanho]="18"></app-header-icone>
-              Aprovar Acesso
+              Aprovar acesso
             </button>
           </div>
         </div>

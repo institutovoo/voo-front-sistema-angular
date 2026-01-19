@@ -1,13 +1,13 @@
 <app-sistema-layout [usuario]="usuario" tipoUsuario="instrutor">
-  <div class="cursos">
-    <div class="cursos__header">
-      <div class="cursos__header-info">
-        <h1 class="cursos__titulo">Meus Cursos</h1>
-        <p class="cursos__subtitulo">Gerencie seus conteúdos e acompanhe o desempenho</p>
+  <div class="meus-cursos">
+    <div class="meus-cursos__header">
+      <div>
+        <h1 class="meus-cursos__titulo">Meus cursos</h1>
+        <p class="meus-cursos__subtitulo">Gerencie seus conteúdos, preços e acompanhe o desempenho</p>
       </div>
       <button class="btn-novo" routerLink="/instrutor/cursos/novo">
-        <app-header-icone nome="mais" [tamanho]="20" cor="white"></app-header-icone>
-        Criar Novo Curso
+        <app-header-icone nome="mais" [tamanho]="18"></app-header-icone>
+        Criar novo curso
       </button>
     </div>
 
@@ -52,14 +52,14 @@
             </div>
             <div class="stat">
               <span class="stat__valor stat__valor--receita">{{ formatarMoeda(curso.receitaTotal) }}</span>
-              <span class="stat__label">Receita Total</span>
+              <span class="stat__label">Receita total</span>
             </div>
           </div>
 
           <div class="curso-card__footer">
             <button class="btn-acao btn-acao--primario" [routerLink]="['/instrutor/cursos', curso.id, 'editar']">
               <app-header-icone nome="editar" [tamanho]="16"></app-header-icone>
-              Editar Curso
+              Editar curso
             </button>
             <button class="btn-acao btn-acao--outline">
               <app-header-icone nome="menu" [tamanho]="16"></app-header-icone>

@@ -3,7 +3,7 @@
   <div class="breadcrumb">
     <a routerLink="/aluno/meus-cursos" class="breadcrumb__link">
       <app-header-icone nome="seta-esquerda" [tamanho]="16"></app-header-icone>
-      Meus Cursos
+      Meus cursos
     </a>
     <span class="breadcrumb__separator">/</span>
     <span class="breadcrumb__atual">{{ curso.titulo }}</span>
@@ -150,12 +150,12 @@
 
         <!-- Botão Principal -->
         <button class="btn btn--primary btn--block" *ngIf="!inscrito()" (click)="inscreverCurso()">
-          {{ curso.gratuito ? 'Inscrever-se Grátis' : 'Comprar Curso' }}
+          {{ curso.gratuito ? 'Inscrever-se grátis' : 'Comprar curso' }}
         </button>
 
         <button class="btn btn--success btn--block" *ngIf="inscrito()" (click)="continuarCurso()">
           <app-header-icone nome="play" [tamanho]="18"></app-header-icone>
-          Continuar Assistindo
+          Continuar assistindo
         </button>
 
         <!-- O que está incluso -->
@@ -196,7 +196,7 @@
             <app-header-icone nome="certificados" [tamanho]="18"></app-header-icone>
             <div>
               <span class="info-item__label">Certificado</span>
-              <span class="info-item__valor">Incluso</span>
+              <span class="info-item__valor">incluso</span>
             </div>
           </div>
           <div class="info-item">

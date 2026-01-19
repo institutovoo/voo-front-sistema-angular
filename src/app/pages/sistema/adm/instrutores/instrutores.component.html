@@ -2,7 +2,7 @@
   <div class="gestao-instrutores">
     <div class="gestao-instrutores__header">
       <div>
-        <h1 class="gestao-instrutores__titulo">Gestão de Instrutores</h1>
+        <h1 class="gestao-instrutores__titulo">Gestão de instrutores</h1>
         <p class="gestao-instrutores__subtitulo">Gerencie parceiros, comissões e novos cadastros</p>
       </div>
     </div>
@@ -20,7 +20,7 @@
         <select class="select-filtro" [ngModel]="filtroStatus()" (ngModelChange)="setFiltroStatus($event)">
           <option value="todos">Todos os status</option>
           <option value="ativo">Ativos</option>
-          <option value="analise">Em Análise</option>
+          <option value="analise">Em análise</option>
         </select>
       </div>
     </div>
@@ -74,12 +74,12 @@
                 <td>{{ inst.comissao || 70 }}%</td>
                 <td>
                   <span class="badge-status" [class]="'badge-status--' + (inst.status || 'ativo')">
-                    {{ (inst.status || 'ativo') === 'ativo' ? 'Ativo' : 'Em Análise' }}
+                    {{ (inst.status || 'ativo') === 'ativo' ? 'Ativo' : 'Em análise' }}
                   </span>
                 </td>
                 <td>
                   <div class="acoes-btns">
-                    <button class="btn-acao" title="Ver Detalhes"><app-header-icone nome="olho" [tamanho]="16"></app-header-icone></button>
+                    <button class="btn-acao" title="Ver detalhes"><app-header-icone nome="olho" [tamanho]="16"></app-header-icone></button>
                     <button class="btn-acao btn-acao--excluir" title="Remover"><app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone></button>
                   </div>
                 </td>

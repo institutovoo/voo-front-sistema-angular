@@ -10,7 +10,7 @@
     <div class="boas-vindas__acoes">
       <a routerLink="/instrutor/cursos/novo" class="btn btn--primary">
         <app-header-icone nome="mais" [tamanho]="18"></app-header-icone>
-        Criar Novo Curso
+        Criar novo curso
       </a>
     </div>
   </section>
@@ -28,31 +28,31 @@
     <div class="coluna-principal">
       <!-- Ações Rápidas -->
       <section class="acoes-rapidas">
-        <h2 class="secao__titulo">Ações Rápidas</h2>
+        <h2 class="secao__titulo">Ações rápidas</h2>
         <div class="acoes-rapidas__grid">
           <a routerLink="/instrutor/cursos/novo" class="acao-card">
             <div class="acao-card__icone acao-card__icone--primary">
               <app-header-icone nome="mais" [tamanho]="24"></app-header-icone>
             </div>
-            <span class="acao-card__texto">Criar Novo Curso</span>
+            <span class="acao-card__texto">Criar novo curso</span>
           </a>
           <a routerLink="/instrutor/cursos" class="acao-card">
             <div class="acao-card__icone acao-card__icone--success">
               <app-header-icone nome="editar" [tamanho]="24"></app-header-icone>
             </div>
-            <span class="acao-card__texto">Editar Cursos</span>
+            <span class="acao-card__texto">Editar cursos</span>
           </a>
           <a routerLink="/instrutor/avaliacoes" class="acao-card">
             <div class="acao-card__icone acao-card__icone--info">
               <app-header-icone nome="certificados" [tamanho]="24"></app-header-icone>
             </div>
-            <span class="acao-card__texto">Avaliações e Provas</span>
+            <span class="acao-card__texto">Avaliações e provas</span>
           </a>
           <a routerLink="/instrutor/duvidas" class="acao-card">
             <div class="acao-card__icone acao-card__icone--warning">
               <app-header-icone nome="mensagem" [tamanho]="24"></app-header-icone>
             </div>
-            <span class="acao-card__texto">Responder Dúvidas</span>
+            <span class="acao-card__texto">Responder dúvidas</span>
           </a>
         </div>
       </section>
@@ -60,7 +60,7 @@
       <!-- Meus Cursos -->
       <section class="secao">
         <div class="secao__header">
-          <h2 class="secao__titulo">Meus Cursos</h2>
+          <h2 class="secao__titulo">Meus cursos</h2>
           <a routerLink="/instrutor/cursos" class="secao__link">Ver todos ›</a>
         </div>
 
@@ -76,7 +76,7 @@
             Rascunhos <span class="status-tab__count">{{ cursosRascunho.length }}</span>
           </button>
           <button class="status-tab">
-            Em Revisão <span class="status-tab__count">{{ cursosRevisao.length }}</span>
+            Em revisão <span class="status-tab__count">{{ cursosRevisao.length }}</span>
           </button>
           <button class="status-tab">
             Pausados <span class="status-tab__count">{{ cursosPausados.length }}</span>
@@ -110,7 +110,7 @@
                   <div class="metrica-divider"></div>
                   <div class="metrica">
                     <span class="metrica__valor">{{ curso.progressoMedio }}%</span>
-                    <span class="metrica__label">Média</span>
+                    <span class="metrica__label">média</span>
                   </div>
                   <div class="metrica-divider"></div>
                   <div class="metrica">
@@ -130,7 +130,7 @@
                     <span class="metrica__valor metrica__valor--receita">
                       {{ formatarMoeda(curso.receitaMensal) }}
                     </span>
-                    <span class="metrica__label">Receita</span>
+                    <span class="metrica__label">receita</span>
                   </div>
                 </div>
               </div>
@@ -140,7 +140,7 @@
               <a
                 [routerLink]="['/instrutor/cursos', curso.id, 'editar']"
                 class="btn-icon btn-icon--edit"
-                title="Editar Curso"
+                title="Editar curso"
               >
                 <app-header-icone nome="editar" [tamanho]="18"></app-header-icone>
               </a>
@@ -157,7 +157,7 @@
     <aside class="coluna-lateral">
       <!-- Receita Mensal -->
       <div class="card-lateral">
-        <h3 class="card-lateral__titulo">Receita Mensal</h3>
+        <h3 class="card-lateral__titulo">Receita mensal</h3>
         <div class="receita-total">
           <span class="receita-total__valor">{{ formatarMoeda(3050) }}</span>
           <span class="receita-total__periodo">Janeiro 2026</span>
@@ -182,7 +182,7 @@
       <!-- Dúvidas Recentes -->
       <div class="card-lateral">
         <div class="card-lateral__header">
-          <h3 class="card-lateral__titulo">Dúvidas Recentes</h3>
+          <h3 class="card-lateral__titulo">Dúvidas recentes</h3>
           <a routerLink="/instrutor/duvidas" class="card-lateral__link">Ver todas</a>
         </div>
         <div class="duvidas-lista">
@@ -201,7 +201,7 @@
 
       <!-- Resumo Rápido -->
       <div class="card-lateral">
-        <h3 class="card-lateral__titulo">Resumo dos Cursos</h3>
+        <h3 class="card-lateral__titulo">Resumo dos cursos</h3>
         <div class="resumo-lista">
           <div class="resumo-item">
             <span class="resumo-item__dot resumo-item__dot--publicado"></span>
@@ -215,7 +215,7 @@
           </div>
           <div class="resumo-item">
             <span class="resumo-item__dot resumo-item__dot--revisao"></span>
-            <span class="resumo-item__label">Em Revisão</span>
+            <span class="resumo-item__label">Em revisão</span>
             <span class="resumo-item__valor">{{ cursosRevisao.length }}</span>
           </div>
           <div class="resumo-item">

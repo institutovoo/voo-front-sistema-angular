@@ -65,7 +65,7 @@
       <div class="prova-instrucoes__regras">
         <h3>
           <app-header-icone nome="alerta" [tamanho]="18"></app-header-icone>
-          Regras e Orientações
+          Regras e orientações
         </h3>
         <ul>
           <li>
@@ -84,11 +84,11 @@
       <div class="prova-instrucoes__acoes">
         <button class="btn btn--outline" (click)="voltarParaCurso()">
           <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
-          Voltar ao Curso
+          Voltar ao curso
         </button>
         <button class="btn btn--primary btn--lg" (click)="iniciarProva()">
           <app-header-icone nome="play" [tamanho]="18"></app-header-icone>
-          Iniciar Prova
+          Iniciar prova
         </button>
       </div>
     </div>
@@ -175,7 +175,7 @@
           *ngIf="statusProva() === 'em-andamento'"
         >
           <app-header-icone nome="check" [tamanho]="16"></app-header-icone>
-          Revisar e Finalizar
+          Revisar e finalizar
         </button>
         <button
           class="btn btn--success btn--block"
@@ -183,7 +183,7 @@
           *ngIf="statusProva() === 'revisao'"
         >
           <app-header-icone nome="check-circle" [tamanho]="16"></app-header-icone>
-          Finalizar Prova
+          Finalizar prova
         </button>
       </div>
     </div>
@@ -255,7 +255,7 @@
             questoesNaoRespondidas === 1 ? 'questão não respondida' : 'questões não respondidas'
           }}.
         </span>
-        <button class="btn btn--sm btn--outline" (click)="voltarParaProva()">Voltar à Prova</button>
+        <button class="btn btn--sm btn--outline" (click)="voltarParaProva()">Voltar à prova</button>
       </div>
     </div>
   </div>
@@ -288,7 +288,7 @@
           <span class="resultado__nota-total">/ {{ prova.pontuacaoTotal }}</span>
         </div>
         <span class="resultado__nota-percentual">
-          {{ (resultado()!.pontuacao / prova.pontuacaoTotal) * 100 | number : '1.0-0' }}%
+          {{ (resultado()!.pontuacao / prova.pontuacaoTotal) * 100 | number: '1.0-0' }}%
         </span>
       </div>
 
@@ -298,7 +298,7 @@
           <app-header-icone nome="check-circle" [tamanho]="24"></app-header-icone>
           <div class="resultado__stat-info">
             <span class="resultado__stat-valor">{{ resultado()!.acertos }}</span>
-            <span class="resultado__stat-label">Acertos</span>
+            <span class="resultado__stat-label">acertos</span>
           </div>
         </div>
 
@@ -306,7 +306,7 @@
           <app-header-icone nome="x" [tamanho]="24"></app-header-icone>
           <div class="resultado__stat-info">
             <span class="resultado__stat-valor">{{ resultado()!.erros }}</span>
-            <span class="resultado__stat-label">Erros</span>
+            <span class="resultado__stat-label">erros</span>
           </div>
         </div>
 
@@ -314,7 +314,7 @@
           <app-header-icone nome="minus" [tamanho]="24"></app-header-icone>
           <div class="resultado__stat-info">
             <span class="resultado__stat-valor">{{ resultado()!.emBranco }}</span>
-            <span class="resultado__stat-label">Em Branco</span>
+            <span class="resultado__stat-label">em branco</span>
           </div>
         </div>
 
@@ -349,7 +349,7 @@
       <div class="resultado__acoes">
         <button class="btn btn--outline" (click)="voltarParaCurso()">
           <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
-          Voltar ao Curso
+          Voltar ao curso
         </button>
 
         <button
@@ -358,12 +358,12 @@
           (click)="refazerProva()"
         >
           <app-header-icone nome="refresh" [tamanho]="18"></app-header-icone>
-          Refazer Prova
+          Refazer prova
         </button>
 
         <button class="btn btn--success" *ngIf="resultado()!.aprovado" (click)="voltarParaCurso()">
           <app-header-icone nome="certificados" [tamanho]="18"></app-header-icone>
-          Ver Certificado
+          Ver certificado
         </button>
       </div>
     </div>
@@ -372,7 +372,7 @@
     <div class="gabarito">
       <h2 class="gabarito__titulo">
         <app-header-icone nome="cursos" [tamanho]="24"></app-header-icone>
-        Gabarito e Explicações
+        Gabarito e explicações
       </h2>
 
       <div class="gabarito__questoes">

@@ -23,7 +23,7 @@
 
       <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()" *ngIf="!senhaResetada">
         <app-campo
-          rotulo="Código de Verificação"
+          rotulo="Código de verificação"
           tipo="text"
           placeholder="000000"
           icone="busca"
@@ -33,7 +33,7 @@
         ></app-campo>
 
         <app-campo
-          rotulo="Nova Senha"
+          rotulo="Nova senha"
           tipo="password"
           placeholder="••••••••"
           icone="senha"
@@ -43,7 +43,7 @@
         ></app-campo>
 
         <app-campo
-          rotulo="Confirmar Nova Senha"
+          rotulo="Confirmar nova senha"
           tipo="password"
           placeholder="••••••••"
           icone="senha"
@@ -59,7 +59,7 @@
           [carregando]="enviando"
           [desabilitado]="enviando"
         >
-          {{ enviando ? 'Redefinindo...' : 'Alterar Senha' }}
+          {{ enviando ? 'Redefinindo...' : 'Alterar senha' }}
         </app-botao>
 
         <div class="rodape">
@@ -75,7 +75,7 @@
       </form>
 
       <div class="rodape" *ngIf="senhaResetada">
-        <a class="atalho" routerLink="/login">Ir para o Login</a>
+        <a class="atalho" routerLink="/login">Ir para o login</a>
       </div>
     </div>
   </div>

@@ -105,7 +105,14 @@
               [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'Aluno'"
             >
               <input type="radio" formControlName="tipoConta" value="Aluno" />
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
@@ -116,7 +123,14 @@
               [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'Instrutor'"
             >
               <input type="radio" formControlName="tipoConta" value="Instrutor" />
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                 <circle cx="9" cy="7" r="4"></circle>
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -126,32 +140,50 @@
             </label>
             <label
               class="tipo-conta__opcao"
-              [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'PJ Conveniados'"
+              [class.tipo-conta__opcao--ativo]="
+                formulario.get('tipoConta')?.value === 'PJ Conveniados'
+              "
             >
               <input type="radio" formControlName="tipoConta" value="PJ Conveniados" />
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                 <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
               </svg>
-              PJ Conveniada
+              PJ conveniada
             </label>
             <label
               class="tipo-conta__opcao"
-              [class.tipo-conta__opcao--ativo]="formulario.get('tipoConta')?.value === 'Instituição Parceira (PJ)'"
+              [class.tipo-conta__opcao--ativo]="
+                formulario.get('tipoConta')?.value === 'Instituição Parceira (PJ)'
+              "
             >
               <input type="radio" formControlName="tipoConta" value="Instituição Parceira (PJ)" />
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
               </svg>
-              Inst. Parceira
+              Inst. parceira
             </label>
           </div>
         </div>
 
         <app-campo
           *ngIf="formulario.get('tipoConta')?.value === 'Instrutor'"
-          rotulo="Tipo de Instrutor"
+          rotulo="Tipo de instrutor"
           tipo="select"
           placeholder="PF ou PJ?"
           icone="usuario"
@@ -178,7 +210,11 @@
         ></app-campo>
 
         <app-campo
-          *ngIf="formulario.get('tipoConta')?.value === 'Aluno' || (formulario.get('tipoConta')?.value === 'Instrutor' && formulario.get('tipoPessoaInstrutor')?.value === 'PF')"
+          *ngIf="
+            formulario.get('tipoConta')?.value === 'Aluno' ||
+            (formulario.get('tipoConta')?.value === 'Instrutor' &&
+              formulario.get('tipoPessoaInstrutor')?.value === 'PF')
+          "
           rotulo="Nome da mãe"
           tipo="text"
           placeholder="Nome completo da mãe"
@@ -253,16 +289,43 @@
               formControlName="estado"
               [obrigatorio]="true"
               [opcoes]="[
-                'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 
-                'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 
-                'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+                'AC',
+                'AL',
+                'AP',
+                'AM',
+                'BA',
+                'CE',
+                'DF',
+                'ES',
+                'GO',
+                'MA',
+                'MT',
+                'MS',
+                'MG',
+                'PA',
+                'PB',
+                'PR',
+                'PE',
+                'PI',
+                'RJ',
+                'RN',
+                'RS',
+                'RO',
+                'RR',
+                'SC',
+                'SP',
+                'SE',
+                'TO',
               ]"
             ></app-campo>
           </ng-container>
         </div>
 
         <app-campo
-          *ngIf="formulario.get('tipoConta')?.value === 'Aluno' || formulario.get('tipoConta')?.value === 'Instrutor'"
+          *ngIf="
+            formulario.get('tipoConta')?.value === 'Aluno' ||
+            formulario.get('tipoConta')?.value === 'Instrutor'
+          "
           rotulo="Última formação"
           tipo="select"
           placeholder="Selecione sua formação"
@@ -273,7 +336,10 @@
         ></app-campo>
 
         <app-campo
-          *ngIf="formulario.get('tipoConta')?.value === 'Aluno' || formulario.get('tipoConta')?.value === 'Instrutor'"
+          *ngIf="
+            formulario.get('tipoConta')?.value === 'Aluno' ||
+            formulario.get('tipoConta')?.value === 'Instrutor'
+          "
           rotulo="Status da formação"
           tipo="select"
           placeholder="Selecione o status"
@@ -284,12 +350,26 @@
         ></app-campo>
 
         <app-campo
-          [rotulo]="(formulario.get('tipoConta')?.value === 'PJ Conveniados' || formulario.get('tipoConta')?.value === 'Instituição Parceira (PJ)' || (formulario.get('tipoConta')?.value === 'Instrutor' && formulario.get('tipoPessoaInstrutor')?.value === 'PJ')) ? 'CNPJ' : 'CPF'"
+          [rotulo]="
+            formulario.get('tipoConta')?.value === 'PJ Conveniados' ||
+            formulario.get('tipoConta')?.value === 'Instituição Parceira (PJ)' ||
+            (formulario.get('tipoConta')?.value === 'Instrutor' &&
+              formulario.get('tipoPessoaInstrutor')?.value === 'PJ')
+              ? 'CNPJ'
+              : 'CPF'
+          "
           tipo="text"
           placeholder="Digite apenas números"
           icone="documento"
           formControlName="documento"
-          [maxlength]="(formulario.get('tipoConta')?.value === 'PJ Conveniados' || formulario.get('tipoConta')?.value === 'Instituição Parceira (PJ)' || (formulario.get('tipoConta')?.value === 'Instrutor' && formulario.get('tipoPessoaInstrutor')?.value === 'PJ')) ? 18 : 14"
+          [maxlength]="
+            formulario.get('tipoConta')?.value === 'PJ Conveniados' ||
+            formulario.get('tipoConta')?.value === 'Instituição Parceira (PJ)' ||
+            (formulario.get('tipoConta')?.value === 'Instrutor' &&
+              formulario.get('tipoPessoaInstrutor')?.value === 'PJ')
+              ? 18
+              : 14
+          "
           [obrigatorio]="true"
         ></app-campo>
 
@@ -337,10 +417,10 @@
             <input type="checkbox" formControlName="termos" />
             <span>
               Li e aceito os
-              <a class="atalho" (click)="abrirTermos(); $event.preventDefault()">Termos de Uso</a>
+              <a class="atalho" (click)="abrirTermos(); $event.preventDefault()">termos de uso</a>
               e a
               <a class="atalho" (click)="abrirPrivacidade(); $event.preventDefault()"
-                >Política de Privacidade</a
+                >política de privacidade</a
               >
             </span>
           </label>
@@ -366,7 +446,8 @@
 </div>
 
 @if (mostrarTermos) {
-<app-termos (fechou)="fecharTermos()"></app-termos>
-} @if (mostrarPrivacidade) {
-<app-privacidade (fechou)="fecharPrivacidade()"></app-privacidade>
+  <app-termos (fechou)="fecharTermos()"></app-termos>
+}
+@if (mostrarPrivacidade) {
+  <app-privacidade (fechou)="fecharPrivacidade()"></app-privacidade>
 }

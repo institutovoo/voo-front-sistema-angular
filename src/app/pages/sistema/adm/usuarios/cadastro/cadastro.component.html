@@ -3,13 +3,13 @@
     <app-logo tema="light" [linkHome]="'/admin/dashboard'"></app-logo>
 
     <div class="header-cadastro">
-      <h1 class="titulo">Novo Usuário</h1>
+      <h1 class="titulo">Novo usuário</h1>
       <p class="subtitulo">Cadastre um novo perfil no ecossistema VooCursos</p>
     </div>
 
     <form (ngSubmit)="cadastrar()" #cadastroForm="ngForm" class="formulario">
       <div class="campo">
-        <label for="nome">Nome Completo</label>
+        <label for="nome">Nome completo</label>
         <div class="input-wrapper">
           <app-header-icone nome="usuario" [tamanho]="18"></app-header-icone>
           <input
@@ -39,7 +39,7 @@
       </div>
 
       <div class="campo">
-        <label for="tipo">Tipo de Usuário</label>
+        <label for="tipo">Tipo de usuário</label>
         <div class="input-wrapper">
           <app-header-icone nome="usuarios" [tamanho]="18"></app-header-icone>
           <select id="tipo" name="tipo" [(ngModel)]="usuario.tipo" required>

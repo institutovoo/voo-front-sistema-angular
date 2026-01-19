@@ -1,6 +1,6 @@
 <div class="pagamento">
   <div class="pagamento__header">
-    <h2 class="pagamento__titulo">Método de Pagamento</h2>
+    <h2 class="pagamento__titulo">Método de pagamento</h2>
     <p class="pagamento__subtitulo">Gerencie seus métodos de pagamento</p>
   </div>
 
@@ -56,7 +56,7 @@
       <div *ngIf="mostrarFormCartao" class="form-cartao">
         <form [formGroup]="formularioCartao" (ngSubmit)="salvarCartao()">
           <div class="campo">
-            <label class="campo__label">Número do Cartão</label>
+            <label class="campo__label">Número do cartão</label>
             <input
               type="text"
               class="campo__input"
@@ -65,7 +65,7 @@
             />
           </div>
           <div class="campo">
-            <label class="campo__label">Nome no Cartão</label>
+            <label class="campo__label">Nome no cartão</label>
             <input
               type="text"
               class="campo__input"
@@ -90,59 +90,33 @@
           </div>
           <div class="form-cartao__acoes">
             <button type="button" class="btn-cancelar" (click)="cancelarCartao()">Cancelar</button>
-            <button type="submit" class="btn-salvar-cartao">Salvar Cartão</button>
+            <button type="submit" class="btn-salvar-cartao">Salvar cartão</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- Email de Cobrança -->
   <div class="secao">
-    <h3 class="secao__titulo">Email de Cobrança</h3>
-    <div class="email-cobranca">
-      <input type="email" class="campo__input" [value]="emailCobranca" readonly />
-      <button class="btn-copiar" (click)="copiarEmail()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-        </svg>
-      </button>
+    <h3 class="secao__titulo">E-mail de cobrança</h3>
+    <div class="fatura-email">
+      <div class="campo">
+        <input type="email" class="campo__input" [value]="'usuario@email.com'" />
+      </div>
     </div>
-    <p class="secao__hint">Recibos e faturas serão enviados para este email</p>
   </div>
 
-  <!-- Assinatura -->
-  <div class="secao">
-    <h3 class="secao__titulo">Assinatura</h3>
-    <div class="assinatura">
-      <div class="assinatura__info">
-        <div class="assinatura__plano">
-          <span class="assinatura__nome">{{ assinatura.plano }}</span>
-          <span
-            class="assinatura__badge"
-            [class.assinatura__badge--ativo]="assinatura.status === 'ativo'"
-          >
-            {{ assinatura.status === 'ativo' ? 'Ativo' : 'Cancelado' }}
-          </span>
-        </div>
-        <span class="assinatura__detalhes">
-          R$ {{ assinatura.preco | number : '1.2-2' }}/mês • Renova em {{ assinatura.renovacao }}
-        </span>
+  <!-- Zona de Perigo -->
+  <div class="secao secao--danger">
+    <h3 class="secao__titulo secao__titulo--danger">Assinatura</h3>
+    <div class="danger-zone">
+      <div class="danger-zone__info">
+        <span class="danger-zone__titulo">Cancelar assinatura</span>
+        <span class="danger-zone__descricao"
+          >Você perderá acesso aos benefícios premium ao final do período atual.</span
+        >
       </div>
-      <div class="assinatura__acoes">
-        <button class="btn-outline" (click)="alterarPlano()">Alterar Plano</button>
-        <button class="btn-cancelar-assinatura" (click)="cancelarAssinatura()">
-          Cancelar Assinatura
-        </button>
-      </div>
+      <button class="btn-excluir">Cancelar assinatura</button>
     </div>
   </div>
 
@@ -150,9 +124,8 @@
   <div class="pagamento__footer">
     <button type="button" class="btn-salvar" (click)="salvar()" [disabled]="salvando">
       <svg
-        *ngIf="!salvando"
-        width="16"
-        height="16"
+        width="18"
+        height="18"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -162,7 +135,7 @@
         <polyline points="17,21 17,13 7,13 7,21" />
         <polyline points="7,3 7,8 15,8" />
       </svg>
-      {{ salvando ? 'Salvando...' : 'Salvar Alterações' }}
+      {{ salvando ? 'Salvando...' : 'Salvar alterações' }}
     </button>
   </div>
 </div>

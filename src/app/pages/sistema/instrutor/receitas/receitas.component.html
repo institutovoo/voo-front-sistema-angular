@@ -1,27 +1,23 @@
 <app-sistema-layout [usuario]="usuario" tipoUsuario="instrutor">
-  <div class="receitas">
-    <div class="receitas__header">
-      <div class="receitas__header-info">
-        <h1 class="receitas__titulo">Minhas Receitas</h1>
-        <p class="receitas__subtitulo">Gerencie seus ganhos e acompanhe suas vendas</p>
+  <div class="minhas-receitas">
+    <div class="minhas-receitas__header">
+      <div>
+        <h1 class="minhas-receitas__titulo">Minhas receitas</h1>
+        <p class="minhas-receitas__subtitulo">
+          Controle financeiro, histórico de vendas e solicitações de saque
+        </p>
       </div>
-      <button class="btn-saque" (click)="enviarRelatorioFinanceiro()">
-        <app-header-icone nome="enviar" [tamanho]="18" cor="white"></app-header-icone>
-        Enviar relatório para o e-mail
-      </button>
+      <button class="btn-saque">Solicitar saque</button>
     </div>
 
     <!-- KPIs de Receita -->
     <div class="receitas__grid-kpis">
-      <app-card-kpi
-        *ngFor="let stat of estatisticas()"
-        [estatistica]="stat"
-      ></app-card-kpi>
+      <app-card-kpi *ngFor="let stat of estatisticas()" [estatistica]="stat"></app-card-kpi>
     </div>
 
     <!-- Gráfico Simulado / Filtros -->
     <div class="receitas__acoes">
-      <h2 class="secao-titulo">Histórico de Transações</h2>
+      <h2 class="secao-titulo">Histórico de transações</h2>
       <div class="filtros">
         <select class="filtro-select">
           <option>Últimos 30 dias</option>
@@ -39,9 +35,9 @@
             <th>Data</th>
             <th>ID</th>
             <th>Curso / Aluno</th>
-            <th>Valor Bruto</th>
+            <th>Valor bruto</th>
             <th>Taxas</th>
-            <th>Valor Líquido</th>
+            <th>Valor líquido</th>
             <th>Status</th>
           </tr>
         </thead>

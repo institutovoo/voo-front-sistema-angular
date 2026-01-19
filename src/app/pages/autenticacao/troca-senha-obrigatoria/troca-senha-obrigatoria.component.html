@@ -6,8 +6,8 @@
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         </svg>
       </div>
-      <h2 class="destaque__titulo">Primeiro acesso</h2>
-      <p class="destaque__descricao">Por segurança, você deve alterar sua senha temporária para continuar acessando o sistema.</p>
+      <h2 class="destaque__titulo">Ação obrigatória</h2>
+      <p class="destaque__descricao">Detectamos que sua senha atual foi gerada automaticamente. A alteração é indispensável para proteger seus dados e continuar navegando.</p>
     </div>
   </div>
 
@@ -15,8 +15,8 @@
     <div class="autenticacao__formulario">
       <app-logo tema="light"></app-logo>
 
-      <h1 class="titulo">Nova senha</h1>
-      <p class="subtitulo">Crie uma senha forte e segura para sua conta.</p>
+      <h1 class="titulo">Sua senha é temporária</h1>
+      <p class="subtitulo">Para garantir a segurança da sua conta, você não pode continuar com uma senha gerada pelo sistema. Defina uma nova senha agora.</p>
 
       <div *ngIf="erro()" class="mensagem-erro">{{ erro() }}</div>
 

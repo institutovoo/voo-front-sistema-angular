@@ -142,6 +142,5 @@ export class AutenticacaoController {
 
   logout() {
     this.service.logout();
-    this.router.navigate(['/autenticacao/login']);
   }
 }

@@ -264,6 +264,8 @@ export class AutenticacaoService {
 
   logout() {
     const usuario = this.usuarioLogado();
+    const isAdmin = usuario?.perfilAtual === 'Admin' || usuario?.indicador_tipo_conta === 'Admin';
+
     if (usuario) {
       Logger.audit(`Usuário realizou logout`, 'Auth', { 
         id: usuario.id, 
@@ -278,7 +280,12 @@ export class AutenticacaoService {
     
     this.usuarioLogado.set(null);
     this.pararMonitoramentoInatividade();
-    this.router.navigate(['/autenticacao/login']);
+
+    if (isAdmin) {
+      this.router.navigate(['/admin/login']);
+    } else {
+      this.router.navigate(['/autenticacao/login']);
+    }
   }
 
   estaLogado(): boolean {

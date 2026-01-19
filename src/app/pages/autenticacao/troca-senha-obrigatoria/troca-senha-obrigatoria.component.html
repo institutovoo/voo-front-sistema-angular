@@ -6,7 +6,7 @@
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         </svg>
       </div>
-      <h2 class="destaque__titulo">Primeiro Acesso</h2>
+      <h2 class="destaque__titulo">Primeiro acesso</h2>
       <p class="destaque__descricao">Por segurança, você deve alterar sua senha temporária para continuar acessando o sistema.</p>
     </div>
   </div>
@@ -15,14 +15,14 @@
     <div class="autenticacao__formulario">
       <app-logo tema="light"></app-logo>
 
-      <h1 class="titulo">Nova Senha</h1>
+      <h1 class="titulo">Nova senha</h1>
       <p class="subtitulo">Crie uma senha forte e segura para sua conta.</p>
 
       <div *ngIf="erro()" class="mensagem-erro">{{ erro() }}</div>
 
       <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
         <app-campo
-          rotulo="Nova Senha"
+          rotulo="Nova senha"
           tipo="password"
           placeholder="Mínimo 8 caracteres"
           icone="senha"
@@ -32,7 +32,7 @@
         ></app-campo>
 
         <app-campo
-          rotulo="Confirmar Nova Senha"
+          rotulo="Confirmar nova senha"
           tipo="password"
           placeholder="Repita a nova senha"
           icone="senha"
@@ -48,7 +48,7 @@
           [carregando]="enviando()"
           [desabilitado]="enviando()"
         >
-          {{ enviando() ? 'Salvando...' : 'Definir Nova Senha' }}
+          {{ enviando() ? 'Salvando...' : 'Definir nova senha' }}
         </app-botao>
       </form>
     </div>

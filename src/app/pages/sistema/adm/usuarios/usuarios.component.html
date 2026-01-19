@@ -2,12 +2,12 @@
   <div class="gestao-usuarios">
     <div class="gestao-usuarios__header">
       <div>
-        <h1 class="gestao-usuarios__titulo">Gestão de Usuários</h1>
+        <h1 class="gestao-usuarios__titulo">Gestão de usuários</h1>
         <p class="gestao-usuarios__subtitulo">Administre os perfis e permissões de todos os usuários do sistema</p>
       </div>
       <button class="btn-novo" routerLink="/admin/usuarios/novo">
         <app-header-icone nome="mais" [tamanho]="18"></app-header-icone>
-        Novo Usuário
+        Novo usuário
       </button>
     </div>
 
@@ -49,7 +49,7 @@
             <tr>
               <th>Usuário</th>
               <th>Perfis</th>
-              <th>Data Cadastro</th>
+              <th>Data de cadastro</th>
               <th>Status</th>
               <th>Ações</th>
             </tr>
@@ -115,7 +115,7 @@
   <!-- Modal de Detalhes -->
   @if (mostrarModalDetalhes()) {
     <app-modal 
-               [titulo]="'Detalhes do Usuário'" 
+               [titulo]="'Detalhes do usuário'" 
                [subtitulo]="usuarioSelecionado()?.nome_completo"
                largura="600px"
                (fechar)="mostrarModalDetalhes.set(false)">
@@ -123,7 +123,7 @@
         <div class="detalhes-usuario">
           <div class="detalhes-grid">
             <div class="detalhes-item">
-              <label>Nome Completo</label>
+              <label>Nome completo</label>
               <span>{{ usuarioSelecionado().nome_completo }}</span>
             </div>
             <div class="detalhes-item">
@@ -135,7 +135,7 @@
               <span>{{ usuarioSelecionado().cpf_cnpj }}</span>
             </div>
             <div class="detalhes-item">
-              <label>Data de Cadastro</label>
+              <label>Data de cadastro</label>
               <span>{{ usuarioSelecionado().data_cadastro }}</span>
             </div>
             <div class="detalhes-item">
@@ -152,7 +152,7 @@
           
           @if (usuarioSelecionado().status === 'bloqueado') {
             <div class="detalhes-secao">
-              <label>Motivo do Bloqueio</label>
+              <label>Motivo do bloqueio</label>
               <p class="motivo-texto">{{ usuarioSelecionado().motivoBloqueio }}</p>
             </div>
           }
@@ -167,13 +167,13 @@
   <!-- Modal de Bloqueio -->
   @if (mostrarModalBloqueio()) {
     <app-modal 
-               [titulo]="'Bloquear Usuário'" 
+               [titulo]="'Bloquear usuário'" 
                [subtitulo]="'Informe o motivo do bloqueio para ' + usuarioSelecionado()?.nome_completo"
                (fechar)="mostrarModalBloqueio.set(false)">
       <div class="form-bloqueio">
         <p class="aviso-bloqueio">O usuário não poderá mais acessar o sistema e receberá um e-mail informando sobre o bloqueio e o motivo abaixo.</p>
         <div class="campo-grupo">
-          <label for="motivo">Motivo do Bloqueio</label>
+          <label for="motivo">Motivo do bloqueio</label>
           <textarea id="motivo" 
                     [(ngModel)]="motivoBloqueio" 
                     placeholder="Ex: Violação dos termos de uso, comportamento inadequado..."
@@ -182,7 +182,7 @@
       </div>
       <div footer>
         <button class="btn-cancelar" (click)="mostrarModalBloqueio.set(false)">Cancelar</button>
-        <button class="btn-confirmar-bloqueio" (click)="confirmarBloqueio()">Bloquear Usuário</button>
+        <button class="btn-confirmar-bloqueio" (click)="confirmarBloqueio()">Bloquear usuário</button>
       </div>
     </app-modal>
   }

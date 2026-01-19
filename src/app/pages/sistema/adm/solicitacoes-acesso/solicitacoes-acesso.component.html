@@ -1,4 +1,4 @@
-<app-sistema-layout [usuario]="usuario" tipoUsuario="admin">
+<app-sistema-layout [usuario]="{ nome: usuarioLogado()?.nome_completo || 'Administrador' }" tipoUsuario="admin">
   <div class="solicitacoes">
     <div class="solicitacoes__header">
       <div class="info">
@@ -8,61 +8,72 @@
           informações antes de conceder permissões de alto nível.
         </p>
       </div>
-      <div class="contador">
-        <span class="numero">{{ solicitacoes.length }}</span>
-        <span class="label">Pendentes</span>
-      </div>
+      @if (!carregando()) {
+        <div class="contador">
+          <span class="numero">{{ solicitacoes().length }}</span>
+          <span class="label">Pendentes</span>
+        </div>
+      }
     </div>
 
     <div class="lista">
-      <div class="card-vazio" *ngIf="solicitacoes.length === 0">
-        <div class="icone-vazio">
-          <app-header-icone nome="verificar" [tamanho]="48"></app-header-icone>
+      @if (carregando()) {
+        <div class="loading-overlay">
+          <p>Carregando solicitações...</p>
         </div>
-        <h3>Tudo em dia!</h3>
-        <p>
-          Não há solicitações de acesso pendentes no momento. O ecossistema administrativo está
-          atualizado.
-        </p>
-      </div>
+      }
 
-      <div
-        class="solicitacao-card"
-        *ngFor="let s of solicitacoes"
-        [class.saindo]="s.status !== 'pendente'"
-      >
-        <div class="solicitacao-card__usuario">
-          <div class="avatar">
-            {{ s.nome.charAt(0) }}
+      @if (!carregando() && solicitacoes().length === 0) {
+        <div class="card-vazio">
+          <div class="icone-vazio">
+            <app-header-icone nome="verificar" [tamanho]="48"></app-header-icone>
           </div>
-          <div class="detalhes">
-            <h3 class="nome">{{ s.nome }}</h3>
-            <span class="email">{{ s.email }}</span>
-          </div>
+          <h3>Tudo em dia!</h3>
+          <p>
+            Não há solicitações de acesso pendentes no momento. O ecossistema administrativo está
+            atualizado.
+          </p>
         </div>
+      }
 
-        <div class="solicitacao-card__info">
-          <div class="item">
-            <span class="label">Cargo / Função</span>
-            <span class="valor">{{ s.cargo }}</span>
+      @for (s of solicitacoes(); track s.id) {
+        <div
+          class="solicitacao-card"
+          [class.saindo]="s.status !== 'pendente'"
+        >
+          <div class="solicitacao-card__usuario">
+            <div class="avatar">
+              {{ s.usuario?.nome_completo?.charAt(0) }}
+            </div>
+            <div class="detalhes">
+              <h3 class="nome">{{ s.usuario?.nome_completo }}</h3>
+              <span class="email">{{ s.usuario?.email }}</span>
+            </div>
           </div>
-          <div class="item">
-            <span class="label">Solicitado em</span>
-            <span class="valor">{{ s.data }}</span>
-          </div>
-        </div>
 
-        <div class="solicitacao-card__acoes">
-          <button class="btn-rejeitar" (click)="rejeitar(s.id)">
-            <app-header-icone nome="bloquear" [tamanho]="18"></app-header-icone>
-            Rejeitar
-          </button>
-          <button class="btn-aprovar" (click)="aprovar(s.id)">
-            <app-header-icone nome="verificar" [tamanho]="18"></app-header-icone>
-            Aprovar Acesso
-          </button>
+          <div class="solicitacao-card__info">
+            <div class="item">
+              <span class="label">Perfil Solicitado</span>
+              <span class="valor">{{ s.perfil }}</span>
+            </div>
+            <div class="item">
+              <span class="label">Solicitado em</span>
+              <span class="valor">{{ s.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+          </div>
+
+          <div class="solicitacao-card__acoes">
+            <button class="btn-rejeitar" (click)="rejeitar(s.id)">
+              <app-header-icone nome="bloquear" [tamanho]="18"></app-header-icone>
+              Rejeitar
+            </button>
+            <button class="btn-aprovar" (click)="aprovar(s.id)">
+              <app-header-icone nome="verificar" [tamanho]="18"></app-header-icone>
+              Aprovar Acesso
+            </button>
+          </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 </app-sistema-layout>

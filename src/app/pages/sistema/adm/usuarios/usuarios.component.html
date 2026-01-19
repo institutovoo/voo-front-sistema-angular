@@ -1,4 +1,4 @@
-<app-sistema-layout [usuario]="usuario" tipoUsuario="admin">
+<app-sistema-layout [usuario]="{ nome: usuarioLogado()?.nome_completo || 'Administrador' }" tipoUsuario="admin">
   <div class="gestao-usuarios">
     <div class="gestao-usuarios__header">
       <div>
@@ -15,63 +15,175 @@
     <div class="gestao-usuarios__filtros">
       <div class="busca">
         <app-header-icone nome="busca" [tamanho]="18"></app-header-icone>
-        <input type="text" placeholder="Nome, e-mail ou ID..." />
+        <input type="text" 
+               placeholder="Nome, e-mail ou CPF..." 
+               [ngModel]="busca()" 
+               (ngModelChange)="setBusca($event)" />
       </div>
       <div class="opcoes">
-        <select class="select-filtro">
-          <option>Todos os tipos</option>
-          <option>Alunos</option>
-          <option>Instrutores</option>
-          <option>Admins</option>
+        <select class="select-filtro" [ngModel]="filtroTipo()" (ngModelChange)="setFiltroTipo($event)">
+          <option value="todos">Todos os tipos</option>
+          <option value="aluno">Alunos</option>
+          <option value="instrutor">Instrutores</option>
+          <option value="admin">Admins</option>
         </select>
-        <select class="select-filtro">
-          <option>Todos os status</option>
-          <option>Ativos</option>
-          <option>Bloqueados</option>
+        <select class="select-filtro" [ngModel]="filtroStatus()" (ngModelChange)="setFiltroStatus($event)">
+          <option value="todos">Todos os status</option>
+          <option value="ativo">Ativos</option>
+          <option value="bloqueado">Bloqueados</option>
+          <option value="desativado">Desativados</option>
         </select>
       </div>
     </div>
 
     <!-- Tabela -->
     <div class="tabela-container">
-      <table class="tabela">
-        <thead>
-          <tr>
-            <th>Usuário</th>
-            <th>Tipo</th>
-            <th>Data Cadastro</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of usuarios()">
-            <td>
-              <div class="user-info">
-                <div class="user-info__avatar">{{ user.nome.charAt(0) }}</div>
-                <div>
-                  <p class="user-info__nome">{{ user.nome }}</p>
-                  <p class="user-info__email">{{ user.email }}</p>
-                </div>
-              </div>
-            </td>
-            <td>
-              <span class="badge-tipo" [ngClass]="'badge-tipo--' + user.tipo">{{ user.tipo }}</span>
-            </td>
-            <td>{{ user.dataCadastro }}</td>
-            <td>
-              <span class="badge-status" [ngClass]="'badge-status--' + user.status">{{ getStatusLabel(user.status) }}</span>
-            </td>
-            <td>
-              <div class="acoes-btns">
-                <button class="btn-acao" title="Editar"><app-header-icone nome="editar" [tamanho]="16"></app-header-icone></button>
-                <button class="btn-acao btn-acao--bloquear" title="Bloquear"><app-header-icone nome="bloquear" [tamanho]="16"></app-header-icone></button>
-                <button class="btn-acao btn-acao--excluir" title="Excluir"><app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone></button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      @if (carregando()) {
+        <div class="loading-overlay">
+          <p>Carregando usuários...</p>
+        </div>
+      }
+      @if (!carregando()) {
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Usuário</th>
+              <th>Perfis</th>
+              <th>Data Cadastro</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of usuariosFiltrados(); track user.cpf_cnpj) {
+              <tr>
+                <td>
+                  <div class="user-info">
+                    <div class="user-info__avatar">{{ user.nome_completo?.charAt(0) }}</div>
+                    <div>
+                      <div class="user-info__header">
+                        <p class="user-info__nome">{{ user.nome_completo }}</p>
+                        @if (ehUsuarioLogado(user)) {
+                          <span class="badge-voce">Você</span>
+                        }
+                      </div>
+                      <p class="user-info__email">{{ user.email }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="perfis-lista">
+                    @for (perfil of user.perfis; track perfil) {
+                      <span class="badge-tipo" 
+                            [class.badge-tipo--aluno]="perfil === 'Aluno'"
+                            [class.badge-tipo--instrutor]="perfil.includes('Instrutor')"
+                            [class.badge-tipo--adm]="perfil === 'Admin'">
+                        {{ perfil }}
+                      </span>
+                    }
+                  </div>
+                </td>
+                <td>{{ user.data_cadastro || 'N/A' }}</td>
+                <td>
+                  <span class="badge-status" [class]="'badge-status--' + (user.status || 'ativo')">
+                    {{ getStatusLabel(user.status) }}
+                  </span>
+                </td>
+                <td>
+                  <div class="acoes-btns">
+                    <button class="btn-acao" title="Editar" (click)="abrirDetalhes(user)"><app-header-icone nome="olho" [tamanho]="16"></app-header-icone></button>
+                    @if (user.status === 'bloqueado') {
+                      <button class="btn-acao btn-acao--desbloquear" title="Desbloquear" (click)="desbloquearUsuario(user)">
+                        <app-header-icone nome="verificar" [tamanho]="16" cor="#10b981"></app-header-icone>
+                      </button>
+                    } @else {
+                      <button class="btn-acao btn-acao--bloquear" title="Bloquear" (click)="prepararBloqueio(user)">
+                        <app-header-icone nome="bloquear" [tamanho]="16"></app-header-icone>
+                      </button>
+                    }
+                    <button class="btn-acao btn-acao--excluir" title="Excluir" (click)="confirmarExclusao(user)"><app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone></button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
     </div>
   </div>
+
+  <!-- Modal de Detalhes -->
+  @if (mostrarModalDetalhes()) {
+    <app-modal 
+               [titulo]="'Detalhes do Usuário'" 
+               [subtitulo]="usuarioSelecionado()?.nome_completo"
+               largura="600px"
+               (fechar)="mostrarModalDetalhes.set(false)">
+      @if (usuarioSelecionado()) {
+        <div class="detalhes-usuario">
+          <div class="detalhes-grid">
+            <div class="detalhes-item">
+              <label>Nome Completo</label>
+              <span>{{ usuarioSelecionado().nome_completo }}</span>
+            </div>
+            <div class="detalhes-item">
+              <label>E-mail</label>
+              <span>{{ usuarioSelecionado().email }}</span>
+            </div>
+            <div class="detalhes-item">
+              <label>CPF/CNPJ</label>
+              <span>{{ usuarioSelecionado().cpf_cnpj }}</span>
+            </div>
+            <div class="detalhes-item">
+              <label>Data de Cadastro</label>
+              <span>{{ usuarioSelecionado().data_cadastro }}</span>
+            </div>
+            <div class="detalhes-item">
+              <label>WhatsApp</label>
+              <span>{{ usuarioSelecionado().whatsapp || 'Não informado' }}</span>
+            </div>
+            <div class="detalhes-item">
+              <label>Status</label>
+              <span class="badge-status" [class]="'badge-status--' + (usuarioSelecionado().status || 'ativo')">
+                {{ getStatusLabel(usuarioSelecionado().status) }}
+              </span>
+            </div>
+          </div>
+          
+          @if (usuarioSelecionado().status === 'bloqueado') {
+            <div class="detalhes-secao">
+              <label>Motivo do Bloqueio</label>
+              <p class="motivo-texto">{{ usuarioSelecionado().motivoBloqueio }}</p>
+            </div>
+          }
+        </div>
+      }
+      <div footer>
+        <button class="btn-fechar-modal" (click)="mostrarModalDetalhes.set(false)">Fechar</button>
+      </div>
+    </app-modal>
+  }
+
+  <!-- Modal de Bloqueio -->
+  @if (mostrarModalBloqueio()) {
+    <app-modal 
+               [titulo]="'Bloquear Usuário'" 
+               [subtitulo]="'Informe o motivo do bloqueio para ' + usuarioSelecionado()?.nome_completo"
+               (fechar)="mostrarModalBloqueio.set(false)">
+      <div class="form-bloqueio">
+        <p class="aviso-bloqueio">O usuário não poderá mais acessar o sistema e receberá um e-mail informando sobre o bloqueio e o motivo abaixo.</p>
+        <div class="campo-grupo">
+          <label for="motivo">Motivo do Bloqueio</label>
+          <textarea id="motivo" 
+                    [(ngModel)]="motivoBloqueio" 
+                    placeholder="Ex: Violação dos termos de uso, comportamento inadequado..."
+                    rows="4"></textarea>
+        </div>
+      </div>
+      <div footer>
+        <button class="btn-cancelar" (click)="mostrarModalBloqueio.set(false)">Cancelar</button>
+        <button class="btn-confirmar-bloqueio" (click)="confirmarBloqueio()">Bloquear Usuário</button>
+      </div>
+    </app-modal>
+  }
 </app-sistema-layout>

@@ -9,8 +9,9 @@ import { BotaoComponent } from '../../../components/botao/botao.component';
 import { CampoComponent } from '../../../components/campo/campo.component';
 import { AutenticacaoController } from '../../../core/controller/autenticacao.controller';
 import { CepService } from '../../../core/service/cep.service';
+import { AlertaService } from '../../../core/service/alerta.service';
 import { CadastroRequest } from '../../../core/model/autenticacao.model';
-import { mascaraTelefone, mascaraDocumento, mascaraCep } from '../../../core/utils/mascaras';
+import { mascaraDocumento, mascaraTelefone, mascaraCep } from '../../../core/utils/mascaras';
 
 @Component({
   selector: 'app-cadastro',
@@ -31,6 +32,7 @@ import { mascaraTelefone, mascaraDocumento, mascaraCep } from '../../../core/uti
 export class CadastroComponent {
   private authController = inject(AutenticacaoController);
   private cepService = inject(CepService);
+  private alertaService = inject(AlertaService);
   private cdr = inject(ChangeDetectorRef);
 
   mostrarTermos = false;
@@ -223,8 +225,7 @@ export class CadastroComponent {
       (tipo === 'Instrutor' && tipoPessoa === 'PJ');
 
     // Nome da mãe é apenas para PF (Aluno ou Instrutor PF)
-    const precisaNomeMae =
-      tipo === 'Aluno' || (tipo === 'Instrutor' && tipoPessoa === 'PF');
+    const precisaNomeMae = tipo === 'Aluno' || (tipo === 'Instrutor' && tipoPessoa === 'PF');
 
     // Formação é para Aluno e TODOS os Instrutores (PF ou PJ) conforme solicitado
     const precisaFormacao = tipo === 'Aluno' || tipo === 'Instrutor';
@@ -267,6 +268,7 @@ export class CadastroComponent {
   private buscarEndereco(cep: string) {
     this.buscandoCep = true;
     this.erro = '';
+    this.enderecoCarregado = false;
     this.cdr.detectChanges(); // Força atualização para exibir o "Buscando..."
 
     this.cepService.buscarCep(cep).subscribe({
@@ -274,6 +276,7 @@ export class CadastroComponent {
         if (dados.erro) {
           this.buscandoCep = false;
           this.erro = 'CEP não encontrado.';
+          this.alertaService.aviso('CEP não encontrado. Por favor, verifique o número digitado.');
           this.enderecoCarregado = false;
           this.cdr.detectChanges();
           return;
@@ -309,8 +312,35 @@ export class CadastroComponent {
 
     console.log('[Cadastro] Formulário válido?', this.formulario.valid);
     if (!this.formulario.valid) {
-      console.warn('[Cadastro] Campos inválidos:', this.getCamposInvalidos());
+      const campos = this.getCamposInvalidos();
+      console.warn('[Cadastro] Campos inválidos:', campos);
+
       this.erro = 'Por favor, preencha todos os campos obrigatórios corretamente.';
+
+      // Alerta específico para o usuário
+      if (campos.includes('documento')) {
+        this.alertaService.aviso('Por favor, informe um CPF ou CNPJ válido.', 'Campo Inválido');
+      } else if (
+        campos.includes('logradouro') ||
+        campos.includes('numero') ||
+        campos.includes('cep')
+      ) {
+        this.alertaService.aviso(
+          'Por favor, complete as informações de endereço. Digite um CEP válido e informe o número.',
+          'Endereço Incompleto',
+        );
+      } else if (campos.includes('termos')) {
+        this.alertaService.aviso(
+          'Você precisa aceitar os Termos de Uso e Política de Privacidade.',
+          'Termos de Uso',
+        );
+      } else {
+        this.alertaService.aviso(
+          'Existem campos obrigatórios não preenchidos ou inválidos.',
+          'Atenção',
+        );
+      }
+
       this.formulario.markAllAsTouched();
       return;
     }
@@ -343,11 +373,10 @@ export class CadastroComponent {
     // Determina o tipo de conta exato para o backend se for instrutor
     let tipoContaFinal = formValue.tipoConta;
     if (tipoContaFinal === 'Instrutor') {
-      tipoContaFinal =
-        formValue.tipoPessoaInstrutor === 'PJ'
-          ? 'Instrutor (PJ)'
-          : 'Instrutor (PF)';
+      tipoContaFinal = formValue.tipoPessoaInstrutor === 'PJ' ? 'Instrutor (PJ)' : 'Instrutor (PF)';
     }
+
+    const documentoLimpo = formValue.documento.replace(/\D/g, '');
 
     const dadosCadastro: CadastroRequest = {
       nome_completo: formValue.nome,
@@ -360,12 +389,12 @@ export class CadastroComponent {
       senha: formValue.senha,
       indicador_tipo_conta: tipoContaFinal as any,
       whatsapp: formValue.telefone,
-      cpf_cnpj: formValue.documento,
+      cpf_cnpj: documentoLimpo,
       aceitouTermos: formValue.termos,
     };
 
     console.log('[Cadastro] Dados preparados para envio:', { ...dadosCadastro, senha: '***' });
-    
+
     this.enviando = true;
 
     try {

@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AlertaService } from '../../../../core/service/alerta.service';
+import { ConfirmService } from '../../../../core/service/confirm.service';
 
 interface Cartao {
   id: number;
@@ -25,6 +27,9 @@ interface Assinatura {
   styleUrl: './pagamento.component.scss',
 })
 export class ConfigPagamentoComponent {
+  private alertaService = inject(AlertaService);
+  private confirmService = inject(ConfirmService);
+  
   cartoes: Cartao[] = [
     {
       id: 1,
@@ -70,9 +75,14 @@ export class ConfigPagamentoComponent {
     cartao.padrao = true;
   }
 
-  removerCartao(cartao: Cartao) {
-    if (confirm('Tem certeza que deseja remover este cartão?')) {
+  async removerCartao(cartao: Cartao) {
+    const confirmado = await this.confirmService.confirmar(
+      'Remover Cartão',
+      'Tem certeza que deseja remover este cartão?'
+    );
+    if (confirmado) {
       this.cartoes = this.cartoes.filter((c) => c.id !== cartao.id);
+      this.alertaService.sucesso('Cartão removido com sucesso!');
     }
   }
 
@@ -103,25 +113,27 @@ export class ConfigPagamentoComponent {
     this.cartoes.push(novoCartao);
     this.mostrarFormCartao = false;
     this.formularioCartao.reset();
+    this.alertaService.sucesso('Novo cartão adicionado!');
   }
 
   alterarPlano() {
     console.log('Alterar plano');
   }
 
-  cancelarAssinatura() {
-    if (
-      confirm(
-        'Tem certeza que deseja cancelar sua assinatura? Você perderá acesso aos benefícios Premium.'
-      )
-    ) {
+  async cancelarAssinatura() {
+    const confirmado = await this.confirmService.confirmar(
+      'Cancelar Assinatura',
+      'Tem certeza que deseja cancelar sua assinatura? Você perderá acesso aos benefícios Premium.'
+    );
+    if (confirmado) {
       this.assinatura.status = 'cancelado';
+      this.alertaService.info('Assinatura cancelada com sucesso.', 'Informação');
     }
   }
 
   copiarEmail() {
     navigator.clipboard.writeText(this.emailCobranca);
-    alert('Email copiado!');
+    this.alertaService.sucesso('Email copiado!');
   }
 
   salvar() {
@@ -130,7 +142,7 @@ export class ConfigPagamentoComponent {
 
     setTimeout(() => {
       this.salvando = false;
-      alert('Alterações salvas com sucesso!');
+      this.alertaService.sucesso('Alterações salvas com sucesso!');
     }, 1000);
   }
 }

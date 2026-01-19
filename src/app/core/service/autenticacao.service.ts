@@ -10,6 +10,8 @@ import {
 import { tap } from 'rxjs/operators';
 import { lerJsonDoStorage, salvarJsonNoStorage } from '../utils/armazenamento';
 import { Router } from '@angular/router';
+import { AlertaService } from './alerta.service';
+import { Logger } from '../utils/logger';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +19,7 @@ import { Router } from '@angular/router';
 export class AutenticacaoService {
   private api = inject(AutenticacaoApi);
   private router = inject(Router);
+  private alertaService = inject(AlertaService);
 
   usuarioLogado = signal<Usuario | null>(this.obterUsuarioInicial());
 
@@ -41,6 +44,7 @@ export class AutenticacaoService {
   }
 
   login(dados: LoginRequest) {
+    Logger.info(`Iniciando tentativa de login`, 'Auth', { identificador: dados.identificador });
     return this.api.login(dados).pipe(
       tap((response: AuthResponse) => {
         if (response.sucesso && response.token && response.usuario) {
@@ -57,6 +61,17 @@ export class AutenticacaoService {
           localStorage.setItem('token', response.token);
           salvarJsonNoStorage('usuario', usuario);
           this.usuarioLogado.set(usuario);
+          
+          Logger.audit(`Usuário logado com sucesso`, 'Auth', { 
+            id: usuario.id, 
+            email: usuario.email, 
+            perfil: usuario.perfilAtual 
+          });
+        } else {
+          Logger.warn(`Falha na tentativa de login`, 'Auth', { 
+            identificador: dados.identificador, 
+            mensagem: response.mensagem 
+          });
         }
       }),
     );
@@ -65,9 +80,17 @@ export class AutenticacaoService {
   alternarPerfil(perfil: TipoConta) {
     const usuario = this.usuarioLogado();
     if (usuario && usuario.perfis.includes(perfil)) {
+      const perfilAntigo = usuario.perfilAtual;
       usuario.perfilAtual = perfil;
       salvarJsonNoStorage('usuario', usuario);
       this.usuarioLogado.set({ ...usuario });
+
+      Logger.audit(`Usuário alterou o perfil ativo`, 'Auth', { 
+        id: usuario.id, 
+        email: usuario.email, 
+        perfilAntigo, 
+        perfilNovo: perfil 
+      });
 
       // Redireciona para o dashboard do novo perfil
       this.redirecionarParaDashboard(perfil);
@@ -76,7 +99,26 @@ export class AutenticacaoService {
 
   adicionarPerfil(perfil: TipoConta, dadosExtras?: any) {
     const usuario = this.usuarioLogado();
-    if (usuario && !usuario.perfis.includes(perfil)) {
+    if (!usuario) return;
+
+    const precisaAprovacao = perfil.includes('Instrutor') && usuario.indicador_tipo_conta !== 'Admin';
+
+    if (precisaAprovacao) {
+      this.api.solicitarPerfil({
+        cpf_cnpj: usuario.cpf_cnpj,
+        perfil: perfil,
+        dadosExtras: dadosExtras
+      }).subscribe(response => {
+        if (response.sucesso) {
+          this.alertaService.info('Sua solicitação para ser instrutor foi enviada para análise do administrador.', 'Solicitação Enviada');
+        } else {
+          this.alertaService.erro(response.mensagem || 'Erro ao enviar solicitação.');
+        }
+      });
+      return;
+    }
+
+    if (!usuario.perfis.includes(perfil)) {
       this.api
         .adicionarPerfil({
           cpf_cnpj: usuario.cpf_cnpj,
@@ -87,12 +129,13 @@ export class AutenticacaoService {
           if (response.sucesso && response.usuario) {
             const usuarioAtualizado = response.usuario;
             usuarioAtualizado.perfilAtual = perfil;
-
+            
             salvarJsonNoStorage('usuario', usuarioAtualizado);
             this.usuarioLogado.set({ ...usuarioAtualizado });
             this.redirecionarParaDashboard(perfil);
+            this.alertaService.sucesso('Perfil adicionado com sucesso!');
           } else {
-            alert(response.mensagem || 'Erro ao adicionar novo perfil.');
+            this.alertaService.erro(response.mensagem || 'Erro ao adicionar novo perfil.');
           }
         });
     }
@@ -117,6 +160,13 @@ export class AutenticacaoService {
   }
 
   logout() {
+    const usuario = this.usuarioLogado();
+    if (usuario) {
+      Logger.audit(`Usuário realizou logout`, 'Auth', { 
+        id: usuario.id, 
+        email: usuario.email 
+      });
+    }
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     this.usuarioLogado.set(null);

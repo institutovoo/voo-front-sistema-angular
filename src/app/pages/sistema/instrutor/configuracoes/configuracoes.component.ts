@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ConfigPerfilComponent } from '../../../../components/sistema/configuracao/perfil/perfil.component';
 import { ConfigSegurancaComponent } from '../../../../components/sistema/configuracao/seguranca/seguranca.component';
 import { Usuario } from '../../../../components/sistema/header/header.component';
@@ -18,7 +17,6 @@ interface Aba {
   selector: 'app-configuracoes',
   standalone: true,
   imports: [
-    CommonModule,
     SistemaLayoutComponent,
     ConfigPerfilComponent,
     ConfigSegurancaComponent,

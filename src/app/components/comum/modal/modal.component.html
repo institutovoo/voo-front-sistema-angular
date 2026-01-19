@@ -1,0 +1,21 @@
+<div class="modal-overlay" (click)="aoFechar()">
+  <div class="modal-container" [style.max-width]="largura" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-header__info">
+        <h2 class="modal-titulo">{{ titulo }}</h2>
+        <p class="modal-subtitulo" *ngIf="subtitulo">{{ subtitulo }}</p>
+      </div>
+      <button class="btn-fechar" *ngIf="mostrarFechar" (click)="aoFechar()">
+        <app-header-icone nome="fechar" [tamanho]="18"></app-header-icone>
+      </button>
+    </div>
+
+    <div class="modal-content">
+      <ng-content></ng-content>
+    </div>
+
+    <div class="modal-footer">
+      <ng-content select="[footer]"></ng-content>
+    </div>
+  </div>
+</div>

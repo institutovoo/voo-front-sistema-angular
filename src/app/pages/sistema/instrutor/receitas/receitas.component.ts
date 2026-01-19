@@ -1,9 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SistemaLayoutComponent } from '../../../../components/sistema/layout/layout.component';
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
 import { CardKpiComponent, Estatistica } from '../../../../components/sistema/kpi-card/kpi-card.component';
+import { AlertaService } from '../../../../core/service/alerta.service';
 
 interface Transacao {
   id: string;
@@ -24,6 +25,7 @@ interface Transacao {
   styleUrl: './receitas.component.scss'
 })
 export class InstrutorReceitasComponent implements OnInit {
+  private alertaService = inject(AlertaService);
   usuario = { nome: 'João Silva', avatar: '' };
   
   estatisticas = signal<Estatistica[]>([
@@ -102,6 +104,9 @@ export class InstrutorReceitasComponent implements OnInit {
   enviarRelatorioFinanceiro() {
     // Simulação da chamada ao Lambda que gera o Excel financeiro e notifica por e-mail
     console.log('Iniciando geração de Excel Financeiro via Lambda e envio de notificação...');
-    alert('Seu relatório financeiro detalhado está sendo gerado e será enviado para o seu e-mail em breve!');
+    this.alertaService.info(
+      'Seu relatório financeiro detalhado está sendo gerado e será enviado para o seu e-mail em breve!',
+      'Relatório Financeiro'
+    );
   }
 }

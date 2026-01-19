@@ -10,14 +10,23 @@
     <div class="gestao-cursos__filtros">
       <div class="busca">
         <app-header-icone nome="busca" [tamanho]="18"></app-header-icone>
-        <input type="text" placeholder="Buscar por título ou instrutor..." />
+        <input
+          type="text"
+          placeholder="Buscar por título ou instrutor..."
+          [ngModel]="busca()"
+          (ngModelChange)="setBusca($event)"
+        />
       </div>
       <div class="opcoes">
-        <select class="select-filtro">
-          <option>Todos os status</option>
-          <option>Publicados</option>
-          <option>Pendentes</option>
-          <option>Bloqueados</option>
+        <select
+          class="select-filtro"
+          [ngModel]="filtroStatus()"
+          (ngModelChange)="setFiltroStatus($event)"
+        >
+          <option value="todos">Todos os status</option>
+          <option value="publicados">Publicados</option>
+          <option value="pendentes">Pendentes</option>
+          <option value="bloqueados">Bloqueados</option>
         </select>
       </div>
     </div>
@@ -35,28 +44,40 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let curso of cursos()">
-            <td>
-              <div class="curso-info">
-                <div class="curso-info__thumb"></div>
-                <span class="curso-info__titulo">{{ curso.titulo }}</span>
-              </div>
-            </td>
-            <td>{{ curso.instrutor }}</td>
-            <td>{{ formatarMoeda(curso.preco) }}</td>
-            <td>{{ curso.dataCriacao }}</td>
-            <td>
-              <span class="badge-status" [ngClass]="'badge-status--' + curso.status">
-                {{ curso.status === 'publicado' ? 'Ativo' : curso.status === 'pendente' ? 'Revisão' : 'Bloqueado' }}
-              </span>
-            </td>
-            <td>
-              <div class="acoes-btns">
-                <button class="btn-acao btn-acao--primary" title="Aprovar/Revisar"><app-header-icone nome="olho" [tamanho]="16"></app-header-icone></button>
-                <button class="btn-acao btn-acao--excluir" title="Remover"><app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone></button>
-              </div>
-            </td>
-          </tr>
+          @for (curso of cursosFiltrados(); track curso.id) {
+            <tr>
+              <td>
+                <div class="curso-info">
+                  <div class="curso-info__thumb"></div>
+                  <span class="curso-info__titulo">{{ curso.titulo }}</span>
+                </div>
+              </td>
+              <td>{{ curso.instrutor }}</td>
+              <td>{{ formatarMoeda(curso.preco) }}</td>
+              <td>{{ curso.dataCriacao }}</td>
+              <td>
+                <span class="badge-status" [class]="'badge-status--' + curso.status">
+                  {{
+                    curso.status === 'publicado'
+                      ? 'Ativo'
+                      : curso.status === 'pendente'
+                        ? 'Revisão'
+                        : 'Bloqueado'
+                  }}
+                </span>
+              </td>
+              <td>
+                <div class="acoes-btns">
+                  <button class="btn-acao btn-acao--primary" title="Aprovar/Revisar">
+                    <app-header-icone nome="olho" [tamanho]="16"></app-header-icone>
+                  </button>
+                  <button class="btn-acao btn-acao--excluir" title="Remover">
+                    <app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AlertaService } from '../../../../core/service/alerta.service';
+import { ConfirmService } from '../../../../core/service/confirm.service';
+import { Logger } from '../../../../core/utils/logger';
+import { AutenticacaoService } from '../../../../core/service/autenticacao.service';
 
 interface Sessao {
   id: number;
@@ -19,6 +23,10 @@ interface Sessao {
   styleUrl: './seguranca.component.scss',
 })
 export class ConfigSegurancaComponent {
+  private alertaService = inject(AlertaService);
+  private confirmService = inject(ConfirmService);
+  private authService = inject(AutenticacaoService);
+  
   formularioSenha = new FormGroup({
     senhaAtual: new FormControl('', {
       validators: [Validators.required],
@@ -66,43 +74,62 @@ export class ConfigSegurancaComponent {
 
     const { novaSenha, confirmarSenha } = this.formularioSenha.getRawValue();
     if (novaSenha !== confirmarSenha) {
-      alert('As senhas não coincidem');
+      this.alertaService.aviso('As senhas não coincidem', 'Senha Inválida');
       return;
     }
 
     this.alterandoSenha = true;
-    console.log('Alterando senha...');
+    const usuario = this.authService.usuarioLogado();
+    Logger.audit('Usuário solicitou alteração de senha', 'Segurança', { id: usuario?.id });
 
     setTimeout(() => {
       this.alterandoSenha = false;
       this.formularioSenha.reset();
-      alert('Senha alterada com sucesso!');
+      this.alertaService.sucesso('Senha alterada com sucesso!');
+      Logger.info('Senha alterada com sucesso', 'Segurança', { id: usuario?.id });
     }, 1500);
   }
 
   toggleAuth2FA() {
     this.auth2FA = !this.auth2FA;
+    const usuario = this.authService.usuarioLogado();
+    Logger.audit(`Usuário ${this.auth2FA ? 'ativou' : 'desativou'} 2FA`, 'Segurança', { id: usuario?.id });
+    
     if (this.auth2FA) {
-      alert('Autenticação de dois fatores ativada!');
+      this.alertaService.sucesso('Autenticação de dois fatores ativada!');
     } else {
-      alert('Autenticação de dois fatores desativada!');
+      this.alertaService.aviso('Autenticação de dois fatores desativada!');
     }
   }
 
-  encerrarSessao(sessao: Sessao) {
-    if (confirm('Tem certeza que deseja encerrar esta sessão?')) {
+  async encerrarSessao(sessao: Sessao) {
+    const confirmado = await this.confirmService.confirmar(
+      'Encerrar Sessão',
+      'Tem certeza que deseja encerrar esta sessão?'
+    );
+    if (confirmado) {
       this.sessoes = this.sessoes.filter((s) => s.id !== sessao.id);
+      this.alertaService.sucesso('Sessão encerrada.');
     }
   }
 
-  excluirConta() {
-    if (
-      confirm(
-        'ATENÇÃO: Esta ação é irreversível. Todos os seus dados serão permanentemente excluídos. Deseja continuar?'
-      )
-    ) {
-      if (confirm('Tem certeza absoluta? Digite "EXCLUIR" para confirmar.')) {
-        console.log('Excluindo conta...');
+  async excluirConta() {
+    const confirmado = await this.confirmService.confirmar(
+      'Excluir Conta',
+      'ATENÇÃO: Esta ação é irreversível. Todos os seus dados serão permanentemente excluídos. Deseja continuar?'
+    );
+    
+    if (confirmado) {
+      const certeza = await this.confirmService.confirmar(
+        'Confirmar Exclusão',
+        'Tem certeza absoluta de que deseja excluir sua conta?',
+        'Sim, excluir tudo',
+        'Não, cancelar'
+      );
+      if (certeza) {
+        const usuario = this.authService.usuarioLogado();
+        Logger.audit('Usuário confirmou exclusão permanente da conta', 'Segurança', { id: usuario?.id });
+        this.alertaService.erro('Iniciando processo de exclusão...', 'Conta sendo removida');
       }
     }
   }
@@ -113,7 +140,7 @@ export class ConfigSegurancaComponent {
 
     setTimeout(() => {
       this.salvando = false;
-      alert('Alterações salvas com sucesso!');
+      this.alertaService.sucesso('Alterações salvas com sucesso!');
     }, 1000);
   }
 }

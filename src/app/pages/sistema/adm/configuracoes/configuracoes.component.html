@@ -26,8 +26,12 @@
       </nav>
 
       <div class="aba-painel">
-        <app-config-perfil *ngIf="abaAtiva === 'perfil'"></app-config-perfil>
-        <app-config-seguranca *ngIf="abaAtiva === 'seguranca'"></app-config-seguranca>
+        @if (abaAtiva === 'perfil') {
+          <app-config-perfil></app-config-perfil>
+        }
+        @if (abaAtiva === 'seguranca') {
+          <app-config-seguranca></app-config-seguranca>
+        }
       </div>
     </div>
   </div>

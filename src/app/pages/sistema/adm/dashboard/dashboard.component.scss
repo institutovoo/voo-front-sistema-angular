@@ -41,7 +41,7 @@ $danger-light: #fee2e2;
   }
 
   .btn--dark {
-    background: $text-dark;
+    background: $primary;
     color: $white;
     padding: 0.875rem 1.5rem;
     border-radius: 12px;
@@ -54,8 +54,9 @@ $danger-light: #fee2e2;
     transition: all 0.2s ease;
 
     &:hover {
-      background: lighten($text-dark, 10%);
+      background: $primary-dark;
       transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($primary, 0.2);
     }
   }
 }

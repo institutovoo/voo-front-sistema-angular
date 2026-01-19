@@ -1,0 +1,16 @@
+@if (visivel) {
+  <div class="alerta-container" [class]="'alerta--' + tipo">
+    <div class="alerta-icone">
+      <app-header-icone [nome]="getIcone()" [tamanho]="24"></app-header-icone>
+    </div>
+    <div class="alerta-conteudo">
+      @if (titulo) {
+        <h4 class="alerta-titulo">{{ titulo }}</h4>
+      }
+      <p class="alerta-mensagem">{{ mensagem }}</p>
+    </div>
+    <button class="btn-fechar" (click)="aoFechar()">
+      <app-header-icone nome="fechar" [tamanho]="16"></app-header-icone>
+    </button>
+  </div>
+}

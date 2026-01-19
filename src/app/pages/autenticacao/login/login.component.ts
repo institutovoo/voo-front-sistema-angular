@@ -6,6 +6,7 @@ import { LogoComponent } from '../../../components/logo/logo.component';
 import { BotaoComponent } from '../../../components/botao/botao.component';
 import { CampoComponent } from '../../../components/campo/campo.component';
 import { AutenticacaoController } from '../../../core/controller/autenticacao.controller';
+import { AlertaService } from '../../../core/service/alerta.service';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ import { AutenticacaoController } from '../../../core/controller/autenticacao.co
 })
 export class LoginComponent {
   private authController = inject(AutenticacaoController);
+  private alertaService = inject(AlertaService);
 
   formulario = new FormGroup({
     identificador: new FormControl('', {
@@ -37,6 +39,7 @@ export class LoginComponent {
   });
 
   erro = '';
+  mostrarAlertaBloqueio = false;
 
   async enviar() {
     if (this.formulario.invalid) {
@@ -45,12 +48,16 @@ export class LoginComponent {
     }
 
     this.erro = '';
+    this.mostrarAlertaBloqueio = false;
     const { identificador, senha } = this.formulario.getRawValue();
 
     const resultado = await this.authController.login({ identificador, senha });
     
     if (!resultado.sucesso) {
       this.erro = resultado.mensagem || 'Erro desconhecido';
+      if (this.erro.toLowerCase().includes('bloqueada')) {
+        this.alertaService.erro(this.erro, 'Acesso Bloqueado');
+      }
     }
   }
 }

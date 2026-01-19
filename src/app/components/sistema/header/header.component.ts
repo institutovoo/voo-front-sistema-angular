@@ -16,6 +16,7 @@ import { HeaderUsuarioAvatarComponent } from './components/usuario-avatar/usuari
 import { AutenticacaoService } from '../../../core/service/autenticacao.service';
 import { TipoConta } from '../../../core/model/autenticacao.model';
 import { ModalNovoPerfilComponent } from '../modal-novo-perfil/modal-novo-perfil.component';
+import { ConfirmService } from '../../../core/service/confirm.service';
 
 export type { MenuItem } from './components/menu-item/menu-item.component';
 
@@ -43,6 +44,7 @@ export interface Usuario {
 export class SistemaHeaderComponent implements OnInit, OnChanges {
   private authService = inject(AutenticacaoService);
   private router = inject(Router);
+  private confirmService = inject(ConfirmService);
 
   @Input() usuario: Usuario = { nome: 'Usuário' };
   @Input() tipoUsuario: 'aluno' | 'instrutor' | 'admin' = 'aluno';
@@ -129,10 +131,17 @@ export class SistemaHeaderComponent implements OnInit, OnChanges {
     this.menuMobileAberto = false;
   }
 
-  onLogout() {
+  async onLogout() {
     this.fecharMenuUsuario();
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    const confirmado = await this.confirmService.confirmar(
+      'Sair do Sistema',
+      'Tem certeza que deseja encerrar sua sessão atual?'
+    );
+
+    if (confirmado) {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+    }
   }
 
   onConfiguracoes() {

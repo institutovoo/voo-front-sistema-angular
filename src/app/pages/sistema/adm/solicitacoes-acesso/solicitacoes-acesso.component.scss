@@ -11,16 +11,14 @@ $danger: #ef4444;
 
 .solicitacoes {
   padding: 0;
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
 
   &__header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 3.5rem;
-    padding-bottom: 2rem;
-    border-bottom: 2px dashed $border;
+    align-items: center;
+    margin-bottom: 2.5rem;
   }
 
   &__titulo {
@@ -40,28 +38,28 @@ $danger: #ef4444;
   }
 
   .contador {
-    background: $text-dark;
-    padding: 1rem 2rem;
-    border-radius: 16px;
+    background: $primary;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 10px 25px rgba($text-dark, 0.15);
+    box-shadow: 0 8px 20px rgba($primary, 0.15);
 
     .numero {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      color: $primary;
+      color: $white;
       line-height: 1;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.125rem;
     }
 
     .label {
-      font-size: 0.75rem;
+      font-size: 0.625rem;
       text-transform: uppercase;
       font-weight: 700;
-      color: rgba($white, 0.6);
-      letter-spacing: 0.1em;
+      color: rgba($white, 0.9);
+      letter-spacing: 0.05em;
     }
   }
 }

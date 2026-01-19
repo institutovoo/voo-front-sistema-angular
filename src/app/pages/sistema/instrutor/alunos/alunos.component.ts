@@ -1,8 +1,9 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SistemaLayoutComponent } from '../../../../components/sistema/layout/layout.component';
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
+import { AlertaService } from '../../../../core/service/alerta.service';
 
 interface AlunoMatriculado {
   id: number;
@@ -23,6 +24,7 @@ interface AlunoMatriculado {
   styleUrl: './alunos.component.scss'
 })
 export class InstrutorAlunosComponent implements OnInit {
+  private alertaService = inject(AlertaService);
   usuario = { nome: 'João Silva', avatar: '' };
   
   alunos = signal<AlunoMatriculado[]>([
@@ -82,6 +84,9 @@ export class InstrutorAlunosComponent implements OnInit {
   enviarRelatorioEmail() {
     // Simulação da chamada ao Lambda que gera o Excel e notifica por e-mail
     console.log('Iniciando geração de Excel via Lambda e envio de notificação...');
-    alert('O relatório de alunos está sendo gerado e será enviado para o seu e-mail em instantes!');
+    this.alertaService.info(
+      'O relatório de alunos está sendo gerado e será enviado para o seu e-mail em instantes!',
+      'Relatório em Processamento'
+    );
   }
 }

@@ -1,4 +1,5 @@
 $primary: #21b7cd;
+$primary-dark: #1a9aab;
 $primary-light: #e0f7fa;
 $text-dark: #0b1b2b;
 $text-muted: #64748b;
@@ -133,6 +134,12 @@ $danger-light: #fee2e2;
     font-weight: 800;
   }
 
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
   &__nome {
     font-size: 0.9375rem;
     font-weight: 700;
@@ -147,9 +154,158 @@ $danger-light: #fee2e2;
   }
 }
 
+/* Detalhes do Usuário no Modal */
+.detalhes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+
+  .detalhes-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    span {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: $text-dark;
+    }
+  }
+}
+
+.detalhes-secao {
+  border-top: 1px solid $border;
+  padding-top: 1.5rem;
+
+  label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: $danger;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .motivo-texto {
+    font-size: 0.875rem;
+    color: $text-muted;
+    background: $danger-light;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+/* Formulário de Bloqueio */
+.form-bloqueio {
+  .aviso-bloqueio {
+    font-size: 0.875rem;
+    color: $text-muted;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .campo-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: $text-dark;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid $border;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      resize: vertical;
+      transition: all 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 4px $primary-light;
+      }
+    }
+  }
+}
+
+/* Botões de Modal */
+.btn-fechar-modal, .btn-cancelar {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #f1f5f9;
+  color: #64748b;
+  border: none;
+
+  &:hover { background: #e2e8f0; color: #475569; }
+}
+
+.btn-confirmar-bloqueio {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: $danger;
+  color: $white;
+  border: none;
+
+  &:hover {
+    background: darken($danger, 5%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($danger, 0.2);
+  }
+}
+
+.badge-tipo {
+  background: #0b1b2b;
+  color: $white;
+  font-size: 0.625rem;
+  font-weight: 800;
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.perfis-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.loading-overlay {
+  padding: 4rem;
+  text-align: center;
+  color: $text-muted;
+  font-weight: 600;
+}
+
 .badge-tipo {
   padding: 0.375rem 0.75rem;
-  border-radius: 100px;
+  border-radius: 8px;
   font-size: 0.6875rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -161,14 +317,15 @@ $danger-light: #fee2e2;
 
 .badge-status {
   padding: 0.375rem 0.75rem;
-  border-radius: 100px;
+  border-radius: 8px;
   font-size: 0.6875rem;
   font-weight: 800;
   text-transform: uppercase;
 
   &--ativo { color: $success; background: $success-light; }
   &--bloqueado { color: $danger; background: $danger-light; }
-  &--pendente { color: $warning; background: $warning-light; }
+  &--analise { color: $warning; background: $warning-light; }
+  &--desativado { color: $text-muted; background: #f1f5f9; border: 1px solid $border; }
 }
 
 .acoes-btns {
@@ -191,6 +348,7 @@ $danger-light: #fee2e2;
 
   &:hover { background: $bg-light; color: $primary; border-color: $primary; }
   &--bloquear:hover { color: $warning; border-color: $warning; }
+  &--desbloquear:hover { color: $success; border-color: $success; }
   &--excluir:hover { color: $danger; border-color: $danger; }
 }
 
@@ -202,9 +360,15 @@ $danger-light: #fee2e2;
   background: $primary;
   color: $white;
   border: none;
-  border-radius: 100px;
+  border-radius: 12px;
   font-size: 0.9375rem;
   font-weight: 700;
   box-shadow: 0 8px 20px rgba($primary, 0.2);
   cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $primary-dark;
+    transform: translateY(-2px);
+  }
 }

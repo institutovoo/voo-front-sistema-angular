@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AlertaService } from '../../../../core/service/alerta.service';
 
 interface CanalNotificacao {
   id: string;
@@ -25,6 +26,8 @@ interface TipoNotificacao {
   styleUrl: './notificacao.component.scss',
 })
 export class ConfigNotificacaoComponent {
+  private alertaService = inject(AlertaService);
+  
   canais: CanalNotificacao[] = [
     {
       id: 'email',
@@ -92,7 +95,7 @@ export class ConfigNotificacaoComponent {
 
     setTimeout(() => {
       this.salvando = false;
-      alert('Preferências de notificação salvas!');
+      this.alertaService.sucesso('Preferências de notificação salvas!');
     }, 1000);
   }
 }

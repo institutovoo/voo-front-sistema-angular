@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MetasService } from '../../../../core/service/metas.service';
 import { AutenticacaoService } from '../../../../core/service/autenticacao.service';
+import { AlertaService } from '../../../../core/service/alerta.service';
+import { Logger } from '../../../../core/utils/logger';
 
 @Component({
   selector: 'app-config-perfil',
@@ -14,6 +16,7 @@ import { AutenticacaoService } from '../../../../core/service/autenticacao.servi
 export class ConfigPerfilComponent {
   private metasService = inject(MetasService);
   private authService = inject(AutenticacaoService);
+  private alertaService = inject(AlertaService);
 
   formulario = new FormGroup({
     nomeCompleto: new FormControl(this.authService.usuarioLogado()?.nome_completo || '', {
@@ -48,7 +51,7 @@ export class ConfigPerfilComponent {
     if (input.files && input.files[0]) {
       const file = input.files[0];
       if (file.size > 2 * 1024 * 1024) {
-        alert('A imagem deve ter no máximo 2MB');
+        this.alertaService.aviso('A imagem deve ter no máximo 2MB', 'Arquivo muito grande');
         return;
       }
       const reader = new FileReader();
@@ -76,14 +79,20 @@ export class ConfigPerfilComponent {
 
     this.salvando = true;
     const dados = this.formulario.getRawValue();
-    console.log('Salvando perfil:', dados);
+    const usuario = this.authService.usuarioLogado();
+    
+    Logger.audit('Usuário iniciou atualização de perfil', 'Perfil', { 
+      id: usuario?.id, 
+      dados: dados 
+    });
 
     // Atualiza a meta semanal no serviço
     this.metasService.atualizarMeta(dados.metaSemanal);
 
     setTimeout(() => {
       this.salvando = false;
-      alert('Alterações salvas com sucesso!');
+      this.alertaService.sucesso('Alterações salvas com sucesso!');
+      Logger.info('Perfil atualizado com sucesso', 'Perfil', { id: usuario?.id });
     }, 1000);
   }
 }

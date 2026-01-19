@@ -6,6 +6,7 @@ import { BotaoComponent } from '../../botao/botao.component';
 import { CampoComponent } from '../../campo/campo.component';
 import { HeaderIconeComponent } from '../header/components/icone/icone.component';
 import { mascaraDocumento } from '../../../core/utils/mascaras';
+import { ConfirmService } from '../../../core/service/confirm.service';
 
 export interface PerfilOpcao {
   tipo: TipoConta;
@@ -24,6 +25,7 @@ export interface PerfilOpcao {
 })
 export class ModalNovoPerfilComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private confirmService = inject(ConfirmService);
 
   @Input() perfilAtual: TipoConta | null = null;
   @Input() perfisExistentes: TipoConta[] = [];
@@ -99,19 +101,27 @@ export class ModalNovoPerfilComponent implements OnInit {
       // Não pode criar o perfil que já tem
       if (this.perfisExistentes.includes(opcao.tipo)) return false;
 
-      // Regras específicas
+      // Regras de Admin: Pode tudo
       if (this.perfilAtual === 'Admin') return true;
 
-      if (this.perfilAtual === 'Aluno') {
-        return opcao.tipo.includes('Instrutor');
+      // Regra de PF (Aluno ou Instrutor PF):
+      // Podem alternar entre si e podem criar um perfil PJ (Instrutor PJ)
+      const ehUsuarioPF = this.perfilAtual === 'Aluno' || this.perfilAtual === 'Instrutor (PF)';
+      if (ehUsuarioPF) {
+        return (
+          opcao.tipo === 'Aluno' || 
+          opcao.tipo === 'Instrutor (PF)' || 
+          opcao.tipo === 'Instrutor (PJ)'
+        );
       }
 
-      if (this.perfilAtual?.includes('Instrutor')) {
-        return opcao.tipo === 'Aluno';
-      }
-
-      if (this.perfilAtual?.includes('PJ') || this.perfilAtual?.includes('Parceira')) {
-        return opcao.tipo === 'Instrutor (PJ)';
+      // Regra de PJ (Empresas, Instituições ou Instrutor PJ):
+      // NUNCA podem ser Aluno ou Instrutor PF.
+      // Podem apenas criar outros perfis PJ (como Instrutor PJ se forem Empresa/Instituição).
+      const ehUsuarioPJ = this.perfilAtual?.includes('PJ') || this.perfilAtual?.includes('Parceira');
+      if (ehUsuarioPJ) {
+        const ehNovoPerfilPJ = opcao.tipo.includes('(PJ)') || opcao.tipo.includes('PJ ');
+        return ehNovoPerfilPJ && opcao.tipo !== 'Aluno' && opcao.tipo !== 'Instrutor (PF)';
       }
 
       return false;
@@ -127,6 +137,9 @@ export class ModalNovoPerfilComponent implements OnInit {
 
     const jaTemPJ = this.documentos.some(doc => doc.replace(/\D/g, '').length === 14);
     const jaTemPF = this.documentos.some(doc => doc.replace(/\D/g, '').length === 11);
+
+    // Se o perfil for Instrutor, avisar sobre a aprovação
+    const requerAprovacao = opcao.tipo.includes('Instrutor') && this.perfilAtual !== 'Admin';
 
     if (ehNovoPJ && !jaTemPJ) {
       this.tipoDocumentoNecessario = 'CNPJ';
@@ -144,11 +157,24 @@ export class ModalNovoPerfilComponent implements OnInit {
       this.formularioExtras.get('documento')?.setValue(this.documentos.find(doc => doc.replace(/\D/g, '').length === 14));
       this.formularioExtras.get('razaoSocial')?.setValidators([Validators.required]);
       this.passo = 'formulario';
+    } else if (requerAprovacao) {
+      // Se for instrutor e não tiver dados extras para preencher, ainda precisa confirmar que sabe da aprovação
+      this.solicitarConfirmacaoAprovacao(opcao);
     } else {
       this.confirmarCriacao();
     }
     
     this.formularioExtras.updateValueAndValidity();
+  }
+
+  private async solicitarConfirmacaoAprovacao(opcao: PerfilOpcao) {
+    const confirmado = await this.confirmService.confirmar(
+      'Solicitar Acesso',
+      `O perfil de ${opcao.titulo} requer aprovação do administrador. Deseja enviar sua solicitação para análise?`
+    );
+    if (confirmado) {
+      this.confirmarCriacao();
+    }
   }
 
   voltar() {
@@ -158,8 +184,22 @@ export class ModalNovoPerfilComponent implements OnInit {
 
   confirmarCriacao() {
     if (this.perfilSelecionado) {
-      const dados = this.passo === 'formulario' ? this.formularioExtras.value : undefined;
-      this.criar.emit({ tipo: this.perfilSelecionado.tipo, dadosExtras: dados });
+      const formValue = this.formularioExtras.value;
+      
+      // Se não preencheu o documento no formulário, tenta pegar o que já temos
+      if (!formValue.documento) {
+        const ehNovoPJ = this.perfilSelecionado.tipo.includes('(PJ)') || this.perfilSelecionado.tipo.includes('PJ ');
+        const docExistente = this.documentos.find(doc => {
+          const limpo = doc.replace(/\D/g, '');
+          return ehNovoPJ ? limpo.length === 14 : limpo.length === 11;
+        });
+        
+        if (docExistente) {
+          formValue.documento = docExistente;
+        }
+      }
+
+      this.criar.emit({ tipo: this.perfilSelecionado.tipo, dadosExtras: formValue });
     }
   }
 

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LogoComponent } from '../../../components/logo/logo.component';
 import { BotaoComponent } from '../../../components/botao/botao.component';
 import { CampoComponent } from '../../../components/campo/campo.component';
@@ -25,6 +25,7 @@ import { AlertaService } from '../../../core/service/alerta.service';
 export class LoginComponent {
   private authController = inject(AutenticacaoController);
   private alertaService = inject(AlertaService);
+  private router = inject(Router);
 
   formulario = new FormGroup({
     identificador: new FormControl('', {
@@ -61,6 +62,14 @@ export class LoginComponent {
     
     if (!resultado.sucesso) {
       this.erro = resultado.mensagem || 'Erro desconhecido';
+      
+      // Se for um Admin tentando logar no portal público
+      if (this.erro.includes('portal administrativo')) {
+        this.alertaService.aviso(this.erro, 'Acesso Administrativo');
+        setTimeout(() => this.router.navigate(['/admin/login']), 3000);
+        return;
+      }
+
       if (this.erro.toLowerCase().includes('bloqueada')) {
         this.alertaService.erro(this.erro, 'Acesso Bloqueado');
       }

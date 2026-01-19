@@ -55,7 +55,16 @@ export class AutenticacaoController {
           },
           error: (err: any) => {
             console.error('[AutenticacaoController] Erro de rede ou servidor ao logar:', err);
-            resolve({ sucesso: false, mensagem: 'Erro de conexão ou credenciais inválidas' });
+            
+            // Tenta extrair a mensagem de erro retornada pelo BFF (ex: erro 400 com body JSON)
+            let mensagem = 'Erro de conexão ou credenciais inválidas';
+            if (err.error && err.error.message) {
+              mensagem = err.error.message;
+            } else if (err.error && err.error.mensagem) {
+              mensagem = err.error.mensagem;
+            }
+
+            resolve({ sucesso: false, mensagem });
           },
         });
       });

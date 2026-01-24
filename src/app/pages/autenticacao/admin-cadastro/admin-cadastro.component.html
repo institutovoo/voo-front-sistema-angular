@@ -120,7 +120,12 @@
             formControlName="cargo"
           ></app-campo>
 
-          <app-botao tipo="submit" variante="primario" [desabilitado]="!formulario.valid">
+          <app-botao
+            tipo="submit"
+            variante="primario"
+            [larguraTotal]="true"
+            [desabilitado]="!formulario.valid"
+          >
             Enviar solicitação
           </app-botao>
         </form>
@@ -153,7 +158,9 @@
             e-mail institucional em até 24h.
           </p>
 
-          <app-botao (click)="voltar()" variante="primario"> Voltar para o login </app-botao>
+          <app-botao (click)="voltar()" variante="primario" [larguraTotal]="true">
+            Voltar para o login
+          </app-botao>
         </div>
       </ng-template>
     </div>

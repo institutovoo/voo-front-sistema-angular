@@ -56,14 +56,19 @@ export class InstrutorDashboardComponent implements OnInit {
 
   estatisticas: Estatistica[] = [];
   cursos: CursoInstrutor[] = [];
-  duvidasRecentes: any[] = [];
   receitaMensal: any[] = [];
+  alertas: any[] = [];
 
   ngOnInit() {
     this.carregarDadosMockados();
   }
 
   carregarDadosMockados() {
+    this.alertas = [
+      { id: 1, tipo: 'video', mensagem: 'Aula 05 sem vídeo enviado', curso: 'React Avançado', cor: 'error' },
+      { id: 2, tipo: 'quiz', mensagem: 'Quiz do Módulo 2 sem questões', curso: 'Fullstack Web', cor: 'warning' },
+      { id: 3, tipo: 'prova', mensagem: 'Prova final aguardando revisão', curso: 'Node.js Backend', cor: 'info' }
+    ];
     this.estatisticas = [
       {
         icone: 'cursos',
@@ -164,33 +169,6 @@ export class InstrutorDashboardComponent implements OnInit {
         receitaTotal: 3850,
         receitaMensal: 0,
         ultimaAtualizacao: '2025-12-20',
-      },
-    ];
-
-    this.duvidasRecentes = [
-      {
-        id: 1,
-        aluno: 'Maria Silva',
-        curso: 'Desenvolvimento Web Fullstack',
-        aula: 'Aula 14 - React Hooks',
-        pergunta: 'Como faço para usar o useEffect com cleanup function?',
-        tempo: '2h atrás',
-      },
-      {
-        id: 2,
-        aluno: 'João Santos',
-        curso: 'React Avançado',
-        aula: 'Aula 8 - Context API',
-        pergunta: 'Qual a diferença entre useContext e Redux?',
-        tempo: '5h atrás',
-      },
-      {
-        id: 3,
-        aluno: 'Ana Costa',
-        curso: 'Desenvolvimento Web Fullstack',
-        aula: 'Aula 22 - API REST',
-        pergunta: 'Como implementar autenticação JWT?',
-        tempo: '1d atrás',
       },
     ];
 

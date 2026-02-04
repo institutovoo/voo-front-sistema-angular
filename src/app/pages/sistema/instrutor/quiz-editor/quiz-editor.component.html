@@ -1,0 +1,88 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="quiz-editor-container">
+    <header class="page-header">
+      <div class="header-content">
+        <a [routerLink]="['/instrutor/cursos', cursoId, 'estrutura']" class="btn-back">
+          <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
+          Voltar para estrutura
+        </a>
+        <h1 class="page-title">Editor de Quiz</h1>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn--outline">Preview</button>
+        <button class="btn btn--primary" (click)="onSubmit()" [disabled]="!formQuiz.valid">
+          Salvar Quiz
+        </button>
+      </div>
+    </header>
+
+    <form [formGroup]="formQuiz" class="quiz-grid">
+      <div class="main-column">
+        <section class="editor-section">
+          <h2 class="section-title">Configurações do Quiz</h2>
+          <div class="form-group">
+            <label for="titulo">Nome do Quiz *</label>
+            <input type="text" id="titulo" formControlName="titulo" placeholder="Ex: Quiz de Introdução">
+          </div>
+          <div class="form-group">
+            <label for="descricao">Descrição (Opcional)</label>
+            <textarea id="descricao" formControlName="descricao" rows="2"></textarea>
+          </div>
+        </section>
+
+        <section class="editor-section">
+          <div class="section-header">
+            <h2 class="section-title">Questões</h2>
+            <button type="button" class="btn btn--outline btn--small" (click)="adicionarQuestao()">
+              <app-header-icone nome="mais" [tamanho]="14"></app-header-icone>
+              Nova Questão
+            </button>
+          </div>
+
+          <div formArrayName="questoes" class="questoes-lista">
+            <div *ngFor="let questao of questoes.controls; let i = index" [formGroupName]="i" class="questao-card">
+              <div class="questao-header">
+                <span class="questao-numero">Questão {{ i + 1 }}</span>
+                <button type="button" class="btn-icon text-danger" (click)="removerQuestao(i)">
+                  <app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone>
+                </button>
+              </div>
+
+              <div class="form-group">
+                <label>Pergunta *</label>
+                <input type="text" formControlName="pergunta" placeholder="Digite a pergunta aqui">
+              </div>
+
+              <div class="alternativas-container">
+                <label>Alternativas * (Marque a correta)</label>
+                <div formArrayName="alternativas" class="alternativas-lista">
+                  <div *ngFor="let alt of getAlternativas(questao).controls; let j = index" [formGroupName]="j" class="alternativa-item">
+                    <input type="checkbox" formControlName="correta">
+                    <input type="text" formControlName="texto" placeholder="Opção {{ j + 1 }}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="side-column">
+        <section class="editor-section">
+          <h2 class="section-title">Regras</h2>
+          <div class="form-group">
+            <label for="tentativas">Tentativas permitidas</label>
+            <input type="number" id="tentativas" formControlName="tentativasPermitidas">
+          </div>
+          <div class="form-group checkbox-group">
+            <label class="checkbox-container">
+              <input type="checkbox" formControlName="feedbackAutomatico">
+              <span class="checkmark"></span>
+              Feedback automático
+            </label>
+          </div>
+        </section>
+      </div>
+    </form>
+  </div>
+</app-sistema-layout>

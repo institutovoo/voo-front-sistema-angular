@@ -1,0 +1,120 @@
+@import '../../../../styles/sistema';
+
+.recurso-editor-container {
+  min-height: 100vh;
+  background: $bg-light;
+}
+
+.page-header {
+  background: $white;
+  border-bottom: 1px solid $border;
+  padding: 2rem 2.5rem;
+
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: $text-muted;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+
+  .header-info {
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: $text-dark;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: $text-muted;
+      font-size: 0.9375rem;
+    }
+  }
+}
+
+.editor-content {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.form-section {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-dark;
+    margin-bottom: 0.5rem;
+  }
+
+  input[type='text'],
+  input[type='url'],
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid $border;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    transition: border-color 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+    }
+  }
+
+  input[type='file'] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px dashed $border;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  small {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: $text-muted;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 2rem;
+  background: $white;
+  border-top: 1px solid $border;
+  position: sticky;
+  bottom: 0;
+}

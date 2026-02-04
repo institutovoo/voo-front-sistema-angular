@@ -536,6 +536,56 @@ $danger-light: #fef2f2;
   }
 }
 
+// ========== ALERTAS ==========
+.alertas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.alerta-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+
+  &--error {
+    background: $danger-light;
+    border-color: rgba($danger, 0.1);
+    .alerta-item__icone { color: $danger; }
+  }
+
+  &--warning {
+    background: $warning-light;
+    border-color: rgba($warning, 0.1);
+    .alerta-item__icone { color: $warning; }
+  }
+
+  &--info {
+    background: $info-light;
+    border-color: rgba($info, 0.1);
+    .alerta-item__icone { color: $info; }
+  }
+
+  &__icone {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__mensagem {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: $text-dark;
+    margin: 0;
+  }
+
+  &__curso {
+    font-size: 0.6875rem;
+    color: $text-muted;
+  }
+}
+
 // ========== RECEITA ==========
 .receita-total {
   text-align: center;

@@ -1,0 +1,496 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="wizard-container">
+    <!-- Header -->
+    <header class="wizard-header">
+      <button class="btn-back" (click)="voltarParaCursos()">
+        <app-header-icone nome="seta-esquerda" [tamanho]="20"></app-header-icone>
+        <span>Sair</span>
+      </button>
+
+      <div class="header-info">
+        <h1 class="page-title">{{ isEditMode ? 'Editar Curso' : 'Criar Novo Curso' }}</h1>
+        <p class="page-subtitle">
+          Fase {{ faseAtual }} de {{ totalFases }}: {{ fases[faseAtual - 1].titulo }}
+        </p>
+      </div>
+
+      <div class="progresso-badge">{{ getProgressoGeral() }}% completo</div>
+    </header>
+
+    <!-- Stepper -->
+    <div class="stepper">
+      <div
+        *ngFor="let fase of fases; let i = index"
+        class="stepper-item"
+        [class.stepper-item--ativo]="fase.id === faseAtual"
+        [class.stepper-item--concluido]="fase.concluida"
+        [class.stepper-item--clicavel]="fase.id < faseAtual"
+        (click)="irParaFase(fase.id)"
+      >
+        <div class="stepper-numero">
+          <app-header-icone
+            *ngIf="fase.concluida"
+            nome="verificar"
+            [tamanho]="16"
+            cor="#ffffff"
+          ></app-header-icone>
+          <span *ngIf="!fase.concluida">{{ fase.id }}</span>
+        </div>
+        <div class="stepper-texto">
+          <span class="stepper-titulo">{{ fase.titulo }}</span>
+          <span class="stepper-descricao">{{ fase.descricao }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conteúdo das Fases -->
+    <div class="wizard-conteudo">
+      <!-- FASE 1: Informações Básicas -->
+      <div class="fase-card" *ngIf="faseAtual === 1">
+        <div class="fase-header">
+          <div class="fase-icone">
+            <app-header-icone nome="documento" [tamanho]="28" cor="#21b7cd"></app-header-icone>
+          </div>
+          <div>
+            <h2 class="fase-titulo">Informações Básicas</h2>
+            <p class="fase-descricao">Comece com os dados essenciais do seu curso</p>
+          </div>
+        </div>
+
+        <form [formGroup]="formFase1" class="fase-form">
+          <div class="form-group">
+            <label for="titulo">Título do curso *</label>
+            <input
+              type="text"
+              id="titulo"
+              formControlName="titulo"
+              placeholder="Ex: Desenvolvimento Web Completo: HTML, CSS e JavaScript"
+            />
+            <span class="form-erro" *ngIf="getCampoErro(formFase1, 'titulo')">
+              {{ getCampoErro(formFase1, 'titulo') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="descricaoCurta">Descrição curta *</label>
+            <textarea
+              id="descricaoCurta"
+              formControlName="descricaoCurta"
+              rows="2"
+              placeholder="Uma descrição breve e atrativa do curso (mínimo 20 caracteres)"
+            ></textarea>
+            <span class="form-erro" *ngIf="getCampoErro(formFase1, 'descricaoCurta')">
+              {{ getCampoErro(formFase1, 'descricaoCurta') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="descricaoLonga">Descrição completa *</label>
+            <textarea
+              id="descricaoLonga"
+              formControlName="descricaoLonga"
+              rows="6"
+              placeholder="Descreva detalhadamente o que o aluno aprenderá (mínimo 100 caracteres)"
+            ></textarea>
+            <span class="form-erro" *ngIf="getCampoErro(formFase1, 'descricaoLonga')">
+              {{ getCampoErro(formFase1, 'descricaoLonga') }}
+            </span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="categoria">Categoria *</label>
+              <select id="categoria" formControlName="categoria">
+                <option value="">Selecione uma categoria</option>
+                <option value="programacao">Programação</option>
+                <option value="design">Design</option>
+                <option value="marketing">Marketing</option>
+                <option value="negocios">Negócios</option>
+                <option value="idiomas">Idiomas</option>
+              </select>
+              <span class="form-erro" *ngIf="getCampoErro(formFase1, 'categoria')">
+                {{ getCampoErro(formFase1, 'categoria') }}
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="nivel">Nível *</label>
+              <select id="nivel" formControlName="nivel">
+                <option value="iniciante">Iniciante</option>
+                <option value="intermediario">Intermediário</option>
+                <option value="avancado">Avançado</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="idioma">Idioma *</label>
+              <select id="idioma" formControlName="idioma">
+                <option value="portugues">Português</option>
+                <option value="ingles">Inglês</option>
+                <option value="espanhol">Espanhol</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- FASE 2: Público e Objetivos -->
+      <div class="fase-card" *ngIf="faseAtual === 2">
+        <div class="fase-header">
+          <div class="fase-icone">
+            <app-header-icone nome="pessoas" [tamanho]="28" cor="#21b7cd"></app-header-icone>
+          </div>
+          <div>
+            <h2 class="fase-titulo">Público e Objetivos</h2>
+            <p class="fase-descricao">Defina para quem é o curso e o que eles vão aprender</p>
+          </div>
+        </div>
+
+        <form [formGroup]="formFase2" class="fase-form">
+          <div class="form-group">
+            <label for="publicoAlvo">Público-alvo *</label>
+            <textarea
+              id="publicoAlvo"
+              formControlName="publicoAlvo"
+              rows="3"
+              placeholder="Para quem este curso é mais adequado? Ex: Iniciantes em programação, profissionais de marketing, etc."
+            ></textarea>
+            <span class="form-erro" *ngIf="getCampoErro(formFase2, 'publicoAlvo')">
+              {{ getCampoErro(formFase2, 'publicoAlvo') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="preRequisitos">Pré-requisitos</label>
+            <textarea
+              id="preRequisitos"
+              formControlName="preRequisitos"
+              rows="3"
+              placeholder="O que o aluno precisa saber antes? Deixe vazio se não houver pré-requisitos"
+            ></textarea>
+            <span class="form-hint">Opcional - deixe vazio se o curso for para iniciantes</span>
+          </div>
+
+          <div class="form-group">
+            <label for="objetivos">O que o aluno vai aprender *</label>
+            <textarea
+              id="objetivos"
+              formControlName="objetivos"
+              rows="6"
+              placeholder="Liste os principais objetivos de aprendizagem. Ex:&#10;- Criar sites responsivos&#10;- Dominar JavaScript ES6+&#10;- Construir aplicações web completas"
+            ></textarea>
+            <span class="form-erro" *ngIf="getCampoErro(formFase2, 'objetivos')">
+              {{ getCampoErro(formFase2, 'objetivos') }}
+            </span>
+          </div>
+        </form>
+      </div>
+
+      <!-- FASE 3: Estrutura -->
+      <div class="fase-card" *ngIf="faseAtual === 3">
+        <div class="fase-header">
+          <div class="fase-icone">
+            <app-header-icone nome="curso" [tamanho]="28" cor="#21b7cd"></app-header-icone>
+          </div>
+          <div>
+            <h2 class="fase-titulo">Estrutura do Curso</h2>
+            <p class="fase-descricao">
+              Organize o conteúdo em seções (você poderá adicionar aulas depois)
+            </p>
+          </div>
+        </div>
+
+        <div class="fase-form">
+          <!-- Lista de Seções -->
+          <div class="secoes-lista" *ngIf="secoes.length > 0">
+            <div class="seccao-item" *ngFor="let seccao of secoes; let i = index">
+              <div class="seccao-numero">{{ i + 1 }}</div>
+              <div class="seccao-info">
+                <h4 class="seccao-titulo">{{ seccao.titulo }}</h4>
+                <p class="seccao-descricao" *ngIf="seccao.descricao">{{ seccao.descricao }}</p>
+              </div>
+              <button class="btn-icon-danger" type="button" (click)="removerSeccao(i)">
+                <app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone>
+              </button>
+            </div>
+          </div>
+
+          <div class="empty-state" *ngIf="secoes.length === 0">
+            <app-header-icone nome="curso" [tamanho]="48" cor="#cbd5e1"></app-header-icone>
+            <p>Nenhuma seção adicionada ainda</p>
+            <span>Adicione pelo menos uma seção para organizar seu curso</span>
+          </div>
+
+          <!-- Adicionar Nova Seção -->
+          <div class="adicionar-seccao">
+            <h3 class="subsecao-titulo">Adicionar nova seção</h3>
+            <div class="form-group">
+              <label for="novaSeccaoTitulo">Título da seção *</label>
+              <input
+                type="text"
+                id="novaSeccaoTitulo"
+                [(ngModel)]="novaSeccaoTitulo"
+                placeholder="Ex: Introdução ao Curso, Fundamentos, Projeto Prático"
+              />
+            </div>
+            <div class="form-group">
+              <label for="novaSeccaoDescricao">Descrição (opcional)</label>
+              <input
+                type="text"
+                id="novaSeccaoDescricao"
+                [(ngModel)]="novaSeccaoDescricao"
+                placeholder="Uma breve descrição do que será abordado nesta seção"
+              />
+            </div>
+            <button class="btn btn--outline" type="button" (click)="adicionarSeccao()">
+              <app-header-icone nome="mais" [tamanho]="18"></app-header-icone>
+              Adicionar Seção
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 4: Mídia -->
+      <div class="fase-card" *ngIf="faseAtual === 4">
+        <div class="fase-header">
+          <div class="fase-icone">
+            <app-header-icone nome="imagem" [tamanho]="28" cor="#21b7cd"></app-header-icone>
+          </div>
+          <div>
+            <h2 class="fase-titulo">Mídia</h2>
+            <p class="fase-descricao">Adicione uma imagem de capa e vídeo de apresentação</p>
+          </div>
+        </div>
+
+        <form [formGroup]="formFase4" class="fase-form">
+          <div class="form-group">
+            <label>Imagem de capa</label>
+            <div class="upload-area">
+              <input
+                type="file"
+                id="imagemCapa"
+                accept="image/*"
+                (change)="onFileSelected($event)"
+                style="display: none"
+              />
+              <label for="imagemCapa" class="upload-label">
+                <div class="upload-preview" *ngIf="capaPreview">
+                  <img [src]="capaPreview" alt="Preview da capa" />
+                </div>
+                <div class="upload-placeholder" *ngIf="!capaPreview">
+                  <app-header-icone nome="imagem" [tamanho]="48" cor="#cbd5e1"></app-header-icone>
+                  <span>Clique para selecionar uma imagem</span>
+                  <small>Recomendado: 1280x720px (16:9)</small>
+                </div>
+              </label>
+            </div>
+            <span class="form-hint">Opcional - você pode adicionar depois</span>
+          </div>
+
+          <div class="form-group">
+            <label for="videoApresentacao">Vídeo de apresentação (URL do YouTube)</label>
+            <input
+              type="url"
+              id="videoApresentacao"
+              formControlName="videoApresentacao"
+              placeholder="https://www.youtube.com/watch?v=..."
+            />
+            <span class="form-hint">Opcional - adicione um vídeo promocional do curso</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- FASE 5: Preço -->
+      <div class="fase-card" *ngIf="faseAtual === 5">
+        <div class="fase-header">
+          <div class="fase-icone">
+            <app-header-icone nome="dinheiro" [tamanho]="28" cor="#21b7cd"></app-header-icone>
+          </div>
+          <div>
+            <h2 class="fase-titulo">Preço</h2>
+            <p class="fase-descricao">Defina como seu curso será monetizado</p>
+          </div>
+        </div>
+
+        <form [formGroup]="formFase5" class="fase-form">
+          <div class="radio-group">
+            <label class="radio-container">
+              <input type="radio" formControlName="tipo" value="gratuito" />
+              <span class="radiomark"></span>
+              <div class="radio-info">
+                <span class="radio-titulo">Curso Gratuito</span>
+                <span class="radio-desc">Disponível para todos sem custo</span>
+              </div>
+            </label>
+            <label class="radio-container">
+              <input type="radio" formControlName="tipo" value="pago" />
+              <span class="radiomark"></span>
+              <div class="radio-info">
+                <span class="radio-titulo">Curso Pago</span>
+                <span class="radio-desc">Defina um valor para seu curso</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="price-details" *ngIf="formFase5.get('tipo')?.value === 'pago'">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="preco">Preço base (R$) *</label>
+                <input
+                  type="number"
+                  id="preco"
+                  formControlName="preco"
+                  placeholder="0,00"
+                  step="0.01"
+                />
+              </div>
+
+              <div class="form-group" *ngIf="formFase5.get('emPromocao')?.value">
+                <label for="precoPromocional">Preço promocional (R$)</label>
+                <input
+                  type="number"
+                  id="precoPromocional"
+                  formControlName="precoPromocional"
+                  placeholder="0,00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+
+            <div class="form-group checkbox-group">
+              <label class="checkbox-container">
+                <input type="checkbox" formControlName="emPromocao" />
+                <span class="checkmark"></span>
+                Este curso estará em promoção
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label class="checkbox-container">
+              <input type="checkbox" formControlName="certificado" />
+              <span class="checkmark"></span>
+              Oferecer certificado de conclusão
+            </label>
+          </div>
+        </form>
+      </div>
+
+      <!-- FASE 6: Revisão -->
+      <div class="fase-card" *ngIf="faseAtual === 6">
+        <div class="fase-header">
+          <div class="fase-icone">
+            <app-header-icone nome="verificar" [tamanho]="28" cor="#22c55e"></app-header-icone>
+          </div>
+          <div>
+            <h2 class="fase-titulo">Revisão Final</h2>
+            <p class="fase-descricao">Revise todas as informações antes de criar o curso</p>
+          </div>
+        </div>
+
+        <div class="revisao-conteudo">
+          <div class="revisao-secao">
+            <div class="revisao-header">
+              <h3>Informações Básicas</h3>
+              <button class="btn-edit" (click)="faseAtual = 1">
+                <app-header-icone nome="editar" [tamanho]="14"></app-header-icone>
+                Editar
+              </button>
+            </div>
+            <div class="revisao-item">
+              <span class="revisao-label">Título:</span>
+              <span class="revisao-valor">{{
+                formFase1.get('titulo')?.value || 'Não preenchido'
+              }}</span>
+            </div>
+            <div class="revisao-item">
+              <span class="revisao-label">Categoria:</span>
+              <span class="revisao-valor">{{
+                formFase1.get('categoria')?.value || 'Não selecionada'
+              }}</span>
+            </div>
+            <div class="revisao-item">
+              <span class="revisao-label">Nível:</span>
+              <span class="revisao-valor">{{ formFase1.get('nivel')?.value }}</span>
+            </div>
+          </div>
+
+          <div class="revisao-secao">
+            <div class="revisao-header">
+              <h3>Público e Objetivos</h3>
+              <button class="btn-edit" (click)="faseAtual = 2">
+                <app-header-icone nome="editar" [tamanho]="14"></app-header-icone>
+                Editar
+              </button>
+            </div>
+            <div class="revisao-item">
+              <span class="revisao-label">Público-alvo:</span>
+              <span class="revisao-valor">{{
+                formFase2.get('publicoAlvo')?.value || 'Não preenchido'
+              }}</span>
+            </div>
+          </div>
+
+          <div class="revisao-secao">
+            <div class="revisao-header">
+              <h3>Estrutura do Curso</h3>
+              <button class="btn-edit" (click)="faseAtual = 3">
+                <app-header-icone nome="editar" [tamanho]="14"></app-header-icone>
+                Editar
+              </button>
+            </div>
+            <div class="revisao-item">
+              <span class="revisao-label">Total de seções:</span>
+              <span class="revisao-valor">{{ secoes.length }}</span>
+            </div>
+            <div class="secoes-preview">
+              <div class="seccao-preview" *ngFor="let seccao of secoes; let i = index">
+                {{ i + 1 }}. {{ seccao.titulo }}
+              </div>
+            </div>
+          </div>
+
+          <div class="revisao-secao">
+            <div class="revisao-header">
+              <h3>Preço</h3>
+              <button class="btn-edit" (click)="faseAtual = 5">
+                <app-header-icone nome="editar" [tamanho]="14"></app-header-icone>
+                Editar
+              </button>
+            </div>
+            <div class="revisao-item">
+              <span class="revisao-label">Tipo:</span>
+              <span class="revisao-valor">{{
+                formFase5.get('tipo')?.value === 'gratuito' ? 'Gratuito' : 'Pago'
+              }}</span>
+            </div>
+            <div class="revisao-item" *ngIf="formFase5.get('tipo')?.value === 'pago'">
+              <span class="revisao-label">Valor:</span>
+              <span class="revisao-valor">R$ {{ formFase5.get('preco')?.value }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer de Navegação -->
+    <div class="wizard-footer">
+      <button class="btn btn--outline" (click)="faseAnterior()" *ngIf="faseAtual > 1">
+        <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
+        Fase Anterior
+      </button>
+
+      <div class="footer-spacer"></div>
+
+      <button class="btn btn--primary" (click)="proximaFase()" *ngIf="faseAtual < totalFases">
+        Próxima Fase
+        <app-header-icone nome="seta-direita" [tamanho]="18"></app-header-icone>
+      </button>
+
+      <button class="btn btn--success" (click)="finalizarCurso()" *ngIf="faseAtual === totalFases">
+        <app-header-icone nome="verificar" [tamanho]="18"></app-header-icone>
+        Criar Curso e Enviar para Análise
+      </button>
+    </div>
+  </div>
+</app-sistema-layout>

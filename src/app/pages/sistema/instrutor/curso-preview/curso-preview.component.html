@@ -1,0 +1,233 @@
+<app-sistema-layout tipoUsuario="instrutor" conteudoMaxWidth="1400px">
+  <!-- Banner de Preview -->
+  <div class="preview-banner">
+    <div class="banner-content">
+      <app-header-icone nome="olho" [tamanho]="24" cor="#21b7cd"></app-header-icone>
+      <div>
+        <h3>Modo Pré-visualização</h3>
+        <p>Você está visualizando o curso como um aluno verá</p>
+      </div>
+    </div>
+    <button class="btn btn--secondary" (click)="voltarParaEstrutura()">
+      <app-header-icone nome="seta-esquerda" [tamanho]="16"></app-header-icone>
+      Voltar para Estrutura
+    </button>
+  </div>
+
+  <div class="curso-detalhe">
+    <!-- Coluna Principal -->
+    <div class="curso-detalhe__principal">
+      <!-- Header do Curso -->
+      <div class="curso-header">
+        <div class="curso-header__video">
+          <img [src]="curso.imagem" [alt]="curso.titulo" class="curso-header__thumb" />
+          <button class="curso-header__play" disabled>
+            <app-header-icone nome="play" [tamanho]="32"></app-header-icone>
+          </button>
+        </div>
+      </div>
+
+      <!-- Info Mobile (só aparece em mobile) -->
+      <div class="curso-info-mobile">
+        <span class="curso-info-mobile__categoria" [style.background-color]="curso.categoriaColor">
+          {{ curso.categoria }}
+        </span>
+        <h1 class="curso-info-mobile__titulo">{{ curso.titulo }}</h1>
+        <p class="curso-info-mobile__descricao">{{ curso.descricao }}</p>
+
+        <div class="curso-info-mobile__stats">
+          <span class="stat">
+            <app-header-icone
+              nome="estrela"
+              [tamanho]="16"
+              preenchimento="#f59e0b"
+              cor="none"
+            ></app-header-icone>
+            {{ curso.avaliacao }} ({{ curso.totalAvaliacoes }} avaliações)
+          </span>
+          <span class="stat">
+            <app-header-icone nome="pessoas" [tamanho]="16"></app-header-icone>
+            {{ curso.totalAlunos | number }} alunos
+          </span>
+        </div>
+      </div>
+
+      <!-- Sobre o Curso -->
+      <section class="secao-detalhe">
+        <h2 class="secao-detalhe__titulo">Sobre este curso</h2>
+        <div class="secao-detalhe__conteudo">
+          <p>{{ curso.descricao }}</p>
+        </div>
+      </section>
+
+      <!-- Lista de Módulos -->
+      <div class="modulos">
+        <h2 class="modulos__titulo">Conteúdo do curso</h2>
+        <p class="modulos__subtitulo">
+          {{ curso.modulos.length }} módulos • {{ curso.totalAulas }} aulas • {{ curso.duracao }} de
+          conteúdo
+        </p>
+
+        <div class="modulos__lista">
+          @for (modulo of curso.modulos; track modulo.id; let i = $index) {
+            <div class="modulo" [class.modulo--expandido]="modulo.expandido">
+              <!-- Header do Módulo -->
+              <button class="modulo__header" (click)="toggleModulo(modulo)">
+                <div class="modulo__info">
+                  <span class="modulo__numero">
+                    {{ i + 1 }}
+                  </span>
+                  <div class="modulo__texto">
+                    <h4 class="modulo__titulo">{{ modulo.titulo }}</h4>
+                    <span class="modulo__meta">
+                      {{ getTotalAulasModulo(modulo) }} aulas • {{ getDuracaoTotalModulo(modulo) }}
+                    </span>
+                  </div>
+                </div>
+                <app-header-icone
+                  [nome]="modulo.expandido ? 'seta-cima' : 'seta-baixo'"
+                  [tamanho]="20"
+                ></app-header-icone>
+              </button>
+
+              <!-- Lista de Aulas -->
+              @if (modulo.expandido) {
+                <div class="modulo__aulas">
+                  @for (aula of modulo.aulas; track aula.id) {
+                    <div class="aula">
+                      <span class="aula__icone">
+                        <app-header-icone
+                          [nome]="getIconeAula(aula.tipo)"
+                          [tamanho]="16"
+                          cor="#64748b"
+                        ></app-header-icone>
+                      </span>
+                      <span class="aula__titulo">{{ aula.titulo }}</span>
+                      @if (aula.duracao) {
+                        <span class="aula__duracao">{{ aula.duracao }}</span>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Sobre o Instrutor -->
+      <section class="secao-detalhe">
+        <h2 class="secao-detalhe__titulo">Sobre o Instrutor</h2>
+        <div class="instrutor-detalhes">
+          <img
+            [src]="curso.instrutor.avatar"
+            [alt]="curso.instrutor.nome"
+            class="instrutor-avatar-grande"
+          />
+          <div class="instrutor-texto">
+            <h3>{{ curso.instrutor.nome }}</h3>
+            @if (curso.instrutor.bio) {
+              <p>{{ curso.instrutor.bio }}</p>
+            }
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="curso-detalhe__sidebar">
+      <div class="sidebar-card">
+        <!-- Preço -->
+        <div class="sidebar-card__preco">
+          @if (curso.gratuito) {
+            <span class="sidebar-card__preco-gratis">Gratuito</span>
+          } @else {
+            <span class="sidebar-card__preco-valor"
+              >R$ {{ curso.preco.toFixed(2).replace('.', ',') }}</span
+            >
+            @if (curso.precoOriginal) {
+              <span class="sidebar-card__preco-original">
+                R$ {{ curso.precoOriginal.toFixed(2).replace('.', ',') }}
+              </span>
+            }
+          }
+        </div>
+
+        <!-- Botão Principal -->
+        <button class="btn btn--primary btn--block" disabled>
+          {{ curso.gratuito ? 'Inscrever-se grátis' : 'Comprar curso' }}
+        </button>
+
+        <!-- O que está incluso -->
+        <div class="sidebar-card__inclui">
+          <h4>Este curso inclui:</h4>
+          <ul class="sidebar-card__lista">
+            @for (item of curso.inclui; track item) {
+              <li>
+                <app-header-icone nome="check" [tamanho]="14" cor="#22c55e"></app-header-icone>
+                {{ item }}
+              </li>
+            }
+          </ul>
+        </div>
+
+        <!-- Informações -->
+        <div class="sidebar-card__info">
+          <div class="info-item">
+            <app-header-icone nome="curso" [tamanho]="18"></app-header-icone>
+            <div>
+              <span class="info-item__label">Aulas</span>
+              <span class="info-item__valor">{{ curso.totalAulas }} aulas</span>
+            </div>
+          </div>
+          <div class="info-item">
+            <app-header-icone nome="relogio" [tamanho]="18"></app-header-icone>
+            <div>
+              <span class="info-item__label">Duração</span>
+              <span class="info-item__valor">{{ curso.duracao }}</span>
+            </div>
+          </div>
+          <div class="info-item">
+            <app-header-icone nome="nivel" [tamanho]="18"></app-header-icone>
+            <div>
+              <span class="info-item__label">Nível</span>
+              <span class="info-item__valor">{{ getNivelTexto(curso.nivel) }}</span>
+            </div>
+          </div>
+          @if (curso.certificado) {
+            <div class="info-item">
+              <app-header-icone nome="certificado" [tamanho]="18"></app-header-icone>
+              <div>
+                <span class="info-item__label">Certificado</span>
+                <span class="info-item__valor">Incluso</span>
+              </div>
+            </div>
+          }
+          <div class="info-item">
+            <app-header-icone nome="calendario" [tamanho]="18"></app-header-icone>
+            <div>
+              <span class="info-item__label">Atualizado</span>
+              <span class="info-item__valor">{{ curso.atualizado | date: 'MM/yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instrutor -->
+        <div class="sidebar-card__instrutor">
+          <h4>Instrutor</h4>
+          <div class="instrutor">
+            <img
+              [src]="curso.instrutor.avatar"
+              [alt]="curso.instrutor.nome"
+              class="instrutor__avatar"
+            />
+            <div class="instrutor__info">
+              <span class="instrutor__label">Criado por</span>
+              <span class="instrutor__nome">{{ curso.instrutor.nome }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</app-sistema-layout>

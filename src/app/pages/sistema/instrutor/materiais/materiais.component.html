@@ -1,0 +1,59 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="materiais-container">
+    <header class="page-header">
+      <div class="header-content">
+        <a [routerLink]="['/instrutor/cursos', cursoId, 'estrutura']" class="btn-back">
+          <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
+          Voltar para estrutura
+        </a>
+        <h1 class="page-title">Materiais de Apoio</h1>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn--primary">
+          <app-header-icone nome="mais" [tamanho]="18"></app-header-icone>
+          Fazer Upload
+        </button>
+      </div>
+    </header>
+
+    <div class="materiais-content">
+      <div class="filters-bar">
+        <div class="search-box">
+          <app-header-icone nome="lupa" [tamanho]="18"></app-header-icone>
+          <input type="text" placeholder="Buscar material...">
+        </div>
+        <select>
+          <option value="">Todos os módulos</option>
+          <option value="1">Módulo 1</option>
+          <option value="2">Módulo 2</option>
+        </select>
+      </div>
+
+      <div class="materiais-grid">
+        <div *ngFor="let material of materiais" class="material-card">
+          <div class="material-icon" [ngClass]="'icon--' + material.tipo">
+            <app-header-icone [nome]="getIcone(material.tipo)" [tamanho]="32"></app-header-icone>
+          </div>
+          <div class="material-info">
+            <h3 class="material-nome">{{ material.nome }}</h3>
+            <p class="material-meta">{{ material.modulo }} • {{ material.tamanho }}</p>
+            <span class="material-data">Upload em {{ material.dataUpload | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="material-actions">
+            <button class="btn-icon" title="Download">
+              <app-header-icone nome="seta-baixo" [tamanho]="18"></app-header-icone>
+            </button>
+            <button class="btn-icon" title="Excluir">
+              <app-header-icone nome="lixeira" [tamanho]="18"></app-header-icone>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="materiais.length === 0" class="empty-state">
+        <app-header-icone nome="documento" [tamanho]="48"></app-header-icone>
+        <p>Nenhum material de apoio cadastrado.</p>
+      </div>
+    </div>
+  </div>
+</app-sistema-layout>

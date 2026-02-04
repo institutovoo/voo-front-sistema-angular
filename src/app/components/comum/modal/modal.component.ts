@@ -7,17 +7,17 @@ import { HeaderIconeComponent } from '../../sistema/header/components/icone/icon
   standalone: true,
   imports: [CommonModule, HeaderIconeComponent],
   templateUrl: './modal.component.html',
-  styleUrl: './modal.component.scss'
+  styleUrl: './modal.component.scss',
 })
 export class ModalComponent {
   @Input() titulo: string = '';
   @Input() subtitulo?: string;
   @Input() largura: string = '500px';
-  @Input() mostrarFechar: boolean = true;
-  
+  @Input() temFooter: boolean = true;
+
   @Output() fechar = new EventEmitter<void>();
 
-  aoFechar() {
+  fecharModal(event: MouseEvent) {
     this.fechar.emit();
   }
 }

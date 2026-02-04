@@ -41,6 +41,10 @@ export class ConfigPerfilComponent {
     bio: new FormControl('', {
       nonNullable: true,
     }),
+    linkedin: new FormControl(''),
+    instagram: new FormControl(''),
+    twitter: new FormControl(''),
+    website: new FormControl('')
   });
 
   fotoUrl: string | null = null;

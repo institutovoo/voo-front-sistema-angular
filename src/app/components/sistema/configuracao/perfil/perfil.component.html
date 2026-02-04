@@ -101,6 +101,49 @@
       ></textarea>
     </div>
 
+    <!-- Redes Sociais -->
+    <div class="campos-grid">
+      <div class="campo">
+        <label class="campo__label">LinkedIn</label>
+        <input
+          type="text"
+          class="campo__input"
+          formControlName="linkedin"
+          placeholder="URL do seu perfil"
+        />
+      </div>
+
+      <div class="campo">
+        <label class="campo__label">Instagram</label>
+        <input
+          type="text"
+          class="campo__input"
+          formControlName="instagram"
+          placeholder="@seuusuario"
+        />
+      </div>
+
+      <div class="campo">
+        <label class="campo__label">Twitter / X</label>
+        <input
+          type="text"
+          class="campo__input"
+          formControlName="twitter"
+          placeholder="@seuusuario"
+        />
+      </div>
+
+      <div class="campo">
+        <label class="campo__label">Website / Portfólio</label>
+        <input
+          type="text"
+          class="campo__input"
+          formControlName="website"
+          placeholder="https://seusite.com"
+        />
+      </div>
+    </div>
+
     <!-- Botão Salvar -->
     <div class="perfil__footer">
       <button type="submit" class="btn-salvar" [disabled]="salvando">

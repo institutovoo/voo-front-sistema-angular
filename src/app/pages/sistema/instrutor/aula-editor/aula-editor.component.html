@@ -1,0 +1,109 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="aula-editor-container">
+    <header class="page-header">
+      <div class="header-content">
+        <a [routerLink]="['/instrutor/cursos', cursoId, 'estrutura']" class="btn-back">
+          <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
+          Voltar para estrutura
+        </a>
+        <h1 class="page-title">Editar Aula</h1>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn--outline">
+          <app-header-icone nome="olho" [tamanho]="18"></app-header-icone>
+          Preview
+        </button>
+        <button class="btn btn--primary" (click)="onSubmit()" [disabled]="!formAula.valid">
+          Salvar Aula
+        </button>
+      </div>
+    </header>
+
+    <form [formGroup]="formAula" class="editor-grid">
+      <div class="main-column">
+        <section class="editor-section">
+          <div class="form-group">
+            <label for="titulo">Título da aula *</label>
+            <input type="text" id="titulo" formControlName="titulo" placeholder="Ex: Introdução ao React">
+          </div>
+
+          <div class="form-group">
+            <label for="tipo">Tipo de conteúdo *</label>
+            <div class="tipo-grid">
+              <label class="tipo-card" [class.active]="formAula.get('tipo')?.value === 'video'">
+                <input type="radio" formControlName="tipo" value="video">
+                <app-header-icone nome="video" [tamanho]="24"></app-header-icone>
+                <span>Vídeo</span>
+              </label>
+              <label class="tipo-card" [class.active]="formAula.get('tipo')?.value === 'texto'">
+                <input type="radio" formControlName="tipo" value="texto">
+                <app-header-icone nome="documento" [tamanho]="24"></app-header-icone>
+                <span>Texto</span>
+              </label>
+              <label class="tipo-card" [class.active]="formAula.get('tipo')?.value === 'pdf'">
+                <input type="radio" formControlName="tipo" value="pdf">
+                <app-header-icone nome="documento" [tamanho]="24"></app-header-icone>
+                <span>PDF / Arquivo</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="content-editor" *ngIf="formAula.get('tipo')?.value === 'video'">
+            <label>Upload de Vídeo</label>
+            <div class="video-upload-box">
+              <app-header-icone nome="mais" [tamanho]="32"></app-header-icone>
+              <p>Clique ou arraste o vídeo aqui</p>
+              <span>MP4, MKV, AVI (Max. 500MB)</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Conteúdo em texto / Descrição</label>
+            <textarea id="descricao" formControlName="descricao" rows="10" placeholder="Escreva o conteúdo da aula ou descrição do vídeo..."></textarea>
+          </div>
+        </section>
+
+        <section class="editor-section">
+          <h2 class="section-title">Materiais Complementares</h2>
+          <div class="anexos-lista">
+            <p class="empty-text">Nenhum anexo adicionado.</p>
+            <button type="button" class="btn btn--outline btn--small">
+              <app-header-icone nome="mais" [tamanho]="14"></app-header-icone>
+              Adicionar Anexo (PDF, Slides, Links)
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div class="side-column">
+        <section class="editor-section">
+          <h2 class="section-title">Configurações</h2>
+          
+          <div class="form-group">
+            <label for="tempoEstimado">Tempo estimado (minutos)</label>
+            <input type="number" id="tempoEstimado" formControlName="tempoEstimado">
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label class="checkbox-container">
+              <input type="checkbox" formControlName="obrigatoria">
+              <span class="checkmark"></span>
+              Aula obrigatória para conclusão
+            </label>
+          </div>
+        </section>
+
+        <section class="editor-section">
+          <h2 class="section-title">Dicas de Instrutor</h2>
+          <div class="dicas-box">
+            <ul>
+              <li>Mantenha vídeos entre 5 e 15 minutos para melhor retenção.</li>
+              <li>Use a descrição para resumir os pontos principais.</li>
+              <li>Adicione materiais extras para aprofundamento.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </form>
+  </div>
+</app-sistema-layout>

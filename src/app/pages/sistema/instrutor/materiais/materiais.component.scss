@@ -1,0 +1,123 @@
+@import '../../../../styles/sistema';
+
+.materiais-container { padding: 1.5rem; }
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  .header-content {
+    .btn-back { display: flex; align-items: center; gap: 0.5rem; color: #64748b; text-decoration: none; font-size: 0.875rem; &:hover { color: #21b7cd; } }
+    .page-title { font-size: 1.5rem; font-weight: 700; color: #0b1b2b; margin: 0.5rem 0 0; }
+  }
+}
+
+.filters-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  
+  .search-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 1rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    input { border: none; padding: 0.75rem 0; width: 100%; &:focus { outline: none; } }
+    color: #94a3b8;
+  }
+
+  select {
+    padding: 0 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    color: #475569;
+    font-size: 0.875rem;
+  }
+}
+
+.materiais-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.material-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+
+  &:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-color: #21b7cd; }
+
+  .material-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    
+    &.icon--pdf { background: #fef2f2; color: #ef4444; }
+    &.icon--slide { background: #fff7ed; color: #f59e0b; }
+    &.icon--doc { background: #eff6ff; color: #3b82f6; }
+    &.icon--planilha { background: #f0fdf4; color: #22c55e; }
+  }
+
+  .material-info {
+    flex: 1;
+    min-width: 0;
+    .material-nome { font-size: 0.9375rem; font-weight: 600; color: #1e293b; margin: 0 0 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .material-meta { font-size: 0.75rem; color: #64748b; margin: 0 0 0.25rem; }
+    .material-data { font-size: 0.75rem; color: #94a3b8; }
+  }
+
+  .material-actions { display: flex; gap: 0.25rem; }
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  &--primary { background: #21b7cd; color: #fff; }
+}
+
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #64748b;
+  border: none;
+  cursor: pointer;
+  &:hover { background: #f1f5f9; color: #21b7cd; }
+}
+
+.empty-state {
+  padding: 4rem;
+  text-align: center;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}

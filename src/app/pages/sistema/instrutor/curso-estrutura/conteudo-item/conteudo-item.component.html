@@ -1,0 +1,86 @@
+<div class="item-row">
+  <button class="item-drag-handle" type="button">
+    <app-header-icone nome="menu" [tamanho]="16" cor="#cbd5e1"></app-header-icone>
+  </button>
+
+  <div class="item-tipo-icon" [ngClass]="'item-tipo--' + item.tipo">
+    <app-header-icone [nome]="getIconeItem(item.tipo)" [tamanho]="20"></app-header-icone>
+  </div>
+
+  <div class="item-info">
+    <div class="item-numero">{{ numero }}</div>
+    <div class="item-detalhes">
+      <span class="item-titulo">{{ item.titulo }}</span>
+      <div class="item-badges">
+        <span class="item-tipo-badge" [ngClass]="'badge--' + item.tipo">
+          {{ getTipoLabel(item.tipo) }}
+        </span>
+        <span class="item-duracao" *ngIf="item.duracao">
+          <app-header-icone nome="relogio" [tamanho]="12"></app-header-icone>
+          {{ item.duracao }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item-status">
+    <span
+      class="status-badge"
+      [ngClass]="item.completo ? 'status--completo' : 'status--incompleto'"
+    >
+      {{ item.completo ? 'Pronto' : 'Pendente' }}
+    </span>
+  </div>
+
+  <div class="item-actions">
+    <button
+      *ngIf="item.tipo === 'aula'"
+      class="btn-icon"
+      type="button"
+      title="Anexar recursos"
+      (click)="onAdicionarRecurso()"
+    >
+      <app-header-icone nome="documento" [tamanho]="16" cor="#21b7cd"></app-header-icone>
+    </button>
+    <button
+      *ngIf="item.tipo === 'aula' && item.recursos && item.recursos.length > 0"
+      class="btn-icon"
+      type="button"
+      [title]="item.mostrarRecursos ? 'Ocultar recursos' : 'Mostrar recursos'"
+      (click)="onToggleRecursos()"
+    >
+      <app-header-icone
+        [nome]="item.mostrarRecursos ? 'seta-baixo' : 'seta-direita'"
+        [tamanho]="16"
+        cor="#64748b"
+      ></app-header-icone>
+    </button>
+    <button class="btn-icon" type="button" title="Editar" (click)="onEditar()">
+      <app-header-icone nome="editar" [tamanho]="16" cor="#64748b"></app-header-icone>
+    </button>
+    <button class="btn-icon" type="button" title="Excluir" (click)="onExcluir()">
+      <app-header-icone nome="lixeira" [tamanho]="16" cor="#64748b"></app-header-icone>
+    </button>
+  </div>
+</div>
+
+<!-- Recursos Anexados -->
+<div
+  *ngIf="item.tipo === 'aula' && item.recursos && item.recursos.length > 0 && item.mostrarRecursos"
+  class="recursos-anexados"
+>
+  <div *ngFor="let recurso of item.recursos" class="recurso-anexado">
+    <div class="recurso-icon">
+      <app-header-icone nome="documento" [tamanho]="16" cor="#21b7cd"></app-header-icone>
+    </div>
+    <span class="recurso-titulo">{{ recurso.titulo }}</span>
+    <button
+      class="btn-icon btn-icon--small"
+      type="button"
+      title="Excluir recurso"
+      (click)="onExcluirRecurso(recurso)"
+    >
+      <app-header-icone nome="lixeira" [tamanho]="14" cor="#64748b"></app-header-icone>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="prova-editor-container">
+    <header class="page-header">
+      <div class="header-content">
+        <a [routerLink]="['/instrutor/cursos', cursoId, 'estrutura']" class="btn-back">
+          <app-header-icone nome="seta-esquerda" [tamanho]="18"></app-header-icone>
+          Voltar para estrutura
+        </a>
+        <h1 class="page-title">Avaliação Final</h1>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn--outline">Configurações Avançadas</button>
+        <button class="btn btn--primary" (click)="onSubmit()" [disabled]="!formProva.valid">
+          Salvar Avaliação
+        </button>
+      </div>
+    </header>
+
+    <form [formGroup]="formProva" class="prova-grid">
+      <div class="main-column">
+        <section class="editor-section">
+          <h2 class="section-title">Informações da Avaliação</h2>
+          <div class="form-group">
+            <label for="titulo">Título da Prova *</label>
+            <input type="text" id="titulo" formControlName="titulo" placeholder="Ex: Avaliação Final do Curso">
+          </div>
+        </section>
+
+        <section class="editor-section">
+          <div class="section-header">
+            <h2 class="section-title">Questões</h2>
+            <button type="button" class="btn btn--outline btn--small" (click)="adicionarQuestao()">
+              <app-header-icone nome="mais" [tamanho]="14"></app-header-icone>
+              Adicionar Questão
+            </button>
+          </div>
+
+          <div formArrayName="questoes" class="questoes-lista">
+            <div *ngFor="let questao of questoes.controls; let i = index" [formGroupName]="i" class="questao-card">
+              <div class="questao-header">
+                <span class="questao-numero">Questão {{ i + 1 }}</span>
+                <div class="questao-meta">
+                  <select formControlName="tipo">
+                    <option value="multipla-escolha">Múltipla Escolha</option>
+                    <option value="discursiva">Discursiva (Manual)</option>
+                  </select>
+                  <button type="button" class="btn-icon text-danger" (click)="removerQuestao(i)">
+                    <app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Pergunta *</label>
+                <textarea formControlName="pergunta" rows="3" placeholder="Digite o enunciado da questão..."></textarea>
+              </div>
+
+              <div class="alternativas-container" *ngIf="questao.get('tipo')?.value === 'multipla-escolha'">
+                <label>Alternativas *</label>
+                <div formArrayName="alternativas" class="alternativas-lista">
+                  <div *ngFor="let alt of getAlternativas(questao).controls; let j = index" [formGroupName]="j" class="alternativa-item">
+                    <input type="checkbox" formControlName="correta">
+                    <input type="text" formControlName="texto" placeholder="Alternativa {{ j + 1 }}">
+                  </div>
+                </div>
+              </div>
+
+              <div class="discursiva-info" *ngIf="questao.get('tipo')?.value === 'discursiva'">
+                <p><app-header-icone nome="info" [tamanho]="14"></app-header-icone> Questões discursivas exigem correção manual do instrutor.</p>
+              </div>
+
+              <div class="form-group">
+                <label>Pontuação da questão</label>
+                <input type="number" formControlName="pontuacao" style="width: 100px;">
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="side-column">
+        <section class="editor-section">
+          <h2 class="section-title">Regras de Aprovação</h2>
+          <div class="form-group">
+            <label for="tempo">Tempo limite (minutos)</label>
+            <input type="number" id="tempo" formControlName="tempoLimite">
+          </div>
+          <div class="form-group">
+            <label for="nota">Nota mínima para aprovação (%)</label>
+            <input type="number" id="nota" formControlName="notaMinima">
+          </div>
+          <div class="info-card">
+            <app-header-icone nome="certificados" [tamanho]="20"></app-header-icone>
+            <p>O certificado será emitido automaticamente após a aprovação nesta prova.</p>
+          </div>
+        </section>
+      </div>
+    </form>
+  </div>
+</app-sistema-layout>

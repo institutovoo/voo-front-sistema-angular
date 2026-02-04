@@ -63,6 +63,14 @@
         </p>
       </div>
 
+      <!-- Sobre o Curso -->
+      <section class="secao-detalhe">
+        <h2 class="secao-detalhe__titulo">Sobre este curso</h2>
+        <div class="secao-detalhe__conteudo">
+          <p>{{ curso.descricao }}</p>
+        </div>
+      </section>
+
       <!-- Lista de Módulos -->
       <div class="modulos">
         <h2 class="modulos__titulo">Conteúdo do curso</h2>
@@ -132,6 +140,121 @@
           </div>
         </div>
       </div>
+
+      <!-- Avaliações do Curso -->
+      <section class="secao-detalhe">
+        <div class="secao-detalhe__header">
+          <h2 class="secao-detalhe__titulo">Avaliações</h2>
+          <div class="header-rating" *ngIf="curso.totalAvaliacoes > 0">
+            <span class="nota">{{ curso.avaliacao }}</span>
+            <div class="stars">
+              <app-header-icone *ngFor="let s of [1,2,3,4,5]" nome="star" [tamanho]="16" [preenchimento]="s <= curso.avaliacao ? '#f59e0b' : 'none'" [cor]="s <= curso.avaliacao ? 'none' : '#cbd5e1'"></app-header-icone>
+            </div>
+            <span class="total">({{ curso.totalAvaliacoes }} avaliações)</span>
+          </div>
+        </div>
+
+        <!-- Formulário de Avaliação (Só se estiver inscrito) -->
+        <div class="feedback-form" *ngIf="inscrito() && !avaliacaoEnviada">
+          <h3>O que você está achando do curso?</h3>
+          <p>Sua opinião é muito importante para nós e para outros alunos.</p>
+          
+          <div class="rating-input">
+            <button *ngFor="let s of [1,2,3,4,5]" (click)="setNota(s)" class="star-btn">
+              <app-header-icone 
+                nome="star" 
+                [tamanho]="32" 
+                [preenchimento]="s <= novaNota ? '#f59e0b' : 'none'" 
+                [cor]="s <= novaNota ? 'none' : '#cbd5e1'"
+              ></app-header-icone>
+            </button>
+          </div>
+
+          <textarea 
+            [(ngModel)]="novoComentario" 
+            placeholder="Conte-nos mais sobre sua experiência..."
+            rows="4"
+          ></textarea>
+
+          <button 
+            class="btn btn--primary" 
+            (click)="enviarAvaliacao()" 
+            [disabled]="novaNota === 0 || !novoComentario.trim()"
+          >
+            Enviar avaliação
+          </button>
+        </div>
+
+        <div class="feedback-sucesso" *ngIf="avaliacaoEnviada">
+          <app-header-icone nome="check-circle" [tamanho]="48" cor="#22c55e"></app-header-icone>
+          <h3>Obrigado pelo seu feedback!</h3>
+          <p>Sua avaliação foi enviada com sucesso.</p>
+        </div>
+
+        <!-- Lista de Avaliações -->
+        <div class="avaliacoes-lista">
+          <div *ngFor="let item of avaliacoesMock" class="avaliacao-item">
+            <div class="avaliacao-item__header">
+              <div class="aluno-avatar">{{ item.aluno.charAt(0) }}</div>
+              <div class="aluno-meta">
+                <span class="aluno-nome">{{ item.aluno }}</span>
+                <span class="avaliacao-data">{{ item.data | date:'dd/MM/yyyy' }}</span>
+              </div>
+              <div class="stars">
+                <app-header-icone *ngFor="let s of getStars(item.nota)" nome="star" [tamanho]="14" preenchimento="#f59e0b" cor="none"></app-header-icone>
+              </div>
+            </div>
+            <p class="comentario">{{ item.comentario }}</p>
+            
+            <div class="resposta-instrutor" *ngIf="item.resposta">
+              <div class="resposta-header">
+                <app-header-icone nome="mensagem" [tamanho]="14"></app-header-icone>
+                <span>Resposta do Instrutor:</span>
+              </div>
+              <p>{{ item.resposta }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sugestões -->
+      <section class="secao-detalhe sugestoes">
+        <h2 class="secao-detalhe__titulo">Cursos que você também pode gostar</h2>
+        <div class="sugestoes__grid">
+          <div *ngFor="let sugestao of sugestoes" class="sugestao-card">
+            <div class="sugestao-card__imagem">
+              <img [src]="sugestao.imagem" [alt]="sugestao.titulo" />
+              <span class="sugestao-card__tag" *ngIf="sugestao.gratuito">Gratuito</span>
+            </div>
+            <div class="sugestao-card__info">
+              <h3 class="sugestao-card__titulo">{{ sugestao.titulo }}</h3>
+              <p class="sugestao-card__instrutor">{{ sugestao.instrutor }}</p>
+              <div class="sugestao-card__meta">
+                <span class="stat">
+                  <app-header-icone
+                    nome="estrela"
+                    [tamanho]="14"
+                    preenchimento="#f59e0b"
+                    cor="none"
+                  ></app-header-icone>
+                  {{ sugestao.avaliacao }}
+                </span>
+                <span class="stat">
+                  <app-header-icone nome="usuarios" [tamanho]="14"></app-header-icone>
+                  {{ sugestao.totalAlunos }}
+                </span>
+              </div>
+              <div class="sugestao-card__footer">
+                <span class="preco" *ngIf="!sugestao.gratuito"
+                  >R$ {{ sugestao.preco | number: '1.2-2' }}</span
+                >
+                <span class="preco preco--gratis" *ngIf="sugestao.gratuito">Grátis</span>
+                <button class="btn-ver">Ver curso</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <!-- Sidebar -->
@@ -141,9 +264,9 @@
         <div class="sidebar-card__preco">
           <span *ngIf="curso.gratuito" class="sidebar-card__preco-gratis">Gratuito</span>
           <ng-container *ngIf="!curso.gratuito">
-            <span class="sidebar-card__preco-valor">R$ {{ curso.preco | number : '1.2-2' }}</span>
+            <span class="sidebar-card__preco-valor">R$ {{ curso.preco | number: '1.2-2' }}</span>
             <span *ngIf="curso.precoOriginal" class="sidebar-card__preco-original">
-              R$ {{ curso.precoOriginal | number : '1.2-2' }}
+              R$ {{ curso.precoOriginal | number: '1.2-2' }}
             </span>
           </ng-container>
         </div>

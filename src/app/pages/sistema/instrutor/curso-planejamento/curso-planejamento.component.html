@@ -1,0 +1,159 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="planejamento-container">
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-content">
+        <a routerLink="/instrutor/cursos" class="btn-back">
+          <app-header-icone nome="seta-esquerda" [tamanho]="20"></app-header-icone>
+          <span>Voltar para cursos</span>
+        </a>
+        <div class="header-title-wrapper">
+          <div class="title-with-status">
+            <h1 class="page-title">Planejamento do Curso</h1>
+            <span class="status-badge" [ngClass]="getStatusClass()">
+              {{ getStatusLabel() }}
+            </span>
+          </div>
+          <p class="page-subtitle">Complete as etapas abaixo para publicar seu curso</p>
+        </div>
+      </div>
+
+      <!-- Barra de Progresso Geral -->
+      <div class="progresso-geral">
+        <div class="progresso-info">
+          <span class="progresso-label">Progresso geral</span>
+          <span class="progresso-valor">{{ getProgressoGeral() }}%</span>
+        </div>
+        <div class="progresso-barra">
+          <div class="progresso-preenchido" [style.width.%]="getProgressoGeral()"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Alerta de Rejeição -->
+    <div class="alerta alerta--erro" *ngIf="statusCurso === 'rejeitado'">
+      <div class="alerta-icone">
+        <app-header-icone nome="alerta" [tamanho]="24" cor="#dc2626"></app-header-icone>
+      </div>
+      <div class="alerta-conteudo">
+        <h3>Curso rejeitado</h3>
+        <p>
+          {{
+            motivoRejeicao ||
+              'O curso precisa de ajustes. Revise as etapas e envie novamente para análise.'
+          }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Alerta de Em Análise -->
+    <div class="alerta alerta--info" *ngIf="statusCurso === 'em_analise'">
+      <div class="alerta-icone">
+        <app-header-icone nome="relogio" [tamanho]="24" cor="#21b7cd"></app-header-icone>
+      </div>
+      <div class="alerta-conteudo">
+        <h3>Curso em análise</h3>
+        <p>Seu curso está sendo analisado pela equipe. Você receberá uma notificação em breve!</p>
+      </div>
+    </div>
+
+    <!-- Alerta de Aprovado -->
+    <div class="alerta alerta--sucesso" *ngIf="statusCurso === 'aprovado'">
+      <div class="alerta-icone">
+        <app-header-icone nome="verificar" [tamanho]="24" cor="#22c55e"></app-header-icone>
+      </div>
+      <div class="alerta-conteudo">
+        <h3>Curso aprovado!</h3>
+        <p>Parabéns! Agora você pode adicionar o conteúdo das aulas, quizzes e recursos.</p>
+      </div>
+    </div>
+
+    <!-- Etapas do Curso -->
+    <div class="etapas-container">
+      <div class="etapa-card" *ngFor="let etapa of etapas; let i = index">
+        <div class="etapa-header">
+          <div class="etapa-numero">{{ i + 1 }}</div>
+          <div class="etapa-info">
+            <h2 class="etapa-titulo">{{ etapa.titulo }}</h2>
+            <div class="etapa-progresso">
+              <div class="progresso-mini">
+                <div class="progresso-mini-barra" [style.width.%]="getProgressoEtapa(etapa)"></div>
+              </div>
+              <span class="progresso-texto">{{ getProgressoEtapa(etapa) }}% concluído</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloqueio de Etapa de Conteúdo -->
+        <div class="etapa-bloqueada" *ngIf="etapa.id === 'conteudo' && isEtapaConteudoBloqueada()">
+          <div class="bloqueio-icone">
+            <app-header-icone nome="cadeado" [tamanho]="32" cor="#94a3b8"></app-header-icone>
+          </div>
+          <p class="bloqueio-texto">
+            <strong>Etapa bloqueada:</strong> Complete o planejamento e aguarde aprovação para
+            desbloquear
+          </p>
+        </div>
+
+        <!-- Itens da Etapa -->
+        <div
+          class="etapa-itens"
+          [class.etapa-itens--bloqueada]="etapa.id === 'conteudo' && isEtapaConteudoBloqueada()"
+        >
+          <div
+            class="item-etapa"
+            *ngFor="let item of etapa.itens"
+            [class.item-etapa--concluido]="item.concluido"
+            [class.item-etapa--bloqueado]="etapa.id === 'conteudo' && isEtapaConteudoBloqueada()"
+          >
+            <button
+              class="item-checkbox"
+              type="button"
+              (click)="toggleItemConcluido(item)"
+              [disabled]="etapa.id === 'conteudo' && isEtapaConteudoBloqueada()"
+            >
+              <app-header-icone
+                *ngIf="item.concluido"
+                nome="verificar"
+                [tamanho]="16"
+                cor="#ffffff"
+              ></app-header-icone>
+            </button>
+
+            <div class="item-info">
+              <span class="item-titulo">{{ item.titulo }}</span>
+              <span class="item-opcional" *ngIf="item.opcional">(opcional)</span>
+            </div>
+
+            <button
+              class="btn-item-acao"
+              type="button"
+              *ngIf="item.rota"
+              (click)="navegarPara(item)"
+              [disabled]="etapa.id === 'conteudo' && isEtapaConteudoBloqueada()"
+            >
+              <app-header-icone nome="seta-direita" [tamanho]="16" cor="#64748b"></app-header-icone>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão de Enviar para Análise -->
+    <div class="footer-actions" *ngIf="statusCurso !== 'em_analise'">
+      <button
+        class="btn btn--primary btn--large"
+        type="button"
+        (click)="enviarParaAnalise()"
+        [disabled]="!podeEnviarParaAnalise()"
+      >
+        <app-header-icone nome="enviar" [tamanho]="20"></app-header-icone>
+        <span>Enviar para análise</span>
+      </button>
+
+      <p class="footer-hint" *ngIf="!isPlanejamentoConcluido()">
+        Complete todas as etapas de planejamento para enviar para análise
+      </p>
+    </div>
+  </div>
+</app-sistema-layout>

@@ -1,21 +1,23 @@
-<div class="modal-overlay" (click)="aoFechar()">
+<div class="modal-overlay" (click)="fecharModal($event)">
   <div class="modal-container" [style.max-width]="largura" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <div class="modal-header__info">
-        <h2 class="modal-titulo">{{ titulo }}</h2>
-        <p class="modal-subtitulo" *ngIf="subtitulo">{{ subtitulo }}</p>
+    <header class="modal-header">
+      <div>
+        <h2 class="modal-title">{{ titulo }}</h2>
+        @if (subtitulo) {
+          <p class="modal-subtitulo">{{ subtitulo }}</p>
+        }
       </div>
-      <button class="btn-fechar" *ngIf="mostrarFechar" (click)="aoFechar()">
-        <app-header-icone nome="fechar" [tamanho]="18"></app-header-icone>
+      <button class="btn-fechar" (click)="fechar.emit()">
+        <app-header-icone nome="fechar" [tamanho]="20"></app-header-icone>
       </button>
-    </div>
+    </header>
 
-    <div class="modal-content">
+    <div class="modal-body">
       <ng-content></ng-content>
     </div>
 
-    <div class="modal-footer">
+    <footer class="modal-footer" *ngIf="temFooter">
       <ng-content select="[footer]"></ng-content>
-    </div>
+    </footer>
   </div>
 </div>

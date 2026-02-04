@@ -1,0 +1,479 @@
+@import '../../../../styles/sistema';
+
+$primary: #21b7cd;
+$primary-dark: #1a9aab;
+$primary-light: #e0f7fa;
+$text-dark: #0b1b2b;
+$text-muted: #64748b;
+$bg-light: #f8fafb;
+$success: #22c55e;
+$success-light: #dcfce7;
+$error: #dc2626;
+$error-light: #fee2e2;
+$info: #21b7cd;
+$info-light: #e0f7fa;
+
+.planejamento-container {
+  padding: 0;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.page-header {
+  background: $white;
+  padding: 2rem 2.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+
+  .header-content {
+    margin-bottom: 2rem;
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: $text-muted;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      transition: all 0.2s;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+
+    .header-title-wrapper {
+      .title-with-status {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+
+        .page-title {
+          font-size: 2rem;
+          font-weight: 800;
+          color: $text-dark;
+          margin: 0;
+          letter-spacing: -0.02em;
+
+          @media (max-width: 768px) {
+            font-size: 1.5rem;
+          }
+        }
+
+        .status-badge {
+          font-size: 0.75rem;
+          font-weight: 700;
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+
+          &.status-rascunho {
+            background: #f1f5f9;
+            color: $text-muted;
+          }
+
+          &.status-em_analise {
+            background: $info-light;
+            color: $info;
+          }
+
+          &.status-aprovado {
+            background: $success-light;
+            color: $success;
+          }
+
+          &.status-rejeitado {
+            background: $error-light;
+            color: $error;
+          }
+        }
+      }
+
+      .page-subtitle {
+        font-size: 1.0625rem;
+        color: $text-muted;
+        margin: 0;
+      }
+    }
+  }
+
+  .progresso-geral {
+    .progresso-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+
+      .progresso-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: $text-dark;
+      }
+
+      .progresso-valor {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: $primary;
+      }
+    }
+
+    .progresso-barra {
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 20px;
+      overflow: hidden;
+
+      .progresso-preenchido {
+        height: 100%;
+        background: linear-gradient(90deg, $primary 0%, $primary-dark 100%);
+        border-radius: 20px;
+        transition: width 0.3s ease;
+      }
+    }
+  }
+}
+
+// Alertas
+.alerta {
+  margin: 0 2.5rem 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    margin: 0 1.5rem 1.5rem;
+  }
+
+  .alerta-icone {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .alerta-conteudo {
+    flex: 1;
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: $text-dark;
+      margin: 0 0 0.5rem;
+    }
+
+    p {
+      font-size: 0.9375rem;
+      color: $text-muted;
+      margin: 0;
+      line-height: 1.5;
+    }
+  }
+
+  &--sucesso {
+    background: $success-light;
+    border: 1px solid #86efac;
+
+    .alerta-icone {
+      background: $success;
+    }
+  }
+
+  &--erro {
+    background: $error-light;
+    border: 1px solid #fca5a5;
+
+    .alerta-icone {
+      background: $error;
+    }
+  }
+
+  &--info {
+    background: $info-light;
+    border: 1px solid #7dd3fc;
+
+    .alerta-icone {
+      background: $info;
+    }
+  }
+}
+
+// Etapas
+.etapas-container {
+  padding: 0 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1.5rem 1.5rem;
+  }
+}
+
+.etapa-card {
+  background: $white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+
+  .etapa-header {
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, $bg-light 0%, $white 100%);
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    .etapa-numero {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: $primary;
+      color: $white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .etapa-info {
+      flex: 1;
+
+      .etapa-titulo {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $text-dark;
+        margin: 0 0 0.75rem;
+      }
+
+      .etapa-progresso {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .progresso-mini {
+          flex: 1;
+          height: 6px;
+          background: #e2e8f0;
+          border-radius: 10px;
+          overflow: hidden;
+
+          .progresso-mini-barra {
+            height: 100%;
+            background: $primary;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+          }
+        }
+
+        .progresso-texto {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: $text-muted;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  .etapa-bloqueada {
+    padding: 2rem;
+    text-align: center;
+    background: $bg-light;
+    border-bottom: 1px solid #e2e8f0;
+
+    .bloqueio-icone {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: $white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+
+    .bloqueio-texto {
+      font-size: 0.9375rem;
+      color: $text-muted;
+      margin: 0;
+
+      strong {
+        color: $text-dark;
+      }
+    }
+  }
+
+  .etapa-itens {
+    padding: 1rem;
+
+    &--bloqueada {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  .item-etapa {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+
+    &:hover:not(&--bloqueado) {
+      background: $bg-light;
+      border-color: #e2e8f0;
+    }
+
+    &--concluido {
+      .item-checkbox {
+        background: $primary;
+        border-color: $primary;
+      }
+
+      .item-titulo {
+        text-decoration: line-through;
+        color: $text-muted;
+      }
+    }
+
+    &--bloqueado {
+      cursor: not-allowed;
+    }
+
+    .item-checkbox {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #cbd5e1;
+      border-radius: 6px;
+      background: $white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+
+      &:hover:not(:disabled) {
+        border-color: $primary;
+        transform: scale(1.1);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+
+    .item-info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .item-titulo {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: $text-dark;
+      }
+
+      .item-opcional {
+        font-size: 0.8125rem;
+        color: $text-muted;
+        font-style: italic;
+      }
+    }
+
+    .btn-item-acao {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: $white;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+
+      &:hover:not(:disabled) {
+        background: $primary-light;
+        border-color: $primary;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+// Footer Actions
+.footer-actions {
+  padding: 2rem 2.5rem;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+
+    &--primary {
+      background: $primary;
+      color: $white;
+      box-shadow: 0 4px 12px rgba($primary, 0.2);
+
+      &:hover:not(:disabled) {
+        background: darken($primary, 5%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba($primary, 0.3);
+      }
+
+      &:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+    }
+
+    &--large {
+      padding: 1.25rem 2.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  .footer-hint {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: $text-muted;
+  }
+}

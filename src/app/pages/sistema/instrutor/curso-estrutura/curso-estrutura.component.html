@@ -1,0 +1,466 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="estrutura-container" (click)="fecharTodosMenus()">
+    <header class="page-header">
+      <div class="header-content">
+        <a routerLink="/instrutor/cursos" class="btn-back">
+          <app-header-icone nome="seta-esquerda" [tamanho]="16"></app-header-icone>
+          Voltar para cursos
+        </a>
+        <div class="header-title-wrapper">
+          <h1 class="page-title">Estrutura do Curso</h1>
+          <p class="page-subtitle">Organize módulos, aulas, quizzes e materiais de apoio</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn--outline" (click)="preVisualizarCurso()">
+          <app-header-icone nome="olho" [tamanho]="18"></app-header-icone>
+          Pré-visualizar
+        </button>
+        <button class="btn btn--primary" (click)="abrirModalNovoModulo()">
+          <app-header-icone nome="mais" [tamanho]="18" cor="white"></app-header-icone>
+          Nova Seção
+        </button>
+      </div>
+    </header>
+
+    <!-- Alerta de Curso Não Aprovado -->
+    <div class="alerta alerta--bloqueio" *ngIf="!isCursoAprovado()">
+      <div class="alerta-icone">
+        <app-header-icone nome="cadeado" [tamanho]="24" cor="#f59e0b"></app-header-icone>
+      </div>
+      <div class="alerta-conteudo">
+        <h3>Conteúdo bloqueado</h3>
+        <p>
+          Complete o planejamento do curso e envie para análise. Após aprovação, você poderá
+          adicionar aulas, quizzes e recursos.
+        </p>
+        <a [routerLink]="['/instrutor/cursos', cursoId, 'planejamento']" class="btn-alerta">
+          Ir para Planejamento
+        </a>
+      </div>
+    </div>
+
+    <!-- Estatísticas do Curso -->
+    <div class="curso-stats">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <app-header-icone nome="curso" [tamanho]="20" cor="#21b7cd"></app-header-icone>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ getTotalSecoes() }}</span>
+          <span class="stat-label">Seções</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <app-header-icone nome="video" [tamanho]="20" cor="#21b7cd"></app-header-icone>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ getTotalAulas() }}</span>
+          <span class="stat-label">Aulas</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <app-header-icone nome="verificar" [tamanho]="20" cor="#21b7cd"></app-header-icone>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ getTotalQuizzes() }}</span>
+          <span class="stat-label">Quizzes & Provas</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <app-header-icone nome="documento" [tamanho]="20" cor="#21b7cd"></app-header-icone>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ getTotalRecursos() }}</span>
+          <span class="stat-label">Recursos</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de Seções/Módulos -->
+    <div class="curriculo" cdkDropList (cdkDropListDropped)="dropSecao($event)">
+      <div *ngFor="let secao of secoes; let i = index" class="secao-card" cdkDrag>
+        <div class="secao-header" [class.secao-header--aberta]="secao.aberto">
+          <div class="secao-left">
+            <button class="secao-drag-handle" type="button">
+              <app-header-icone nome="menu" [tamanho]="18" cor="#94a3b8"></app-header-icone>
+            </button>
+            <button class="secao-toggle" type="button" (click)="toggleSecao(secao)">
+              <app-header-icone
+                [nome]="secao.aberto ? 'seta-baixo' : 'seta-direita'"
+                [tamanho]="18"
+              ></app-header-icone>
+            </button>
+            <div class="secao-info">
+              <h3 class="secao-titulo">Seção {{ i + 1 }}: {{ secao.titulo }}</h3>
+              <p class="secao-meta">
+                {{ secao.itens.length }} itens · {{ calcularDuracaoSecao(secao) }}
+              </p>
+            </div>
+          </div>
+          <div class="secao-actions" (click)="$event.stopPropagation()">
+            <button
+              class="btn-icon"
+              type="button"
+              title="Editar seção"
+              (click)="editarSecao(secao)"
+            >
+              <app-header-icone nome="editar" [tamanho]="18" cor="#64748b"></app-header-icone>
+            </button>
+            <button
+              class="btn-icon"
+              type="button"
+              title="Excluir seção"
+              (click)="excluirSecao(secao)"
+            >
+              <app-header-icone nome="lixeira" [tamanho]="18" cor="#64748b"></app-header-icone>
+            </button>
+          </div>
+        </div>
+
+        <!-- Botão Adicionar Conteúdo (no topo, antes da lista) -->
+        <div class="adicionar-conteudo" *ngIf="secao.aberto" (click)="$event.stopPropagation()">
+          <button class="btn-adicionar" type="button" (click)="abrirMenuAdicionar(secao, $event)">
+            <app-header-icone nome="mais" [tamanho]="18" cor="#21b7cd"></app-header-icone>
+            <span>Adicionar Conteúdo</span>
+          </button>
+
+          <!-- Menu de Opções -->
+          <div class="menu-conteudo" *ngIf="secao.menuAberto" (click)="$event.stopPropagation()">
+            <button class="menu-opcao" type="button" (click)="adicionarItem(secao, 'aula', $event)">
+              <div class="opcao-icon opcao-icon--aula">
+                <app-header-icone nome="video" [tamanho]="20"></app-header-icone>
+              </div>
+              <div class="opcao-info">
+                <span class="opcao-titulo">Aula</span>
+                <span class="opcao-desc">Vídeo ou texto educativo</span>
+              </div>
+            </button>
+
+            <button class="menu-opcao" type="button" (click)="adicionarItem(secao, 'quiz', $event)">
+              <div class="opcao-icon opcao-icon--quiz">
+                <app-header-icone nome="certificados" [tamanho]="20"></app-header-icone>
+              </div>
+              <div class="opcao-info">
+                <span class="opcao-titulo">Quiz</span>
+                <span class="opcao-desc">Exercício de fixação rápido</span>
+              </div>
+            </button>
+
+            <button
+              class="menu-opcao"
+              type="button"
+              (click)="adicionarItem(secao, 'prova', $event)"
+            >
+              <div class="opcao-icon opcao-icon--prova">
+                <app-header-icone nome="verificar" [tamanho]="20"></app-header-icone>
+              </div>
+              <div class="opcao-info">
+                <span class="opcao-titulo">Prova</span>
+                <span class="opcao-desc">Avaliação formal completa</span>
+              </div>
+            </button>
+
+            <button
+              class="menu-opcao"
+              type="button"
+              (click)="adicionarItem(secao, 'recurso', $event)"
+            >
+              <div class="opcao-icon opcao-icon--recurso">
+                <app-header-icone nome="documento" [tamanho]="20"></app-header-icone>
+              </div>
+              <div class="opcao-info">
+                <span class="opcao-titulo">Recurso</span>
+                <span class="opcao-desc">PDF, slides, arquivos para download</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Lista de Itens da Seção -->
+        <div
+          *ngIf="secao.aberto"
+          class="secao-conteudo"
+          cdkDropList
+          (cdkDropListDropped)="dropItem($event, secao)"
+        >
+          <div *ngFor="let item of secao.itens; let j = index" class="item-wrapper" cdkDrag>
+            <app-conteudo-item
+              [item]="item"
+              [secao]="secao"
+              [numero]="i + 1 + '.' + (j + 1)"
+              (adicionarRecurso)="adicionarRecursoAula($event)"
+              (toggleRecursos)="toggleRecursosAula($event)"
+              (editar)="editarItem($event.secao, $event.item)"
+              (excluir)="excluirItem($event.secao, $event.item)"
+              (excluirRecurso)="excluirRecursoAula($event.item, $event.recurso)"
+            ></app-conteudo-item>
+          </div>
+
+          <div *ngIf="secao.itens.length === 0" class="empty-state">
+            <app-header-icone nome="curso" [tamanho]="48" cor="#cbd5e1"></app-header-icone>
+            <p>Nenhum conteúdo adicionado ainda</p>
+            <span>Clique em "Adicionar Conteúdo" para começar</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado Vazio -->
+      <div *ngIf="secoes.length === 0" class="empty-curso">
+        <div class="empty-icon">
+          <app-header-icone nome="curso" [tamanho]="64" cor="#cbd5e1"></app-header-icone>
+        </div>
+        <h3>Organize o conteúdo do seu curso</h3>
+        <p>Crie seções e adicione aulas, quizzes, provas e recursos para estruturar seu curso</p>
+        <button class="btn btn--primary btn--large" (click)="abrirModalNovoModulo()">
+          <app-header-icone nome="mais" [tamanho]="20"></app-header-icone>
+          Criar Primeira Seção
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAIS -->
+  <!-- Modal: Adicionar Aula -->
+  <app-modal
+    *ngIf="modalAberto === 'aula'"
+    titulo="Nova Aula"
+    largura="600px"
+    (fechar)="fecharModal()"
+  >
+    <div class="form-group">
+      <label>Título da aula *</label>
+      <input type="text" [(ngModel)]="novoItem.titulo" placeholder="Ex: Introdução ao HTML" />
+    </div>
+
+    <div class="form-group">
+      <label>Descrição curta *</label>
+      <textarea
+        [(ngModel)]="novoItem.descricao"
+        rows="2"
+        placeholder="Descreva brevemente o que será abordado nesta aula"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Duração estimada (minutos)</label>
+      <input type="text" [(ngModel)]="novoItem.duracao" placeholder="Ex: 15min" />
+    </div>
+
+    <div class="form-group">
+      <label>Vídeo da aula</label>
+      <div
+        class="upload-video"
+        [class.drag-over]="dragOver"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onVideoDrop($event)"
+      >
+        <input
+          type="file"
+          id="videoFile"
+          accept="video/*"
+          (change)="onVideoFileSelected($event)"
+          style="display: none"
+        />
+        <div class="upload-placeholder" *ngIf="!novoItem.videoUrl">
+          <app-header-icone nome="video" [tamanho]="48" cor="#cbd5e1"></app-header-icone>
+          <p>Arraste o vídeo aqui ou</p>
+          <label for="videoFile" class="btn-upload">Selecionar arquivo</label>
+          <span class="upload-hint">Formatos aceitos: MP4, AVI, MOV (máx. 500MB)</span>
+        </div>
+        <div class="video-preview" *ngIf="novoItem.videoUrl">
+          <video [src]="novoItem.videoUrl" controls></video>
+          <button
+            class="btn-remove-video"
+            (click)="novoItem.videoUrl = ''; novoItem.videoFile = null"
+          >
+            <app-header-icone nome="lixeira" [tamanho]="16"></app-header-icone>
+            Remover vídeo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div footer>
+      <button class="btn btn--outline" (click)="fecharModal()">Cancelar</button>
+      <button class="btn btn--primary" (click)="salvarItem()">Adicionar Aula</button>
+    </div>
+  </app-modal>
+
+  <!-- Modal: Adicionar Quiz -->
+  <app-modal
+    *ngIf="modalAberto === 'quiz'"
+    titulo="Novo Quiz"
+    largura="600px"
+    (fechar)="fecharModal()"
+  >
+    <div class="form-group">
+      <label>Título do quiz *</label>
+      <input
+        type="text"
+        [(ngModel)]="novoItem.titulo"
+        placeholder="Ex: Quiz de fixação - Módulo 1"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Descrição *</label>
+      <textarea
+        [(ngModel)]="novoItem.descricao"
+        rows="2"
+        placeholder="Descreva o objetivo deste quiz"
+      ></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Duração (minutos)</label>
+        <input type="text" [(ngModel)]="novoItem.duracao" placeholder="Ex: 10min" />
+      </div>
+
+      <div class="form-group">
+        <label>Nota mínima para passar (%)</label>
+        <input type="number" [(ngModel)]="novoItem.notaMinima" min="0" max="100" />
+      </div>
+    </div>
+
+    <div footer>
+      <button class="btn btn--outline" (click)="fecharModal()">Cancelar</button>
+      <button class="btn btn--primary" (click)="salvarItem()">Adicionar Quiz</button>
+    </div>
+  </app-modal>
+
+  <!-- Modal: Adicionar Prova -->
+  <app-modal
+    *ngIf="modalAberto === 'prova'"
+    titulo="Nova Prova"
+    largura="600px"
+    (fechar)="fecharModal()"
+  >
+    <div class="form-group">
+      <label>Título da prova *</label>
+      <input
+        type="text"
+        [(ngModel)]="novoItem.titulo"
+        placeholder="Ex: Avaliação Final - HTML e CSS"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Descrição *</label>
+      <textarea
+        [(ngModel)]="novoItem.descricao"
+        rows="2"
+        placeholder="Descreva o que será avaliado nesta prova"
+      ></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Duração (minutos)</label>
+        <input type="text" [(ngModel)]="novoItem.duracao" placeholder="Ex: 30min" />
+      </div>
+
+      <div class="form-group">
+        <label>Nota mínima para passar (%)</label>
+        <input type="number" [(ngModel)]="novoItem.notaMinima" min="0" max="100" />
+      </div>
+    </div>
+
+    <div footer>
+      <button class="btn btn--outline" (click)="fecharModal()">Cancelar</button>
+      <button class="btn btn--primary" (click)="salvarItem()">Adicionar Prova</button>
+    </div>
+  </app-modal>
+
+  <!-- Modal: Adicionar Recurso -->
+  <app-modal
+    *ngIf="modalAberto === 'recurso'"
+    titulo="Novo Recurso"
+    largura="600px"
+    (fechar)="fecharModal()"
+  >
+    <div class="form-group">
+      <label>Título do recurso *</label>
+      <input
+        type="text"
+        [(ngModel)]="novoItem.titulo"
+        placeholder="Ex: Slides da aula, Material complementar"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Descrição *</label>
+      <textarea
+        [(ngModel)]="novoItem.descricao"
+        rows="2"
+        placeholder="Descreva o conteúdo deste recurso"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Tipo de recurso</label>
+      <div class="radio-group-horizontal">
+        <label class="radio-option" [class.selected]="novoItem.tipoRecurso === 'documento'">
+          <input
+            type="radio"
+            name="tipoRecurso"
+            value="documento"
+            [(ngModel)]="novoItem.tipoRecurso"
+          />
+          <span>Documento</span>
+        </label>
+        <label class="radio-option" [class.selected]="novoItem.tipoRecurso === 'texto'">
+          <input type="radio" name="tipoRecurso" value="texto" [(ngModel)]="novoItem.tipoRecurso" />
+          <span>Texto</span>
+        </label>
+        <label class="radio-option" [class.selected]="novoItem.tipoRecurso === 'link'">
+          <input type="radio" name="tipoRecurso" value="link" [(ngModel)]="novoItem.tipoRecurso" />
+          <span>Link Externo</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Documento -->
+    <div class="form-group" *ngIf="novoItem.tipoRecurso === 'documento'">
+      <label>Arquivo</label>
+      <input
+        type="file"
+        id="arquivoRecurso"
+        accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+        (change)="onArquivoSelected($event)"
+        style="display: none"
+      />
+      <label for="arquivoRecurso" class="btn-file-upload">
+        <app-header-icone nome="documento" [tamanho]="20"></app-header-icone>
+        Selecionar arquivo
+      </label>
+      <span class="upload-hint">PDF, Word, Excel, PowerPoint (máx. 50MB)</span>
+    </div>
+
+    <!-- Texto -->
+    <div class="form-group" *ngIf="novoItem.tipoRecurso === 'texto'">
+      <label>Conteúdo do texto</label>
+      <textarea
+        [(ngModel)]="novoItem.conteudoTexto"
+        rows="6"
+        placeholder="Digite ou cole o conteúdo do texto aqui..."
+      ></textarea>
+    </div>
+
+    <!-- Link -->
+    <div class="form-group" *ngIf="novoItem.tipoRecurso === 'link'">
+      <label>URL do link</label>
+      <input type="url" [(ngModel)]="novoItem.linkExterno" placeholder="https://exemplo.com" />
+    </div>
+
+    <div footer>
+      <button class="btn btn--outline" (click)="fecharModal()">Cancelar</button>
+      <button class="btn btn--primary" (click)="salvarItem()">Adicionar Recurso</button>
+    </div>
+  </app-modal>
+</app-sistema-layout>

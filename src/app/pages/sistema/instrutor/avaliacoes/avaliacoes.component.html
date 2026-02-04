@@ -1,0 +1,74 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="avaliacoes-container">
+    <header class="page-header">
+      <div class="header-content">
+        <h1 class="page-title">Avaliações e Feedback</h1>
+        <p class="page-subtitle">O que seus alunos estão dizendo sobre seus cursos</p>
+      </div>
+      <div class="header-summary">
+        <div class="summary-item">
+          <span class="summary-value">{{ notaMedia }}</span>
+          <div class="summary-stars">
+            <app-header-icone *ngFor="let s of [1,2,3,4,5]" nome="estrela" [tamanho]="16" preenchimento="#f59e0b" cor="none"></app-header-icone>
+          </div>
+          <span class="summary-label">Média Geral</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-item">
+          <span class="summary-value">{{ totalAvaliacoes }}</span>
+          <span class="summary-label">Total de Avaliações</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="avaliacoes-lista">
+      <div *ngFor="let avaliacao of avaliacoes" class="avaliacao-card">
+        <div class="avaliacao-header">
+          <div class="aluno-info">
+            <div class="aluno-avatar">{{ avaliacao.aluno.charAt(0) }}</div>
+            <div>
+              <h4 class="aluno-nome">{{ avaliacao.aluno }}</h4>
+              <p class="avaliacao-meta">{{ avaliacao.curso }} • {{ avaliacao.data }}</p>
+            </div>
+          </div>
+          <div class="avaliacao-nota">
+            <app-header-icone *ngFor="let s of getStars(avaliacao.nota)" nome="estrela" [tamanho]="14" preenchimento="#f59e0b" cor="none"></app-header-icone>
+          </div>
+        </div>
+
+        <div class="avaliacao-corpo">
+          <p class="comentario">{{ avaliacao.comentario }}</p>
+        </div>
+
+        <div *ngIf="avaliacao.resposta && respondendoId !== avaliacao.id" class="resposta-instrutor">
+          <div class="resposta-header">
+            <app-header-icone nome="mensagem" [tamanho]="14"></app-header-icone>
+            <span>Sua resposta:</span>
+          </div>
+          <p>{{ avaliacao.resposta }}</p>
+        </div>
+
+        <div *ngIf="respondendoId === avaliacao.id" class="campo-resposta">
+          <textarea 
+            [(ngModel)]="textoResposta" 
+            placeholder="Escreva sua resposta para o aluno..."
+            rows="3"
+            class="resposta-textarea"
+          ></textarea>
+          <div class="resposta-acoes">
+            <button class="btn btn--outline btn--small" (click)="cancelarResposta()">Cancelar</button>
+            <button class="btn btn--primary btn--small" (click)="enviarResposta(avaliacao.id)" [disabled]="!textoResposta.trim()">
+              Enviar Resposta
+            </button>
+          </div>
+        </div>
+
+        <div class="avaliacao-acoes" *ngIf="respondendoId !== avaliacao.id">
+          <button *ngIf="!avaliacao.resposta" class="btn btn--outline btn--small" (click)="abrirResposta(avaliacao.id)">Responder</button>
+          <button *ngIf="avaliacao.resposta" class="btn btn--outline btn--small" (click)="abrirResposta(avaliacao.id)">Editar Resposta</button>
+          <button class="btn-text text-danger">Denunciar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-sistema-layout>

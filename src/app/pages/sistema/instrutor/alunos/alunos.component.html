@@ -33,9 +33,10 @@
             <th>Aluno</th>
             <th>Curso</th>
             <th>Progresso</th>
-            <th>Matrícula</th>
+            <th>Último Acesso</th>
+            <th>Nota Média</th>
             <th>Status</th>
-            <th></th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -63,7 +64,12 @@
               </div>
             </td>
             <td>
-              <span class="data-matricula">{{ aluno.dataMatricula }}</span>
+              <span class="data-matricula">{{ aluno.ultimoAcesso }}</span>
+            </td>
+            <td>
+              <span class="nota-media" [class.nota-baixa]="aluno.notaMedia < 7">
+                {{ aluno.notaMedia | number:'1.1-1' }}
+              </span>
             </td>
             <td>
               <span class="status-badge" [ngClass]="'status-badge--' + aluno.status">
@@ -71,9 +77,14 @@
               </span>
             </td>
             <td>
-              <button class="btn-icon">
-                <app-header-icone nome="mensagem" [tamanho]="18"></app-header-icone>
-              </button>
+              <div class="acoes-lista">
+                <button class="btn-icon" title="Resetar Progresso" (click)="resetarProgresso(aluno)">
+                  <app-header-icone nome="relogio" [tamanho]="18"></app-header-icone>
+                </button>
+                <button class="btn-icon text-danger" title="Remover Aluno" (click)="removerAluno(aluno)">
+                  <app-header-icone nome="lixeira" [tamanho]="18"></app-header-icone>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>

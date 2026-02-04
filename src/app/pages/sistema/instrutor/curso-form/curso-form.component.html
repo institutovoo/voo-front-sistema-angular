@@ -1,0 +1,331 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="curso-form-container">
+    <header class="page-header">
+      <div class="header-content">
+        <a routerLink="/instrutor/cursos" class="btn-back">
+          <app-header-icone nome="seta-esquerda" [tamanho]="16"></app-header-icone>
+          Voltar para cursos
+        </a>
+        <div class="header-title-wrapper">
+          <h1 class="page-title">{{ isEditMode ? 'Editar Curso' : 'Criar Novo Curso' }}</h1>
+          <p class="page-subtitle" *ngIf="isEditMode">Atualize as informações do seu curso</p>
+          <p class="page-subtitle" *ngIf="!isEditMode">
+            Preencha as informações para criar um novo curso
+          </p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button
+          *ngIf="isEditMode && cursoId"
+          class="btn btn--outline"
+          type="button"
+          [routerLink]="['/instrutor/cursos', cursoId, 'estrutura']"
+        >
+          <app-header-icone nome="curso" [tamanho]="18"></app-header-icone>
+          Gerenciar Conteúdo
+        </button>
+        <button class="btn btn--outline" type="button" routerLink="/instrutor/cursos">
+          <app-header-icone nome="fechar" [tamanho]="18"></app-header-icone>
+          Cancelar
+        </button>
+        <button class="btn btn--primary" (click)="onSubmit()" [disabled]="!formCurso.valid">
+          <app-header-icone nome="check" [tamanho]="18"></app-header-icone>
+          {{ isEditMode ? 'Salvar Alterações' : 'Criar Curso' }}
+        </button>
+      </div>
+    </header>
+
+    <form [formGroup]="formCurso" class="form-grid">
+      <!-- Coluna Principal -->
+      <div class="form-column main-column">
+        <!-- Informações Básicas -->
+        <section class="form-section">
+          <div class="section-header">
+            <div class="section-icon">
+              <app-header-icone nome="cursos" [tamanho]="24"></app-header-icone>
+            </div>
+            <div class="section-title-wrapper">
+              <h2 class="section-title">Informações Básicas</h2>
+              <p class="section-subtitle">Título, categoria e descrição geral do curso</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="titulo">Título do curso</label>
+            <input
+              type="text"
+              id="titulo"
+              formControlName="titulo"
+              placeholder="Ex: React do Zero ao Avançado"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="descricaoCurta">Descrição curta *</label>
+            <textarea
+              id="descricaoCurta"
+              formControlName="descricaoCurta"
+              rows="3"
+              placeholder="Aprenda as tecnologias mais modernas do mercado e torne-se um desenvolvedor completo."
+            ></textarea>
+            <span class="form-hint"
+              >Máximo de 160 caracteres - Esta é a primeira impressão do aluno</span
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="descricaoLonga">Descrição detalhada *</label>
+            <textarea
+              id="descricaoLonga"
+              formControlName="descricaoLonga"
+              rows="8"
+              placeholder="Detalhe todo o conteúdo, metodologia e diferenciais do curso..."
+            ></textarea>
+            <span class="form-hint">Descreva de forma completa o que será ensinado e como</span>
+          </div>
+
+          <div class="form-group">
+            <label>Palavras-chave (Pressione Enter para adicionar)</label>
+            <div class="keywords-input-wrapper">
+              <div class="keywords-list" *ngIf="keywords.length > 0">
+                <span *ngFor="let kw of keywords" class="keyword-tag">
+                  {{ kw }}
+                  <button type="button" (click)="removerKeyword(kw)">
+                    <app-header-icone nome="fechar" [tamanho]="12"></app-header-icone>
+                  </button>
+                </span>
+              </div>
+              <input
+                type="text"
+                placeholder="Ex: javascript, react, web"
+                (keydown.enter)="$event.preventDefault(); adicionarKeyword($event)"
+              />
+            </div>
+            <small class="form-hint"
+              >Adicione de 3 a 8 palavras-chave para melhor SEO. Não repita palavras.</small
+            >
+          </div>
+        </section>
+
+        <!-- Descrição Detalhada -->
+        <section class="form-section">
+          <div class="section-header">
+            <div class="section-icon">
+              <app-header-icone nome="documento" [tamanho]="24"></app-header-icone>
+            </div>
+            <div class="section-title-wrapper">
+              <h2 class="section-title">Descrição Detalhada</h2>
+              <p class="section-subtitle">Conteúdo programático e o que o aluno irá aprender</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descricaoLonga">O que os alunos vão aprender?</label>
+            <textarea
+              id="descricaoLonga"
+              formControlName="descricaoLonga"
+              placeholder="Descreva os tópicos e objetivos do curso..."
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- Configurações de Preço -->
+        <section class="form-section">
+          <div class="section-header">
+            <div class="section-icon">
+              <app-header-icone nome="receitas" [tamanho]="24"></app-header-icone>
+            </div>
+            <div class="section-title-wrapper">
+              <h2 class="section-title">Preço e Vendas</h2>
+              <p class="section-subtitle">Defina o modelo de cobrança e promoções</p>
+            </div>
+          </div>
+
+          <div class="radio-group">
+            <label class="radio-container">
+              <input type="radio" formControlName="tipo" value="gratuito" />
+              <span class="radiomark"></span>
+              Curso Gratuito
+            </label>
+            <label class="radio-container">
+              <input type="radio" formControlName="tipo" value="pago" />
+              <span class="radiomark"></span>
+              Curso Pago
+            </label>
+          </div>
+
+          <div class="price-details" *ngIf="formCurso.get('tipo')?.value === 'pago'">
+            <div class="price-row">
+              <div class="form-group">
+                <label for="preco">Preço base (R$)</label>
+                <input
+                  type="number"
+                  id="preco"
+                  formControlName="preco"
+                  placeholder="0,00"
+                  step="0.01"
+                />
+              </div>
+
+              <div class="form-group" *ngIf="formCurso.get('emPromocao')?.value">
+                <label for="precoPromocional">Preço promocional (R$)</label>
+                <input
+                  type="number"
+                  id="precoPromocional"
+                  formControlName="precoPromocional"
+                  placeholder="0,00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+
+            <div class="form-group checkbox-group">
+              <label class="checkbox-container checkbox-container--inline">
+                <input type="checkbox" formControlName="emPromocao" />
+                <span class="checkmark"></span>
+                Este curso está em promoção
+              </label>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Coluna Lateral -->
+      <div class="form-column side-column">
+        <!-- Configurações -->
+        <section class="form-section">
+          <div class="section-header">
+            <div class="section-icon">
+              <app-header-icone nome="configuracao" [tamanho]="24"></app-header-icone>
+            </div>
+            <div class="section-title-wrapper">
+              <h2 class="section-title">Configurações</h2>
+              <p class="section-subtitle">Categoria, nível e idioma</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="categoria">Categoria</label>
+            <select id="categoria" formControlName="categoria">
+              <option value="">Selecione uma categoria</option>
+              <option value="programacao">Programação</option>
+              <option value="design">Design</option>
+              <option value="negocios">Negócios</option>
+              <option value="marketing">Marketing</option>
+              <option value="dados">Data Science</option>
+              <option value="outros">Outros</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nivel">Nível</label>
+              <select id="nivel" formControlName="nivel">
+                <option value="iniciante">Iniciante</option>
+                <option value="intermediario">Intermediário</option>
+                <option value="avancado">Avançado</option>
+                <option value="todos">Todos</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="idioma">Idioma</label>
+              <select id="idioma" formControlName="idioma">
+                <option value="portugues">Português</option>
+                <option value="ingles">Inglês</option>
+                <option value="espanhol">Espanhol</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mídia -->
+        <section class="form-section">
+          <div class="section-header">
+            <div class="section-icon">
+              <app-header-icone nome="imagem" [tamanho]="24"></app-header-icone>
+            </div>
+            <div class="section-title-wrapper">
+              <h2 class="section-title">Mídia do Curso</h2>
+              <p class="section-subtitle">Imagens e vídeos</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Capa do curso</label>
+            <div class="upload-box" [class.has-preview]="capaPreview">
+              <ng-container *ngIf="!capaPreview">
+                <app-header-icone nome="imagem" [tamanho]="24"></app-header-icone>
+                <span>Upload da capa</span>
+                <p class="hint">1280x720px (16:9)</p>
+              </ng-container>
+              <ng-container *ngIf="capaPreview">
+                <img [src]="capaPreview" alt="Preview da capa" class="preview-img" />
+                <div class="preview-overlay">
+                  <app-header-icone nome="atualizar" [tamanho]="20" cor="#fff"></app-header-icone>
+                  <span>Alterar</span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Vídeo de apresentação</label>
+            <div class="upload-box">
+              <app-header-icone nome="video" [tamanho]="24"></app-header-icone>
+              <span>Upload do vídeo</span>
+              <p class="hint">MP4 ou MOV</p>
+            </div>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label class="checkbox-container">
+              <input type="checkbox" formControlName="certificado" />
+              Oferecer certificado
+            </label>
+          </div>
+        </section>
+
+        <!-- Preview do Curso -->
+        <section class="form-section">
+          <div class="section-header">
+            <div class="section-icon">
+              <app-header-icone nome="olho" [tamanho]="24"></app-header-icone>
+            </div>
+            <div class="section-title-wrapper">
+              <h2 class="section-title">Pré-visualização</h2>
+              <p class="section-subtitle">Como seu curso aparecerá</p>
+            </div>
+          </div>
+
+          <div class="preview-card">
+            <div class="preview-image">
+              <app-header-icone nome="curso" [tamanho]="48" cor="#cbd5e1"></app-header-icone>
+            </div>
+            <div class="preview-info">
+              <h3>{{ formCurso.get('titulo')?.value || 'Título do curso' }}</h3>
+              <p>{{ formCurso.get('descricaoCurta')?.value || 'Descrição breve do curso' }}</p>
+              <div class="preview-meta">
+                <span class="badge badge--{{ formCurso.get('nivel')?.value }}">
+                  {{
+                    formCurso.get('nivel')?.value === 'iniciante'
+                      ? 'Iniciante'
+                      : formCurso.get('nivel')?.value === 'intermediario'
+                        ? 'Intermediário'
+                        : 'Avançado'
+                  }}
+                </span>
+                <span *ngIf="formCurso.get('tipo')?.value === 'pago'" class="price-tag">
+                  R$ {{ formCurso.get('preco')?.value || '0,00' }}
+                </span>
+                <span *ngIf="formCurso.get('tipo')?.value === 'gratuito'" class="badge badge--free">
+                  Gratuito
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </form>
+  </div>
+</app-sistema-layout>

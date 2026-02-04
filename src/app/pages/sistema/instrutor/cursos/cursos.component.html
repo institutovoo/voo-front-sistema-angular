@@ -3,7 +3,9 @@
     <div class="meus-cursos__header">
       <div>
         <h1 class="meus-cursos__titulo">Meus cursos</h1>
-        <p class="meus-cursos__subtitulo">Gerencie seus conteúdos, preços e acompanhe o desempenho</p>
+        <p class="meus-cursos__subtitulo">
+          Gerencie seus conteúdos, preços e acompanhe o desempenho
+        </p>
       </div>
       <button class="btn-novo" routerLink="/instrutor/cursos/novo">
         <app-header-icone nome="mais" [tamanho]="18"></app-header-icone>
@@ -17,7 +19,7 @@
         <app-header-icone nome="busca" [tamanho]="18" cor="#64748b"></app-header-icone>
         <input type="text" placeholder="Buscar curso pelo nome..." class="busca__input" />
       </div>
-      
+
       <div class="filtros">
         <button class="filtro-btn filtro-btn--ativo">Todos</button>
         <button class="filtro-btn">Publicados</button>
@@ -31,7 +33,11 @@
       <div *ngFor="let curso of cursos()" class="curso-card">
         <div class="curso-card__imagem" [style.background-color]="curso.categoriaColor">
           <div class="curso-card__placeholder">
-            <app-header-icone nome="curso" [tamanho]="48" cor="rgba(255,255,255,0.3)"></app-header-icone>
+            <app-header-icone
+              nome="curso"
+              [tamanho]="48"
+              cor="rgba(255,255,255,0.3)"
+            ></app-header-icone>
           </div>
           <span class="status-badge" [ngClass]="'status-badge--' + curso.status">
             {{ getStatusLabel(curso.status) }}
@@ -51,18 +57,27 @@
               <span class="stat__label">Alunos</span>
             </div>
             <div class="stat">
-              <span class="stat__valor stat__valor--receita">{{ formatarMoeda(curso.receitaTotal) }}</span>
+              <span class="stat__valor stat__valor--receita">{{
+                formatarMoeda(curso.receitaTotal)
+              }}</span>
               <span class="stat__label">Receita total</span>
             </div>
           </div>
 
           <div class="curso-card__footer">
-            <button class="btn-acao btn-acao--primario" [routerLink]="['/instrutor/cursos', curso.id, 'editar']">
+            <button
+              class="btn-acao btn-acao--secundario"
+              [routerLink]="['/instrutor/cursos/editar', curso.id]"
+            >
               <app-header-icone nome="editar" [tamanho]="16"></app-header-icone>
-              Editar curso
+              Editar
             </button>
-            <button class="btn-acao btn-acao--outline">
-              <app-header-icone nome="menu" [tamanho]="16"></app-header-icone>
+            <button
+              class="btn-acao btn-acao--primario"
+              [routerLink]="['/instrutor/cursos', curso.id, 'estrutura']"
+            >
+              <app-header-icone nome="curso" [tamanho]="16"></app-header-icone>
+              Gerenciar
             </button>
           </div>
         </div>

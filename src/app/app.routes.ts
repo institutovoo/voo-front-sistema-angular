@@ -181,6 +181,126 @@ export const routes: Routes = [
             (m) => m.InstrutorReceitasComponent,
           ),
       },
+      {
+        path: 'cursos/novo',
+        title: 'Criar Curso',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/curso-wizard/curso-wizard.component').then(
+            (m) => m.CursoWizardComponent,
+          ),
+      },
+      {
+        path: 'cursos/editar/:id',
+        title: 'Editar Curso',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/curso-form/curso-form.component').then(
+            (m) => m.CursoFormComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/planejamento',
+        title: 'Planejamento do Curso',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/curso-planejamento/curso-planejamento.component').then(
+            (m) => m.CursoPlanejamentoComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/estrutura',
+        title: 'Estrutura do Curso',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/curso-estrutura/curso-estrutura.component').then(
+            (m) => m.CursoEstruturaComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/aula-editor',
+        title: 'Editor de Aula',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/aula-editor/aula-editor.component').then(
+            (m) => m.AulaEditorComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/quiz-editor',
+        title: 'Editor de Quiz',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/quiz-editor/quiz-editor.component').then(
+            (m) => m.QuizEditorComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/prova-editor',
+        title: 'Editor de Prova',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/prova-editor/prova-editor.component').then(
+            (m) => m.ProvaEditorComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/recurso-editor',
+        title: 'Editor de Recurso',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/recurso-editor/recurso-editor.component').then(
+            (m) => m.RecursoEditorComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/preview',
+        title: 'Pré-visualizar Curso',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/curso-preview/curso-preview.component').then(
+            (m) => m.CursoPreviewComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/aula/:aulaId',
+        title: 'Editor de Aula',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/aula-editor/aula-editor.component').then(
+            (m) => m.AulaEditorComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/quiz/:quizId',
+        title: 'Editor de Quiz',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/quiz-editor/quiz-editor.component').then(
+            (m) => m.QuizEditorComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/prova/:provaId',
+        title: 'Editor de Prova',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/prova-editor/prova-editor.component').then(
+            (m) => m.ProvaEditorComponent,
+          ),
+      },
+      {
+        path: 'cursos/:id/materiais',
+        title: 'Materiais de Apoio',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/materiais/materiais.component').then(
+            (m) => m.MateriaisComponent,
+          ),
+      },
+      {
+        path: 'avaliacoes',
+        title: 'Avaliações e Feedback',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/avaliacoes/avaliacoes.component').then(
+            (m) => m.AvaliacoesComponent,
+          ),
+      },
+      {
+        path: 'relatorios',
+        title: 'Relatórios de Desempenho',
+        loadComponent: () =>
+          import('./pages/sistema/instrutor/relatorios/relatorios.component').then(
+            (m) => m.RelatoriosComponent,
+          ),
+      },
     ],
   },
 
@@ -242,7 +362,9 @@ export const routes: Routes = [
             path: 'cursos',
             title: 'Gestão de Cursos',
             loadComponent: () =>
-              import('./pages/sistema/adm/cursos/cursos.component').then((m) => m.AdmCursosComponent),
+              import('./pages/sistema/adm/cursos/cursos.component').then(
+                (m) => m.AdmCursosComponent,
+              ),
           },
           {
             path: 'instrutores',

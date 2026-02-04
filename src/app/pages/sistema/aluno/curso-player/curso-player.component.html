@@ -85,29 +85,8 @@
 
     <!-- Sidebar - Lista de Módulos -->
     <aside class="player-sidebar" *ngIf="sidebarAberta()">
-      <!-- Tabs -->
-      <div class="sidebar-tabs">
-        <button
-          class="sidebar-tab"
-          [class.sidebar-tab--ativa]="tabAtiva() === 'conteudo'"
-          (click)="setTab('conteudo')"
-        >
-          <app-header-icone nome="cursos" [tamanho]="16"></app-header-icone>
-          Conteúdo
-        </button>
-        <button
-          class="sidebar-tab"
-          [class.sidebar-tab--ativa]="tabAtiva() === 'duvidas'"
-          (click)="setTab('duvidas')"
-        >
-          <app-header-icone nome="mensagem" [tamanho]="16"></app-header-icone>
-          Dúvidas
-          <span class="sidebar-tab__badge" *ngIf="duvidas.length > 0">{{ duvidas.length }}</span>
-        </button>
-      </div>
-
       <!-- Tab Conteúdo -->
-      <div class="sidebar-content" *ngIf="tabAtiva() === 'conteudo'">
+      <div class="sidebar-content">
         <div class="sidebar-header">
           <h3>Conteúdo do curso</h3>
           <span class="sidebar-header__progresso">{{ progresso }}% concluído</span>
@@ -144,69 +123,6 @@
                 <span class="sidebar-aula__duracao">{{ aula.duracao }}</span>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab Dúvidas -->
-      <div class="sidebar-content sidebar-content--duvidas" *ngIf="tabAtiva() === 'duvidas'">
-        <div class="sidebar-header">
-          <h3>Dúvidas da Aula</h3>
-        </div>
-
-        <!-- Formulário de nova dúvida -->
-        <div class="nova-duvida">
-          <textarea
-            [ngModel]="novaDuvida()"
-            (ngModelChange)="novaDuvida.set($event)"
-            placeholder="Tem alguma dúvida sobre esta aula? Pergunte aqui..."
-            rows="3"
-          ></textarea>
-          <button
-            class="btn btn--primary btn--sm"
-            (click)="enviarDuvida()"
-            [disabled]="!novaDuvida().trim()"
-          >
-            <app-header-icone nome="enviar" [tamanho]="16"></app-header-icone>
-            Enviar dúvida
-          </button>
-        </div>
-
-        <!-- Lista de dúvidas -->
-        <div class="duvidas-lista">
-          <div class="duvida-vazia" *ngIf="duvidas.length === 0">
-            <app-header-icone nome="mensagem" [tamanho]="32" cor="#cbd5e1"></app-header-icone>
-            <p>Nenhuma dúvida ainda.<br />Seja o primeiro a perguntar!</p>
-          </div>
-
-          <div class="duvida-item" *ngFor="let duvida of duvidas">
-            <div class="duvida-item__header">
-              <span class="duvida-item__autor">{{ duvida.autor }}</span>
-              <span class="duvida-item__data">{{ formatarData(duvida.data) }}</span>
-            </div>
-            <p class="duvida-item__texto">{{ duvida.texto }}</p>
-
-            <!-- Respostas -->
-            <div class="duvida-respostas" *ngIf="duvida.respostas.length > 0">
-              <div class="resposta-item" *ngFor="let resposta of duvida.respostas">
-                <div class="resposta-item__header">
-                  <span
-                    class="resposta-item__autor"
-                    [class.resposta-item__autor--instrutor]="resposta.isInstrutor"
-                  >
-                    {{ resposta.autor }}
-                    <span class="resposta-item__badge" *ngIf="resposta.isInstrutor">Instrutor</span>
-                  </span>
-                  <span class="resposta-item__data">{{ formatarData(resposta.data) }}</span>
-                </div>
-                <p class="resposta-item__texto">{{ resposta.texto }}</p>
-              </div>
-            </div>
-
-            <span class="duvida-item__aguardando" *ngIf="duvida.respostas.length === 0">
-              <app-header-icone nome="relogio" [tamanho]="12"></app-header-icone>
-              Aguardando resposta
-            </span>
           </div>
         </div>
       </div>

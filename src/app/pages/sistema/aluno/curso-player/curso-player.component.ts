@@ -5,22 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
 import { LogoComponent } from '../../../../components/logo/logo.component';
 
-export interface Duvida {
-  id: number;
-  texto: string;
-  autor: string;
-  data: Date;
-  respostas: Resposta[];
-}
-
-export interface Resposta {
-  id: number;
-  texto: string;
-  autor: string;
-  isInstrutor: boolean;
-  data: Date;
-}
-
 export interface Aula {
   id: number;
   titulo: string;
@@ -50,11 +34,8 @@ export interface Modulo {
 })
 export class CursoPlayerComponent {
   sidebarAberta = signal(true);
-  duvidaAberta = signal(false);
   aulaAtualId = signal(8);
   cursoId = signal(1);
-  novaDuvida = signal('');
-  tabAtiva = signal<'conteudo' | 'duvidas'>('conteudo');
 
   // Dados do curso
   curso = {
@@ -289,61 +270,5 @@ export class CursoPlayerComponent {
 
   getAulasConcluidas(modulo: Modulo): number {
     return modulo.aulas.filter((a) => a.concluida).length;
-  }
-
-  // Dúvidas mockadas
-  duvidas: Duvida[] = [
-    {
-      id: 1,
-      texto: 'Como faço para centralizar um elemento com Flexbox?',
-      autor: 'Maria Silva',
-      data: new Date('2026-01-10'),
-      respostas: [
-        {
-          id: 1,
-          texto:
-            'Para centralizar, use display: flex; justify-content: center; align-items: center; no elemento pai.',
-          autor: 'Prof. Carlos Mendes',
-          isInstrutor: true,
-          data: new Date('2026-01-10'),
-        },
-      ],
-    },
-    {
-      id: 2,
-      texto: 'Qual a diferença entre justify-content e align-items?',
-      autor: 'João Pedro',
-      data: new Date('2026-01-09'),
-      respostas: [],
-    },
-  ];
-
-  setTab(tab: 'conteudo' | 'duvidas'): void {
-    this.tabAtiva.set(tab);
-  }
-
-  enviarDuvida(): void {
-    const texto = this.novaDuvida().trim();
-    if (texto) {
-      this.duvidas.unshift({
-        id: Date.now(),
-        texto,
-        autor: 'Você',
-        data: new Date(),
-        respostas: [],
-      });
-      this.novaDuvida.set('');
-    }
-  }
-
-  formatarData(data: Date): string {
-    const agora = new Date();
-    const diff = agora.getTime() - data.getTime();
-    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-    if (dias === 0) return 'Hoje';
-    if (dias === 1) return 'Ontem';
-    if (dias < 7) return `${dias} dias atrás`;
-    return data.toLocaleDateString('pt-BR');
   }
 }

@@ -1,0 +1,91 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="recurso-editor-container">
+    <header class="page-header">
+      <button class="btn-back" (click)="voltar()">
+        <app-header-icone nome="seta-esquerda" [tamanho]="20"></app-header-icone>
+        Voltar para estrutura
+      </button>
+      <div class="header-info">
+        <h1>{{ modo === 'criar' ? 'Novo Recurso' : 'Editar Recurso' }}</h1>
+        <p *ngIf="secaoTitulo">{{ secaoTitulo }}</p>
+      </div>
+    </header>
+
+    <div class="editor-content">
+      <form [formGroup]="formRecurso" (ngSubmit)="salvar()">
+        <div class="form-section">
+          <h2>Informações Básicas</h2>
+
+          <div class="form-group">
+            <label for="titulo">Título do Recurso *</label>
+            <input
+              type="text"
+              id="titulo"
+              formControlName="titulo"
+              placeholder="Ex: Material complementar, PDF do curso..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea
+              id="descricao"
+              formControlName="descricao"
+              rows="3"
+              placeholder="Descreva o conteúdo deste recurso..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="tipo">Tipo de Recurso *</label>
+            <select id="tipo" formControlName="tipo">
+              <option value="documento">Documento/Arquivo</option>
+              <option value="link">Link Externo</option>
+              <option value="texto">Texto/Anotações</option>
+            </select>
+          </div>
+
+          <!-- Documento -->
+          <div class="form-group" *ngIf="formRecurso.value.tipo === 'documento'">
+            <label>Arquivo</label>
+            <input
+              type="file"
+              (change)="onFileSelected($event)"
+              accept=".pdf,.doc,.docx,.ppt,.pptx,.zip"
+            />
+            <small>PDF, Word, PowerPoint ou ZIP (máx. 50MB)</small>
+          </div>
+
+          <!-- Link -->
+          <div class="form-group" *ngIf="formRecurso.value.tipo === 'link'">
+            <label for="linkExterno">URL do Link</label>
+            <input
+              type="url"
+              id="linkExterno"
+              formControlName="linkExterno"
+              placeholder="https://..."
+            />
+          </div>
+
+          <!-- Texto -->
+          <div class="form-group" *ngIf="formRecurso.value.tipo === 'texto'">
+            <label for="conteudoTexto">Conteúdo</label>
+            <textarea
+              id="conteudoTexto"
+              formControlName="conteudoTexto"
+              rows="10"
+              placeholder="Digite o conteúdo aqui..."
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn--outline" (click)="voltar()">Cancelar</button>
+          <button type="submit" class="btn btn--primary" [disabled]="formRecurso.invalid">
+            {{ modo === 'criar' ? 'Criar Recurso' : 'Salvar Alterações' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-sistema-layout>

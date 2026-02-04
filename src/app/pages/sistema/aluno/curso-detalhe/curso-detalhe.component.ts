@@ -6,6 +6,8 @@ import { SistemaLayoutComponent } from '../../../../components/sistema/layout/la
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
 import { BarraProgressoComponent } from '../../../../components/sistema/barra-progresso/barra-progresso.component';
 
+import { FormsModule } from '@angular/forms';
+
 export interface Aula {
   id: number;
   titulo: string;
@@ -51,6 +53,15 @@ export interface CursoCompleto {
   idioma: string;
 }
 
+export interface Avaliacao {
+  id: number;
+  aluno: string;
+  nota: number;
+  data: Date;
+  comentario: string;
+  resposta?: string;
+}
+
 @Component({
   selector: 'app-curso-detalhe',
   standalone: true,
@@ -60,6 +71,7 @@ export interface CursoCompleto {
     SistemaLayoutComponent,
     HeaderIconeComponent,
     BarraProgressoComponent,
+    FormsModule,
   ],
   templateUrl: './curso-detalhe.component.html',
   styleUrl: './curso-detalhe.component.scss',
@@ -72,6 +84,32 @@ export class CursoDetalheComponent {
 
   cursoId = signal<number>(1);
   inscrito = signal<boolean>(false);
+
+  // Avaliação do aluno
+  novaNota = 0;
+  novoComentario = '';
+  avaliacaoEnviada = false;
+
+  avaliacoesMock: Avaliacao[] = [
+    {
+      id: 1,
+      aluno: 'Marcos Silva',
+      nota: 5,
+      data: new Date('2026-01-02'),
+      comentario:
+        'Curso excelente! O conteúdo é muito bem explicado e os projetos práticos ajudam muito.',
+      resposta: 'Olá Marcos! Que bom que gostou. Bons estudos!',
+    },
+    {
+      id: 2,
+      aluno: 'Julia Costa',
+      nota: 4,
+      data: new Date('2025-12-28'),
+      comentario: 'Gostei muito, mas senti falta de mais exemplos sobre autenticação.',
+      resposta:
+        'Olá Julia! Obrigado pelo feedback. Vamos adicionar uma aula extra sobre isso em breve!',
+    },
+  ];
 
   // Curso mockado - seria carregado via API
   curso: CursoCompleto = {
@@ -229,7 +267,43 @@ export class CursoDetalheComponent {
     ],
   };
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  sugestoes = [
+    {
+      id: 2,
+      titulo: 'React Avançado com TypeScript',
+      instrutor: 'Prof. Carlos Mendes',
+      imagem: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400',
+      avaliacao: 4.9,
+      totalAlunos: 850,
+      gratuito: false,
+      preco: 149.9,
+    },
+    {
+      id: 3,
+      titulo: 'Node.js e MongoDB: Backend Completo',
+      instrutor: 'Mariana Costa',
+      imagem: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400',
+      avaliacao: 4.7,
+      totalAlunos: 1200,
+      gratuito: true,
+      preco: 0,
+    },
+    {
+      id: 4,
+      titulo: 'UI/UX Design para Desenvolvedores',
+      instrutor: 'Ricardo Alves',
+      imagem: 'https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?w=400',
+      avaliacao: 4.8,
+      totalAlunos: 560,
+      gratuito: false,
+      preco: 129.0,
+    },
+  ];
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {
     // Simula inscrição automática para demonstração
     this.inscrito.set(true);
   }
@@ -282,6 +356,33 @@ export class CursoDetalheComponent {
   inscreverCurso(): void {
     this.inscrito.set(true);
     // Aqui faria a chamada API para inscrever
+  }
+
+  setNota(nota: number): void {
+    if (!this.avaliacaoEnviada) {
+      this.novaNota = nota;
+    }
+  }
+
+  enviarAvaliacao(): void {
+    if (this.novaNota > 0 && this.novoComentario.trim()) {
+      this.avaliacaoEnviada = true;
+      console.log('Avaliação enviada:', { nota: this.novaNota, comentario: this.novoComentario });
+
+      // Adiciona ao mock para visualização imediata
+      this.avaliacoesMock.unshift({
+        id: Date.now(),
+        aluno: this.usuario.nome,
+        nota: this.novaNota,
+        data: new Date(),
+        comentario: this.novoComentario,
+        resposta: undefined,
+      });
+    }
+  }
+
+  getStars(nota: number): number[] {
+    return Array(nota).fill(0);
   }
 
   acessarAula(aula: Aula): void {

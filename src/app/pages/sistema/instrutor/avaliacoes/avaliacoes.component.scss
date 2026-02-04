@@ -1,0 +1,136 @@
+@import '../../../../styles/sistema';
+
+.avaliacoes-container { padding: 1.5rem; }
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  @media (max-width: 768px) { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  
+  .page-title { font-size: 1.75rem; font-weight: 700; color: #0b1b2b; margin: 0; }
+  .page-subtitle { font-size: 1rem; color: #64748b; margin: 0.25rem 0 0; }
+}
+
+.header-summary {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: #fff;
+  padding: 1.25rem 2rem;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .summary-value { font-size: 1.5rem; font-weight: 700; color: #0b1b2b; }
+    .summary-stars { display: flex; gap: 2px; margin: 0.25rem 0; }
+    .summary-label { font-size: 0.75rem; color: #64748b; font-weight: 500; }
+  }
+  .summary-divider { width: 1px; height: 40px; background: #e2e8f0; }
+}
+
+.avaliacoes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 800px;
+}
+
+.avaliacao-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+
+  .avaliacao-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .aluno-info {
+    display: flex;
+    gap: 1rem;
+    .aluno-avatar { width: 40px; height: 40px; border-radius: 50%; background: #e0f7fa; color: #21b7cd; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .aluno-nome { font-size: 1rem; font-weight: 600; color: #1e293b; margin: 0; }
+    .avaliacao-meta { font-size: 0.8125rem; color: #64748b; margin: 0.125rem 0 0; }
+  }
+
+  .avaliacao-corpo { margin-bottom: 1.25rem; .comentario { font-size: 0.9375rem; color: #475569; line-height: 1.6; margin: 0; } }
+
+  .resposta-instrutor {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-left: 3px solid #21b7cd;
+    border-radius: 4px;
+
+    .resposta-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #21b7cd;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: #475569;
+      margin: 0;
+    }
+  }
+
+  .campo-resposta {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .resposta-textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      resize: vertical;
+      background: #f8fafc;
+
+      &:focus {
+        outline: none;
+        border-color: #21b7cd;
+        background: #fff;
+      }
+    }
+
+    .resposta-acoes {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+  }
+
+  .avaliacao-acoes {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    .btn-text { background: none; border: none; font-size: 0.8125rem; font-weight: 600; cursor: pointer; color: #64748b; &:hover { text-decoration: underline; } &.text-danger:hover { color: #ef4444; } }
+  }
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  border: none;
+  &--outline { background: transparent; border: 1px solid #e2e8f0; color: #475569; &:hover { background: #f8fafc; } }
+}

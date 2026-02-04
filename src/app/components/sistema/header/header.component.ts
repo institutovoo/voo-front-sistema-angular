@@ -95,6 +95,8 @@ export class SistemaHeaderComponent implements OnInit, OnChanges {
           { label: 'Dashboard', rota: '/instrutor/dashboard', icone: 'dashboard' },
           { label: 'Meus Cursos', rota: '/instrutor/cursos', icone: 'cursos' },
           { label: 'Alunos', rota: '/instrutor/alunos', icone: 'alunos' },
+          { label: 'Avaliações', rota: '/instrutor/avaliacoes', icone: 'estrela' },
+          { label: 'Relatórios', rota: '/instrutor/relatorios', icone: 'documento' },
           { label: 'Receitas', rota: '/instrutor/receitas', icone: 'receitas' },
         ];
       } else {

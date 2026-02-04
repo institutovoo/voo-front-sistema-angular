@@ -48,12 +48,6 @@
             </div>
             <span class="acao-card__texto">Avaliações e provas</span>
           </a>
-          <a routerLink="/instrutor/duvidas" class="acao-card">
-            <div class="acao-card__icone acao-card__icone--warning">
-              <app-header-icone nome="mensagem" [tamanho]="24"></app-header-icone>
-            </div>
-            <span class="acao-card__texto">Responder dúvidas</span>
-          </a>
         </div>
       </section>
 
@@ -89,7 +83,11 @@
             <div class="curso-item__corpo">
               <div class="curso-item__imagem" [style.background-color]="curso.categoriaColor">
                 <div class="curso-item__placeholder">
-                  <app-header-icone nome="curso" [tamanho]="32" cor="rgba(255,255,255,0.5)"></app-header-icone>
+                  <app-header-icone
+                    nome="curso"
+                    [tamanho]="32"
+                    cor="rgba(255,255,255,0.5)"
+                  ></app-header-icone>
                 </div>
               </div>
 
@@ -101,7 +99,7 @@
                   <span class="curso-item__data">Atualizado em {{ curso.ultimaAtualizacao }}</span>
                 </div>
                 <h3 class="curso-item__titulo">{{ curso.titulo }}</h3>
-                
+
                 <div class="curso-item__metricas" *ngIf="curso.status === 'publicado'">
                   <div class="metrica">
                     <span class="metrica__valor">{{ curso.totalAlunos }}</span>
@@ -144,9 +142,6 @@
               >
                 <app-header-icone nome="editar" [tamanho]="18"></app-header-icone>
               </a>
-              <button class="btn-icon" title="Mais opções">
-                <app-header-icone nome="menu" [tamanho]="18"></app-header-icone>
-              </button>
             </div>
           </div>
         </div>
@@ -155,6 +150,26 @@
 
     <!-- Coluna Lateral -->
     <aside class="coluna-lateral">
+      <!-- Alertas -->
+      <div class="card-lateral card-lateral--alertas" *ngIf="alertas.length > 0">
+        <h3 class="card-lateral__titulo">Alertas pendentes</h3>
+        <div class="alertas-lista">
+          <div
+            *ngFor="let alerta of alertas"
+            class="alerta-item"
+            [ngClass]="'alerta-item--' + alerta.cor"
+          >
+            <div class="alerta-item__icone">
+              <app-header-icone [nome]="alerta.tipo" [tamanho]="16"></app-header-icone>
+            </div>
+            <div class="alerta-item__conteudo">
+              <p class="alerta-item__mensagem">{{ alerta.mensagem }}</p>
+              <span class="alerta-item__curso">{{ alerta.curso }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Receita Mensal -->
       <div class="card-lateral">
         <h3 class="card-lateral__titulo">Receita mensal</h3>
@@ -175,26 +190,6 @@
               ></div>
             </div>
             <span class="barra-item__label">{{ item.mes }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Dúvidas Recentes -->
-      <div class="card-lateral">
-        <div class="card-lateral__header">
-          <h3 class="card-lateral__titulo">Dúvidas recentes</h3>
-          <a routerLink="/instrutor/duvidas" class="card-lateral__link">Ver todas</a>
-        </div>
-        <div class="duvidas-lista">
-          <div *ngFor="let duvida of duvidasRecentes" class="duvida-item">
-            <div class="duvida-item__avatar">
-              {{ duvida.aluno.charAt(0) }}
-            </div>
-            <div class="duvida-item__info">
-              <p class="duvida-item__aluno">{{ duvida.aluno }}</p>
-              <p class="duvida-item__pergunta">{{ duvida.pergunta }}</p>
-              <span class="duvida-item__meta"> {{ duvida.curso }} • {{ duvida.tempo }} </span>
-            </div>
           </div>
         </div>
       </div>

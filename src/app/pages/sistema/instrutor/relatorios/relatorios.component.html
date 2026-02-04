@@ -1,0 +1,68 @@
+<app-sistema-layout tipoUsuario="instrutor">
+  <div class="relatorios-container">
+    <header class="page-header">
+      <div class="header-content">
+        <h1 class="page-title">Relatórios de Desempenho</h1>
+        <p class="page-subtitle">Analise os dados dos seus cursos e alunos</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn--outline" (click)="exportarExcel()">
+          <app-header-icone nome="documento" [tamanho]="18"></app-header-icone>
+          Exportar Excel
+        </button>
+        <button class="btn btn--primary" (click)="exportarPDF()">
+          <app-header-icone nome="verificar" [tamanho]="18" cor="white"></app-header-icone>
+          Exportar PDF
+        </button>
+      </div>
+    </header>
+
+    <div class="metricas-grid">
+      <div *ngFor="let metrica of metricas" class="metrica-card" [ngClass]="'metrica-card--' + metrica.cor">
+        <div class="metrica-icon">
+          <app-header-icone [nome]="metrica.icone" [tamanho]="24"></app-header-icone>
+        </div>
+        <div class="metrica-info">
+          <span class="metrica-label">{{ metrica.label }}</span>
+          <span class="metrica-valor">{{ metrica.valor }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="relatorios-grid">
+      <section class="relatorio-section">
+        <h2 class="section-title">Aulas mais assistidas</h2>
+        <div class="tabela-container">
+          <table class="tabela">
+            <thead>
+              <tr>
+                <th>Aula</th>
+                <th>Visualizações</th>
+                <th>Taxa de Conclusão</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let aula of aulasMaisAssistidas">
+                <td>{{ aula.titulo }}</td>
+                <td>{{ aula.visualizacoes }}</td>
+                <td>
+                  <div class="progresso-mini">
+                    <div class="progresso-fill" [style.width]="aula.conclusao"></div>
+                    <span>{{ aula.conclusao }}</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="relatorio-section">
+        <h2 class="section-title">Pontos de Abandono</h2>
+        <div class="abandono-grafico">
+          <p class="empty-text">Gráfico em processamento...</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</app-sistema-layout>

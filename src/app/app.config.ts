@@ -6,11 +6,12 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { TituloStrategy } from './titulo-strategy';
 import { loggerInterceptor } from './core/interceptor/logger.interceptor';
+import { authInterceptor } from './core/interceptor/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([loggerInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, loggerInterceptor])),
     { provide: TitleStrategy, useClass: TituloStrategy },
   ],
 };

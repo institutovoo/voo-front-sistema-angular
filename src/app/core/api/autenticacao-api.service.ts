@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from './base-api';
 import {
   AuthResponse,
   CadastroRequest,
@@ -14,96 +15,83 @@ import {
 })
 export class AutenticacaoApi {
   private http = inject(HttpClient);
-  private readonly API_URL = 'https://5axe4j6ztxumduquhtim6icgg40tlimo.lambda-url.us-east-1.on.aws';
-
-  private getHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-  }
+  private readonly API_URL = API_CONFIG.BASE_URL;
 
   cadastrar(dados: CadastroRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios`, dados, {
-      headers: this.getHeaders(),
-    });
+    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios`, dados);
   }
 
   login(dados: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/login`, dados, {
-      headers: this.getHeaders(),
-    });
+    return this.http.post<AuthResponse>(`${this.API_URL}/login`, dados);
   }
 
   esqueciSenha(dados: EsqueciSenhaRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/esqueci-senha`, dados, {
-      headers: this.getHeaders(),
-    });
+    return this.http.post<AuthResponse>(`${this.API_URL}/esqueci-senha`, dados);
   }
 
   resetSenha(dados: ResetSenhaRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/reset-senha`, dados, {
-      headers: this.getHeaders(),
-    });
+    return this.http.post<AuthResponse>(`${this.API_URL}/reset-senha`, dados);
   }
 
   me(): Observable<AuthResponse> {
-    return this.http.get<AuthResponse>(`${this.API_URL}/usuarios/me`, {
-      headers: this.getHeaders(),
-    });
+    return this.http.get<AuthResponse>(`${this.API_URL}/me`);
   }
 
-  adicionarPerfil(dados: { cpf_cnpj: string; perfil: string; dadosExtras?: any }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/perfil`, dados, {
-      headers: this.getHeaders(),
-    });
+  adicionarPerfil(dados: {
+    cpf_cnpj: string;
+    perfil: string;
+    dadosExtras?: any;
+  }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/perfil`, dados);
   }
 
-  solicitarPerfil(dados: { cpf_cnpj: string; perfil: string; dadosExtras?: any }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/solicitar-perfil`, dados, {
-      headers: this.getHeaders(),
-    });
+  solicitarPerfil(dados: {
+    cpf_cnpj: string;
+    perfil: string;
+    dadosExtras?: any;
+  }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/solicitar-perfil`, dados);
   }
 
   listarSolicitacoes(): Observable<{ sucesso: boolean; solicitacoes: any[] }> {
-    return this.http.get<{ sucesso: boolean; solicitacoes: any[] }>(`${this.API_URL}/usuarios/solicitacoes`, {
-      headers: this.getHeaders(),
-    });
+    return this.http.get<{ sucesso: boolean; solicitacoes: any[] }>(
+      `${this.API_URL}/solicitacoes`,
+    );
   }
 
-  decidirSolicitacao(dados: { id: string; decisao: 'aprovado' | 'rejeitado' }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/decidir-solicitacao`, dados, {
-      headers: this.getHeaders(),
-    });
+  decidirSolicitacao(dados: {
+    id: string;
+    decisao: 'aprovado' | 'rejeitado';
+  }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/decidir-solicitacao`, dados);
   }
 
   bloquearUsuario(dados: { cpf_cnpj: string; motivo: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/bloquear`, dados, {
-      headers: this.getHeaders(),
+    return this.http.patch<AuthResponse>(`${this.API_URL}/status`, {
+      cpf_cnpj: dados.cpf_cnpj,
+      status: 'bloqueado',
+      motivo: dados.motivo,
     });
   }
 
   desbloquearUsuario(cpf_cnpj: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/desbloquear`, { cpf_cnpj }, {
-      headers: this.getHeaders(),
+    return this.http.patch<AuthResponse>(`${this.API_URL}/status`, {
+      cpf_cnpj,
+      status: 'ativo',
     });
   }
 
   excluirUsuario(cpf_cnpj: string): Observable<AuthResponse> {
     return this.http.delete<AuthResponse>(`${this.API_URL}/usuarios`, {
-      headers: this.getHeaders(),
-      body: { cpf_cnpj }
+      body: { cpf_cnpj },
     });
   }
 
   listarUsuarios(): Observable<{ sucesso: boolean; usuarios: any[] }> {
-    return this.http.get<{ sucesso: boolean; usuarios: any[] }>(`${this.API_URL}/usuarios`, {
-      headers: this.getHeaders(),
-    });
+    return this.http.get<{ sucesso: boolean; usuarios: any[] }>(`${this.API_URL}/usuarios`);
   }
 
-  alterarSenhaObrigatoria(dados: { cpf_cnpj: string; novaSenha: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/usuarios/alterar-senha-obrigatoria`, dados, {
-      headers: this.getHeaders(),
-    });
+  alterarSenha(dados: { cpf_cnpj: string; novaSenha: string }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/alterar-senha`, dados);
   }
 }

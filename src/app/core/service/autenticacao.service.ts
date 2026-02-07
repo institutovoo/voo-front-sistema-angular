@@ -247,7 +247,7 @@ export class AutenticacaoService {
     const usuario = this.usuarioLogado();
     if (!usuario) return;
 
-    return this.api.alterarSenhaObrigatoria({
+    return this.api.alterarSenha({
       cpf_cnpj: usuario.cpf_cnpj,
       novaSenha
     }).pipe(

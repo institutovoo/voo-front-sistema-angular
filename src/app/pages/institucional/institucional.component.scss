@@ -543,7 +543,9 @@ $radius-full: 9999px;
   border-radius: $radius-lg;
   overflow: hidden;
   box-shadow: $shadow-sm;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 
   &:hover {
     transform: translateY(-8px);
@@ -895,10 +897,15 @@ $radius-full: 9999px;
   }
 
   &__info-row {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
-    flex-wrap: wrap;
+    max-width: 980px;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
   }
 }
 
@@ -912,7 +919,10 @@ $radius-full: 9999px;
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: $shadow-sm;
   text-decoration: none;
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
 
   &:hover {
     transform: translateY(-2px);
@@ -1051,7 +1061,9 @@ $radius-full: 9999px;
     font-size: 15px;
     color: $text-dark;
     background: $white;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
 
     &::placeholder {
       color: #a0aec0;

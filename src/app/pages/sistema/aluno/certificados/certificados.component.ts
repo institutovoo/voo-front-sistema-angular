@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { Usuario } from '../../../../components/sistema/header/header.component';
 import { SistemaLayoutComponent } from '../../../../components/sistema/layout/layout.component';
+import { SistemaHeaderComponent, Usuario } from '../../../../components/sistema/header/header.component';
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
 import {
   CertificadoCardComponent,
@@ -18,6 +18,9 @@ import {
   FiltroTab,
   OpcaoOrdenacao,
 } from '../../../../components/sistema/filtros-barra/filtros-barra.component';
+import { CertificadoApi } from '../../../../core/api/certificado-api.service';
+import { AutenticacaoService } from '../../../../core/service/autenticacao.service';
+import { AlertaService } from '../../../../core/service/alerta.service';
 
 @Component({
   selector: 'app-certificados',
@@ -36,10 +39,18 @@ import {
   styleUrl: './certificados.component.scss',
 })
 export class CertificadosComponent {
-  usuario: Usuario = {
-    nome: 'João Silva',
-    email: 'joao@email.com',
-  };
+  private certificadoApi = inject(CertificadoApi);
+  private authService = inject(AutenticacaoService);
+  private alertaService = inject(AlertaService);
+
+  get usuarioExibicao(): Usuario {
+    const user = this.authService.usuarioLogado();
+    return {
+      nome: user?.nome_completo || 'Usuário',
+      email: user?.email,
+      avatar: '',
+    };
+  }
 
   // Filtros
   termoBusca = '';
@@ -51,27 +62,27 @@ export class CertificadosComponent {
   metricas: Estatistica[] = [
     {
       icone: 'certificados',
-      valor: 12,
-      label: 'Certificados',
+      valor: 1,
+      label: 'Certificado',
       cor: 'primary',
-      tendencia: { valor: 2, tipo: 'up' },
+      tendencia: { valor: 0, tipo: 'up' },
     },
     {
       icone: 'relogio',
-      valor: '148h',
+      valor: '24h',
       label: 'Horas de estudo',
       cor: 'success',
-      tendencia: { valor: 24, tipo: 'up' },
+      tendencia: { valor: 0, tipo: 'up' },
     },
     {
       icone: 'cursos',
-      valor: 12,
-      label: 'Cursos concluídos',
+      valor: 1,
+      label: 'Curso concluído',
       cor: 'warning',
     },
     {
       icone: 'trophy',
-      valor: '4.8',
+      valor: '5.0',
       label: 'Nota média',
       cor: 'info',
     },
@@ -79,26 +90,21 @@ export class CertificadosComponent {
 
   // Categorias (tabs)
   categorias: FiltroTab[] = [
-    { id: 'todas', nome: 'Todas', quantidade: 12 },
-    { id: 'desenvolvimento', nome: 'Desenvolvimento', cor: '#3b82f6', quantidade: 5 },
-    { id: 'design', nome: 'Design', cor: '#ec4899', quantidade: 3 },
-    { id: 'marketing', nome: 'Marketing', cor: '#f59e0b', quantidade: 2 },
-    { id: 'negocios', nome: 'Negócios', cor: '#22c55e', quantidade: 2 },
+    { id: 'todas', nome: 'Todas', quantidade: 1 },
+    { id: 'desenvolvimento', nome: 'Desenvolvimento', cor: '#3b82f6', quantidade: 1 },
   ];
 
   // Opções de ordenação
   opcoesOrdenacao: OpcaoOrdenacao[] = [
     { valor: 'recentes', label: 'Mais recentes' },
-    { valor: 'antigos', label: 'Mais antigos' },
     { valor: 'nome', label: 'Nome A-Z' },
-    { valor: 'nota', label: 'Maior nota' },
   ];
 
   // Certificados
   certificados: Certificado[] = [
     {
       id: 1,
-      titulo: 'Angular Avançado: Arquitetura e Performance',
+      titulo: 'Angular avançado: arquitetura e performance',
       categoria: 'Desenvolvimento',
       categoriaColor: '#3b82f6',
       instrutor: 'Carlos Mendes',
@@ -106,91 +112,7 @@ export class CertificadosComponent {
       cargaHoraria: 24,
       codigoValidacao: 'CERT-ANG-2025-001',
       imagemCurso: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400',
-      nota: 4.9,
-    },
-    {
-      id: 2,
-      titulo: 'UI/UX Design: Do Básico ao Avançado',
-      categoria: 'Design',
-      categoriaColor: '#ec4899',
-      instrutor: 'Ana Paula Silva',
-      dataConclusao: new Date('2025-11-28'),
-      cargaHoraria: 32,
-      codigoValidacao: 'CERT-UX-2025-002',
-      imagemCurso: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400',
       nota: 5.0,
-    },
-    {
-      id: 3,
-      titulo: 'Marketing Digital e Growth Hacking',
-      categoria: 'Marketing',
-      categoriaColor: '#f59e0b',
-      instrutor: 'Roberto Campos',
-      dataConclusao: new Date('2025-10-20'),
-      cargaHoraria: 18,
-      codigoValidacao: 'CERT-MKT-2025-003',
-      imagemCurso: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400',
-      nota: 4.7,
-    },
-    {
-      id: 4,
-      titulo: 'Node.js com TypeScript e Clean Architecture',
-      categoria: 'Desenvolvimento',
-      categoriaColor: '#3b82f6',
-      instrutor: 'Pedro Santos',
-      dataConclusao: new Date('2025-09-15'),
-      cargaHoraria: 28,
-      codigoValidacao: 'CERT-NODE-2025-004',
-      imagemCurso: 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=400',
-      nota: 4.8,
-    },
-    {
-      id: 5,
-      titulo: 'Gestão de Projetos Ágeis com Scrum',
-      categoria: 'Negócios',
-      categoriaColor: '#22c55e',
-      instrutor: 'Mariana Costa',
-      dataConclusao: new Date('2025-08-10'),
-      cargaHoraria: 16,
-      codigoValidacao: 'CERT-SCRUM-2025-005',
-      imagemCurso: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400',
-      nota: 4.6,
-    },
-    {
-      id: 6,
-      titulo: 'React e Next.js na Prática',
-      categoria: 'Desenvolvimento',
-      categoriaColor: '#3b82f6',
-      instrutor: 'Lucas Ferreira',
-      dataConclusao: new Date('2025-07-22'),
-      cargaHoraria: 30,
-      codigoValidacao: 'CERT-REACT-2025-006',
-      imagemCurso: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=400',
-      nota: 4.9,
-    },
-    {
-      id: 7,
-      titulo: 'Design System com Figma',
-      categoria: 'Design',
-      categoriaColor: '#ec4899',
-      instrutor: 'Juliana Martins',
-      dataConclusao: new Date('2025-06-18'),
-      cargaHoraria: 20,
-      codigoValidacao: 'CERT-FIGMA-2025-007',
-      imagemCurso: 'https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=400',
-      nota: 4.8,
-    },
-    {
-      id: 8,
-      titulo: 'Python para Data Science',
-      categoria: 'Desenvolvimento',
-      categoriaColor: '#3b82f6',
-      instrutor: 'Ricardo Almeida',
-      dataConclusao: new Date('2025-05-30'),
-      cargaHoraria: 36,
-      codigoValidacao: 'CERT-PYTHON-2025-008',
-      imagemCurso: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400',
-      nota: 4.7,
     },
   ];
 
@@ -213,37 +135,62 @@ export class CertificadosComponent {
       resultado = resultado.filter((cert) => cert.categoria.toLowerCase() === this.categoriaFiltro);
     }
 
-    // Ordenação
-    switch (this.ordenacao) {
-      case 'recentes':
-        resultado.sort(
-          (a, b) => new Date(b.dataConclusao).getTime() - new Date(a.dataConclusao).getTime()
-        );
-        break;
-      case 'antigos':
-        resultado.sort(
-          (a, b) => new Date(a.dataConclusao).getTime() - new Date(b.dataConclusao).getTime()
-        );
-        break;
-      case 'nome':
-        resultado.sort((a, b) => a.titulo.localeCompare(b.titulo));
-        break;
-      case 'nota':
-        resultado.sort((a, b) => (b.nota || 0) - (a.nota || 0));
-        break;
-    }
-
     return resultado;
   }
 
   onVisualizarCertificado(certificado: Certificado) {
-    console.log('Visualizar certificado:', certificado);
-    // Implementar modal ou navegação para visualização
+    this.onBaixarCertificado(certificado);
   }
 
   onBaixarCertificado(certificado: Certificado) {
-    console.log('Baixar certificado:', certificado);
-    // Implementar download do PDF
+    const usuario = this.authService.usuarioLogado();
+    if (!usuario) {
+      this.alertaService.erro('Usuário não autenticado');
+      return;
+    }
+
+    this.alertaService.info('Gerando seu certificado, por favor aguarde...', 'Processando');
+
+    const dados = {
+      nomeCompleto: usuario.nome_completo,
+      nomeCurso: certificado.titulo,
+      cargaHoraria: certificado.cargaHoraria,
+      dataConclusao: certificado.dataConclusao.toLocaleDateString('pt-BR'),
+    };
+
+    this.certificadoApi.gerarCertificado(dados).subscribe({
+      next: (res: any) => {
+        // A API retorna o PDF como stream ou base64
+        // No handler do Lambda está retornando base64 se não for configurado como binário no GTW
+        // Mas o handler mostra Content-Type: application/pdf
+        
+        try {
+          // Se vier como base64 string
+          const byteCharacters = atob(res);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: 'application/pdf' });
+          
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `Certificado - ${certificado.titulo}.pdf`;
+          link.click();
+          window.URL.revokeObjectURL(url);
+          this.alertaService.sucesso('Certificado gerado com sucesso!');
+        } catch (e) {
+          console.error('Erro ao processar PDF:', e);
+          this.alertaService.erro('Erro ao processar o arquivo do certificado.');
+        }
+      },
+      error: (err) => {
+        console.error('Erro ao gerar certificado:', err);
+        this.alertaService.erro('Não foi possível gerar o certificado no momento.');
+      }
+    });
   }
 
   onCompartilharCertificado(certificado: Certificado) {

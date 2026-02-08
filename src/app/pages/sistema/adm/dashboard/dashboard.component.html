@@ -6,7 +6,7 @@
       <p class="boas-vindas__subtitulo">Gestão centralizada do ecossistema VooCursos.</p>
     </div>
     <div class="boas-vindas__acoes">
-      <button class="btn btn--dark">
+      <button class="btn btn--dark" (click)="abrirRelatorioGlobal()">
         <app-header-icone nome="relatorios" [tamanho]="18"></app-header-icone>
         Relatório global
       </button>
@@ -29,7 +29,7 @@
         <div class="secao__header">
           <h2 class="secao__titulo">Gestão do sistema</h2>
         </div>
-        
+
         <div class="acoes-grid">
           <a *ngFor="let acao of acoesRapidas" [routerLink]="acao.rota" class="acao-card">
             <div class="acao-card__badge" *ngIf="acao.badge">{{ acao.badge }}</div>
@@ -40,7 +40,11 @@
               <h3 class="acao-card__titulo">{{ acao.titulo }}</h3>
               <p class="acao-card__desc">{{ acao.desc }}</p>
             </div>
-            <app-header-icone nome="seta-direita" [tamanho]="16" class="acao-card__seta"></app-header-icone>
+            <app-header-icone
+              nome="seta-direita"
+              [tamanho]="16"
+              class="acao-card__seta"
+            ></app-header-icone>
           </a>
         </div>
       </section>
@@ -51,7 +55,7 @@
           <h2 class="secao__titulo">Auditoria e segurança</h2>
           <a routerLink="/admin/auditoria" class="secao__link">Ver todos os logs ›</a>
         </div>
-        
+
         <div class="auditoria-atalho">
           <div class="auditoria-atalho__item" *ngFor="let log of atividadesRecentes">
             <div class="log-status" [ngClass]="'log-status--' + log.status"></div>
@@ -59,7 +63,7 @@
               <span class="log-info__texto">{{ log.texto }}</span>
               <span class="log-info__tempo">{{ log.tempo }}</span>
             </div>
-            <button class="btn-ver-log">Detalhes</button>
+            <button class="btn-ver-log" (click)="verDetalhesLog(log)">Detalhes</button>
           </div>
         </div>
       </section>

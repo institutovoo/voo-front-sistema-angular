@@ -7,11 +7,14 @@ import { routes } from './app.routes';
 import { TituloStrategy } from './titulo-strategy';
 import { loggerInterceptor } from './core/interceptor/logger.interceptor';
 import { authInterceptor } from './core/interceptor/auth.interceptor';
+import { responseNormalizerInterceptor } from './core/interceptor/response-normalizer.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor, loggerInterceptor])),
+    provideHttpClient(
+      withInterceptors([authInterceptor, loggerInterceptor, responseNormalizerInterceptor]),
+    ),
     { provide: TitleStrategy, useClass: TituloStrategy },
   ],
 };

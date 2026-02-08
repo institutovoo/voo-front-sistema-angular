@@ -30,34 +30,41 @@ export const routes: Routes = [
       import('./pages/autenticacao/login/login.component').then((m) => m.LoginComponent),
   },
   {
-    path: 'cadastro',
-    title: 'Cadastro',
-    loadComponent: () =>
-      import('./pages/autenticacao/cadastro/cadastro.component').then((m) => m.CadastroComponent),
-  },
-  {
-    path: 'esqueci-senha',
-    title: 'Recuperar Senha',
-    loadComponent: () =>
-      import('./pages/autenticacao/esqueci-senha/esqueci-senha.component').then(
-        (m) => m.EsqueciSenhaComponent,
-      ),
-  },
-  {
-    path: 'reset-senha',
-    title: 'Redefinir Senha',
-    loadComponent: () =>
-      import('./pages/autenticacao/reset-senha/reset-senha.component').then(
-        (m) => m.ResetSenhaComponent,
-      ),
-  },
-  {
-    path: 'troca-senha-obrigatoria',
-    title: 'Troca de Senha Obrigatória',
-    loadComponent: () =>
-      import('./pages/autenticacao/troca-senha-obrigatoria/troca-senha-obrigatoria.component').then(
-        (m) => m.TrocaSenhaObrigatoriaComponent,
-      ),
+    path: 'usuarios',
+    children: [
+      {
+        path: 'cadastro',
+        title: 'Cadastro',
+        loadComponent: () =>
+          import('./pages/autenticacao/cadastro/cadastro.component').then(
+            (m) => m.CadastroComponent,
+          ),
+      },
+      {
+        path: 'esqueci-senha',
+        title: 'Recuperar Senha',
+        loadComponent: () =>
+          import('./pages/autenticacao/esqueci-senha/esqueci-senha.component').then(
+            (m) => m.EsqueciSenhaComponent,
+          ),
+      },
+      {
+        path: 'reset-senha',
+        title: 'Redefinir Senha',
+        loadComponent: () =>
+          import('./pages/autenticacao/reset-senha/reset-senha.component').then(
+            (m) => m.ResetSenhaComponent,
+          ),
+      },
+      {
+        path: 'troca-senha-obrigatoria',
+        title: 'Troca de Senha Obrigatória',
+        loadComponent: () =>
+          import('./pages/autenticacao/troca-senha-obrigatoria/troca-senha-obrigatoria.component').then(
+            (m) => m.TrocaSenhaObrigatoriaComponent,
+          ),
+      },
+    ],
   },
 
   // ========================================

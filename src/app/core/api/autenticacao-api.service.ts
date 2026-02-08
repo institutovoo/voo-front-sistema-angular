@@ -50,12 +50,12 @@ export class AutenticacaoApi {
     perfil: string;
     dadosExtras?: any;
   }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/solicitar-perfil`, dados);
+    return this.http.post<AuthResponse>(`${this.API_URL}/solicitacao-perfil`, dados);
   }
 
   listarSolicitacoes(): Observable<{ sucesso: boolean; solicitacoes: any[] }> {
     return this.http.get<{ sucesso: boolean; solicitacoes: any[] }>(
-      `${this.API_URL}/solicitacoes`,
+      `${this.API_URL}/solicitacoes-usuarios`,
     );
   }
 
@@ -63,7 +63,7 @@ export class AutenticacaoApi {
     id: string;
     decisao: 'aprovado' | 'rejeitado';
   }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/decidir-solicitacao`, dados);
+    return this.http.post<AuthResponse>(`${this.API_URL}/resposta-solicitacao`, dados);
   }
 
   bloquearUsuario(dados: { cpf_cnpj: string; motivo: string }): Observable<AuthResponse> {
@@ -92,6 +92,18 @@ export class AutenticacaoApi {
   }
 
   alterarSenha(dados: { cpf_cnpj: string; novaSenha: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/alterar-senha`, dados);
+    return this.http.post<AuthResponse>(`${this.API_URL}/alteracao-senha`, dados);
+  }
+
+  uploadAvatar(dados: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/avatar`, dados);
+  }
+
+  obterUsuario(cpf_cnpj: string): Observable<any> {
+    return this.http.get(`${this.API_URL}/usuarios/${cpf_cnpj}`);
+  }
+
+  atualizarUsuario(cpf_cnpj: string, dados: any): Observable<any> {
+    return this.http.put(`${this.API_URL}/usuarios/${cpf_cnpj}`, dados);
   }
 }

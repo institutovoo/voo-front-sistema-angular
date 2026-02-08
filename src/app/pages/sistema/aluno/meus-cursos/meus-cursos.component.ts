@@ -76,7 +76,7 @@ export class MeusCursosComponent {
   cursos: MeuCurso[] = [
     {
       id: 1,
-      titulo: 'Angular Avançado: Do Zero ao Deploy',
+      titulo: 'Angular avançado: do zero ao deploy',
       categoria: 'Desenvolvimento',
       categoriaColor: '#3b82f6',
       instrutor: 'Carlos Silva',
@@ -95,7 +95,7 @@ export class MeusCursosComponent {
     },
     {
       id: 2,
-      titulo: 'UI/UX Design Completo',
+      titulo: 'UI/UX design completo',
       categoria: 'Design',
       categoriaColor: '#ec4899',
       instrutor: 'Ana Beatriz',
@@ -132,7 +132,7 @@ export class MeusCursosComponent {
     },
     {
       id: 4,
-      titulo: 'Marketing Digital Estratégico',
+      titulo: 'Marketing digital estratégico',
       categoria: 'Marketing',
       categoriaColor: '#f59e0b',
       instrutor: 'Mariana Costa',
@@ -149,7 +149,7 @@ export class MeusCursosComponent {
     },
     {
       id: 5,
-      titulo: 'Python para Data Science',
+      titulo: 'Python para data science',
       categoria: 'Data Science',
       categoriaColor: '#8b5cf6',
       instrutor: 'Lucas Mendes',
@@ -168,7 +168,7 @@ export class MeusCursosComponent {
     },
     {
       id: 6,
-      titulo: 'React Native: Apps Mobile',
+      titulo: 'React Native: apps mobile',
       categoria: 'Mobile',
       categoriaColor: '#06b6d4',
       instrutor: 'Felipe Santos',

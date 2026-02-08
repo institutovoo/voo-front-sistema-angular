@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { SistemaLayoutComponent } from '../../../../components/sistema/layout/layout.component';
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
 import {
@@ -24,30 +24,32 @@ import {
 export class AdmDashboardComponent implements OnInit {
   usuario = { nome: 'Administrador', avatar: '' };
 
+  constructor(private router: Router) {}
+
   estatisticas = signal<Estatistica[]>([
     {
-      label: 'Total de Usuários',
+      label: 'Total de usuários',
       valor: '15.420',
       icone: 'usuarios',
       cor: 'primary',
       tendencia: { valor: 8, tipo: 'up', periodo: 'este mês' },
     },
     {
-      label: 'Instrutores Ativos',
+      label: 'Instrutores ativos',
       valor: '124',
       icone: 'usuarios',
       cor: 'success',
       tendencia: { valor: 2, tipo: 'up', periodo: 'este mês' },
     },
     {
-      label: 'Cursos no Ar',
+      label: 'Cursos no ar',
       valor: '456',
       icone: 'cursos',
       cor: 'info',
       tendencia: { valor: 5, tipo: 'up', periodo: 'este mês' },
     },
     {
-      label: 'Receita Bruta',
+      label: 'Receita bruta',
       valor: 'R$ 142.500',
       icone: 'moeda',
       cor: 'success',
@@ -57,22 +59,22 @@ export class AdmDashboardComponent implements OnInit {
 
   acoesRapidas = [
     {
-      titulo: 'Aprovações de Acesso',
+      titulo: 'Aprovações de acesso',
       desc: 'Gerenciar novos pedidos de admin',
-      rota: '/admin/solicitacoes-acesso',
+      rota: '/admin/solicitacoes',
       icone: 'verificar',
       cor: 'success',
       badge: '3',
     },
     {
-      titulo: 'Gestão de Usuários',
+      titulo: 'Gestão de usuários',
       desc: 'Aprovar, bloquear ou editar usuários',
       rota: '/admin/usuarios',
       icone: 'usuarios',
       cor: 'primary',
     },
     {
-      titulo: 'Gestão de Cursos',
+      titulo: 'Gestão de cursos',
       desc: 'Revisar e publicar novos cursos',
       rota: '/admin/cursos',
       icone: 'cursos',
@@ -116,4 +118,21 @@ export class AdmDashboardComponent implements OnInit {
   ];
 
   ngOnInit() {}
+
+  verDetalhesLog(log: any) {
+    // Navegação baseada no tipo de atividade
+    if (log.texto.includes('instrutor')) {
+      this.router.navigate(['/admin/solicitacoes']);
+    } else if (log.texto.includes('Curso')) {
+      this.router.navigate(['/admin/cursos']);
+    } else if (log.texto.includes('login')) {
+      this.router.navigate(['/admin/auditoria']);
+    } else {
+      this.router.navigate(['/admin/auditoria']);
+    }
+  }
+
+  abrirRelatorioGlobal() {
+    this.router.navigate(['/admin/relatorios']);
+  }
 }

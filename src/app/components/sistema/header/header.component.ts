@@ -93,7 +93,7 @@ export class SistemaHeaderComponent implements OnInit, OnChanges {
       } else if (perfil?.toLowerCase().includes('instrutor')) {
         this.menuPrincipal = [
           { label: 'Dashboard', rota: '/instrutor/dashboard', icone: 'dashboard' },
-          { label: 'Meus Cursos', rota: '/instrutor/cursos', icone: 'cursos' },
+          { label: 'Meus cursos', rota: '/instrutor/cursos', icone: 'cursos' },
           { label: 'Alunos', rota: '/instrutor/alunos', icone: 'alunos' },
           { label: 'Avaliações', rota: '/instrutor/avaliacoes', icone: 'estrela' },
           { label: 'Relatórios', rota: '/instrutor/relatorios', icone: 'documento' },
@@ -102,9 +102,9 @@ export class SistemaHeaderComponent implements OnInit, OnChanges {
       } else {
         this.menuPrincipal = [
           { label: 'Dashboard', rota: '/aluno/dashboard', icone: 'dashboard' },
-          { label: 'Meus Cursos', rota: '/aluno/meus-cursos', icone: 'cursos' },
+          { label: 'Meus cursos', rota: '/aluno/meus-cursos', icone: 'cursos' },
           { label: 'Certificados', rota: '/aluno/certificados', icone: 'certificados' },
-          { label: 'Loja de Cursos', rota: '/aluno/loja', icone: 'loja' },
+          { label: 'Loja de cursos', rota: '/aluno/loja', icone: 'loja' },
         ];
       }
     }
@@ -136,13 +136,12 @@ export class SistemaHeaderComponent implements OnInit, OnChanges {
   async onLogout() {
     this.fecharMenuUsuario();
     const confirmado = await this.confirmService.confirmar(
-      'Sair do Sistema',
+      'Sair do sistema',
       'Tem certeza que deseja encerrar sua sessão atual?'
     );
 
     if (confirmado) {
       this.authService.logout();
-      this.router.navigate(['/login']);
     }
   }
 

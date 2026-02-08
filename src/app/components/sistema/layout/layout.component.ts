@@ -27,7 +27,7 @@ export class SistemaLayoutComponent {
     // Bloqueio de acesso se for primeiro login
     const user = this.authService.usuarioLogado();
     if (user?.primeiroLogin) {
-      this.router.navigate(['/troca-senha-obrigatoria']);
+      this.router.navigate(['/usuarios/troca-senha-obrigatoria']);
     }
   }
 
@@ -45,7 +45,6 @@ export class SistemaLayoutComponent {
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
   }
 
   onBuscar(valor: string) {

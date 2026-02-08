@@ -33,6 +33,53 @@ $danger: #ef4444;
     color: $text-muted;
     margin: 0;
   }
+
+  &__filtros {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+    }
+  }
+}
+
+.busca {
+  flex: 1;
+  max-width: 450px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 1.25rem;
+  background: $white;
+  border: 1px solid $border;
+  border-radius: 14px;
+
+  input {
+    flex: 1;
+    border: none;
+    padding: 1rem 0;
+    font-size: 0.9375rem;
+    outline: none;
+  }
+}
+
+.opcoes {
+  display: flex;
+  gap: 1rem;
+}
+
+.select-filtro {
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid $border;
+  background: $white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $text-dark;
+  outline: none;
 }
 
 .tabela-container {
@@ -65,8 +112,12 @@ $danger: #ef4444;
     vertical-align: middle;
   }
 
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba($primary, 0.01); }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tr:hover td {
+    background: rgba($primary, 0.01);
+  }
 }
 
 .inst-info {
@@ -137,9 +188,18 @@ $danger: #ef4444;
   font-weight: 800;
   text-transform: uppercase;
 
-  &--aluno { background: $primary-light; color: $primary; }
-  &--instrutor { background: $success-light; color: $success; }
-  &--adm { background: $text-dark; color: $white; }
+  &--aluno {
+    background: $primary-light;
+    color: $primary;
+  }
+  &--instrutor {
+    background: $success-light;
+    color: $success;
+  }
+  &--adm {
+    background: $text-dark;
+    color: $white;
+  }
 }
 
 .badge-status {
@@ -149,8 +209,14 @@ $danger: #ef4444;
   font-weight: 700;
   text-transform: uppercase;
 
-  &--ativo { color: $success; background: $success-light; }
-  &--analise { color: $warning; background: $warning-light; }
+  &--ativo {
+    color: $success;
+    background: $success-light;
+  }
+  &--analise {
+    color: $warning;
+    background: $warning-light;
+  }
 }
 
 .acoes-btns {
@@ -171,6 +237,13 @@ $danger: #ef4444;
   color: $text-muted;
   transition: all 0.2s ease;
 
-  &:hover { background: $bg-light; color: $primary; border-color: $primary; }
-  &--excluir:hover { color: $danger; border-color: $danger; }
+  &:hover {
+    background: $bg-light;
+    color: $primary;
+    border-color: $primary;
+  }
+  &--excluir:hover {
+    color: $danger;
+    border-color: $danger;
+  }
 }

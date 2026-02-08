@@ -16,7 +16,7 @@ export class NotificacaoApi {
     template?: string;
     dados?: any;
   }): Observable<any> {
-    return this.http.post(`${this.API_URL}/enviar-email`, dados);
+    return this.http.post(`${this.API_URL}/emails`, dados);
   }
 
   obterStatus(): Observable<any> {

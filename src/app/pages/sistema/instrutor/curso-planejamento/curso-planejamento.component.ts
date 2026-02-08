@@ -236,7 +236,7 @@ export class CursoPlanejamentoComponent implements OnInit {
     }
 
     const confirmado = await this.confirmService.confirmar(
-      'Enviar para Análise',
+      'Enviar para análise',
       'Deseja enviar este curso para análise? Você não poderá editá-lo até receber o feedback.'
     );
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,6 +20,7 @@ export class AdminLoginComponent implements OnInit {
   private alertaService = inject(AlertaService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   formulario!: FormGroup;
   erro = '';
@@ -37,6 +38,7 @@ export class AdminLoginComponent implements OnInit {
     if (this.formulario.valid) {
       this.carregando = true;
       this.erro = '';
+      this.cdr.detectChanges();
       
       const { email, senha, lembrar } = this.formulario.value;
       
@@ -57,16 +59,20 @@ export class AdminLoginComponent implements OnInit {
         if (!resultado.sucesso) {
           this.erro = resultado.mensagem || 'Credenciais administrativas inválidas.';
           this.alertaService.erro(this.erro);
+          this.cdr.detectChanges();
         }
       } catch (err) {
         this.erro = 'Erro de conexão com o servidor.';
         this.alertaService.erro(this.erro);
+        this.cdr.detectChanges();
       } finally {
         this.carregando = false;
+        this.cdr.detectChanges();
       }
     } else {
       this.formulario.markAllAsTouched();
       this.erro = 'Por favor, preencha os campos corretamente.';
+      this.cdr.detectChanges();
     }
   }
 

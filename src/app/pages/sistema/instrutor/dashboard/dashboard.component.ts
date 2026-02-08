@@ -65,9 +65,9 @@ export class InstrutorDashboardComponent implements OnInit {
 
   carregarDadosMockados() {
     this.alertas = [
-      { id: 1, tipo: 'video', mensagem: 'Aula 05 sem vídeo enviado', curso: 'React Avançado', cor: 'error' },
-      { id: 2, tipo: 'quiz', mensagem: 'Quiz do Módulo 2 sem questões', curso: 'Fullstack Web', cor: 'warning' },
-      { id: 3, tipo: 'prova', mensagem: 'Prova final aguardando revisão', curso: 'Node.js Backend', cor: 'info' }
+      { id: 1, tipo: 'video', mensagem: 'Aula 05 sem vídeo enviado', curso: 'React avançado', cor: 'error' },
+      { id: 2, tipo: 'quiz', mensagem: 'Quiz do módulo 2 sem questões', curso: 'Fullstack web', cor: 'warning' },
+      { id: 3, tipo: 'prova', mensagem: 'Prova final aguardando revisão', curso: 'Node.js backend', cor: 'info' }
     ];
     this.estatisticas = [
       {
@@ -102,7 +102,7 @@ export class InstrutorDashboardComponent implements OnInit {
     this.cursos = [
       {
         id: 1,
-        titulo: 'Desenvolvimento Web Fullstack: Do Zero ao Pro',
+        titulo: 'Desenvolvimento web fullstack: do zero ao pro',
         imagem: 'assets/cursos/fullstack.jpg',
         categoriaColor: '#21b7cd',
         status: 'publicado',
@@ -116,7 +116,7 @@ export class InstrutorDashboardComponent implements OnInit {
       },
       {
         id: 2,
-        titulo: 'React Avançado com TypeScript',
+        titulo: 'React avançado com TypeScript',
         imagem: 'assets/cursos/react.jpg',
         categoriaColor: '#6366f1',
         status: 'publicado',
@@ -130,7 +130,7 @@ export class InstrutorDashboardComponent implements OnInit {
       },
       {
         id: 3,
-        titulo: 'Node.js e MongoDB: Backend Completo',
+        titulo: 'Node.js e MongoDB: backend completo',
         imagem: 'assets/cursos/nodejs.jpg',
         categoriaColor: '#10b981',
         status: 'revisao',
@@ -144,7 +144,7 @@ export class InstrutorDashboardComponent implements OnInit {
       },
       {
         id: 4,
-        titulo: 'Introdução ao Python para Data Science',
+        titulo: 'Introdução ao Python para data science',
         imagem: 'assets/cursos/python.jpg',
         categoriaColor: '#f59e0b',
         status: 'rascunho',
@@ -158,7 +158,7 @@ export class InstrutorDashboardComponent implements OnInit {
       },
       {
         id: 5,
-        titulo: 'AWS para Desenvolvedores',
+        titulo: 'AWS para desenvolvedores',
         imagem: 'assets/cursos/aws.jpg',
         categoriaColor: '#f43f5e',
         status: 'pausado',
@@ -207,7 +207,7 @@ export class InstrutorDashboardComponent implements OnInit {
     const labels: Record<string, string> = {
       rascunho: 'Rascunho',
       publicado: 'Publicado',
-      revisao: 'Em Revisão',
+      revisao: 'Em revisão',
       pausado: 'Pausado',
     };
     return labels[status] || status;

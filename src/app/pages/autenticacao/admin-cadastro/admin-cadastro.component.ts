@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { LogoComponent } from '../../../components/logo/logo.component';
 import { CampoComponent } from '../../../components/campo/campo.component';
 import { BotaoComponent } from '../../../components/botao/botao.component';
+import { mascaraDocumento } from '../../../core/utils/mascaras';
 
 @Component({
   selector: 'app-admin-cadastro',
@@ -26,8 +27,19 @@ export class AdminCadastroComponent implements OnInit {
   ngOnInit(): void {
     this.formulario = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
+      cpf_cnpj: ['', [Validators.required, Validators.minLength(11)]],
       email: ['', [Validators.required, Validators.email]],
       cargo: ['', [Validators.required]],
+    });
+
+    // Aplica máscara de CPF/CNPJ automaticamente
+    this.formulario.get('cpf_cnpj')?.valueChanges.subscribe((valor) => {
+      if (valor) {
+        const valorFormatado = mascaraDocumento(valor);
+        if (valor !== valorFormatado) {
+          this.formulario.get('cpf_cnpj')?.setValue(valorFormatado, { emitEvent: false });
+        }
+      }
     });
   }
 

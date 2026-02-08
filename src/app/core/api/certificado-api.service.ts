@@ -11,6 +11,6 @@ export class CertificadoApi {
   private readonly API_URL = API_CONFIG.BASE_URL;
 
   gerarCertificado(dados: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/certificados`, dados);
+    return this.http.post(`${this.API_URL}/certificados`, dados, { responseType: 'text' });
   }
 }

@@ -30,10 +30,12 @@
           <input type="checkbox" formControlName="lembrar" />
           <span>Manter conectado</span>
         </label>
-        <a class="atalho" routerLink="/esqueci-senha">Esqueci minha senha</a>
+        <a class="atalho" routerLink="/usuarios/esqueci-senha">Esqueci minha senha</a>
       </div>
 
-      <app-botao tipo="submit" variante="primario">Entrar</app-botao>
+      <app-botao tipo="submit" variante="primario" [carregando]="carregando">
+        {{ carregando ? 'Entrando...' : 'Entrar' }}
+      </app-botao>
 
       <div class="separador" aria-hidden="true">
         <span class="separador__linha"></span>
@@ -73,7 +75,7 @@
 
     <div class="rodape">
       <span>Não tem uma conta?</span>
-      <a class="atalho" routerLink="/cadastro">Criar conta grátis</a>
+      <a class="atalho" routerLink="/usuarios/cadastro">Criar conta grátis</a>
     </div>
   </div>
 

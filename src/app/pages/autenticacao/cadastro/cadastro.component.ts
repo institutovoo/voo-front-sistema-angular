@@ -53,7 +53,7 @@ export class CadastroComponent {
       tipo === 'Instituição Parceira (PJ)' ||
       (tipo === 'Instrutor' && tipoPessoa === 'PJ')
     ) {
-      return 'Razão Social';
+      return 'Razão social';
     }
     return 'Nome completo';
   }
@@ -75,9 +75,9 @@ export class CadastroComponent {
   opcoesTipoPessoa = ['PF', 'PJ'];
 
   opcoesFormacao = [
-    'Ensino Fundamental',
-    'Ensino Médio',
-    'Ensino Superior',
+    'Ensino fundamental',
+    'Ensino médio',
+    'Ensino superior',
     'Pós-graduação',
     'Mestrado',
     'Doutorado',
@@ -277,8 +277,10 @@ export class CadastroComponent {
         if (dados.erro) {
           this.buscandoCep = false;
           this.erro = 'CEP não encontrado.';
-          this.alertaService.aviso('CEP não encontrado. Por favor, verifique o número digitado.');
-          this.enderecoCarregado = false;
+          this.alertaService.aviso(
+            'CEP não encontrado. Por favor, preencha o endereço manualmente.',
+          );
+          this.enderecoCarregado = true; // Permite preenchimento manual mesmo se não encontrar
           this.cdr.detectChanges();
           return;
         }
@@ -301,8 +303,11 @@ export class CadastroComponent {
       },
       error: () => {
         this.buscandoCep = false;
-        this.erro = 'Erro ao buscar CEP.';
-        this.enderecoCarregado = false;
+        this.erro = 'Não foi possível carregar o endereço automaticamente.';
+        this.enderecoCarregado = true; // Permite preenchimento manual
+        this.alertaService.aviso(
+          'Não conseguimos buscar seu endereço automaticamente. Por favor, preencha-o manualmente.',
+        );
         this.cdr.detectChanges();
       },
     });
@@ -320,7 +325,7 @@ export class CadastroComponent {
 
       // Alerta específico para o usuário
       if (campos.includes('documento')) {
-        this.alertaService.aviso('Por favor, informe um CPF ou CNPJ válido.', 'Campo Inválido');
+        this.alertaService.aviso('Por favor, informe um CPF ou CNPJ válido.', 'Campo inválido');
       } else if (
         campos.includes('logradouro') ||
         campos.includes('numero') ||
@@ -328,12 +333,12 @@ export class CadastroComponent {
       ) {
         this.alertaService.aviso(
           'Por favor, complete as informações de endereço. Digite um CEP válido e informe o número.',
-          'Endereço Incompleto',
+          'Endereço incompleto',
         );
       } else if (campos.includes('termos')) {
         this.alertaService.aviso(
-          'Você precisa aceitar os Termos de Uso e Política de Privacidade.',
-          'Termos de Uso',
+          'Você precisa aceitar os termos de uso e política de privacidade.',
+          'Termos de uso',
         );
       } else {
         this.alertaService.aviso(

@@ -113,7 +113,7 @@ export class AdmUsuariosComponent implements OnInit {
 
   prepararBloqueio(usuario: any) {
     if (this.ehUsuarioLogado(usuario)) {
-      this.alertaService.erro('Você não pode bloquear a sua própria conta.', 'Ação Negada');
+      this.alertaService.erro('Você não pode bloquear a sua própria conta.', 'Ação negada');
       return;
     }
     this.usuarioSelecionado.set(usuario);
@@ -123,7 +123,7 @@ export class AdmUsuariosComponent implements OnInit {
 
   confirmarBloqueio() {
     if (!this.motivoBloqueio().trim()) {
-      this.alertaService.aviso('Por favor, informe o motivo do bloqueio.', 'Campo Obrigatório');
+      this.alertaService.aviso('Por favor, informe o motivo do bloqueio.', 'Campo obrigatório');
       return;
     }
 
@@ -131,7 +131,7 @@ export class AdmUsuariosComponent implements OnInit {
     this.authApi.bloquearUsuario({ cpf_cnpj: u.cpf_cnpj, motivo: this.motivoBloqueio() }).subscribe({
       next: (res) => {
         if (res.sucesso) {
-          this.alertaService.sucesso(`O usuário ${u.nome_completo} foi bloqueado com sucesso.`, 'Usuário Bloqueado');
+          this.alertaService.sucesso(`O usuário ${u.nome_completo} foi bloqueado com sucesso.`, 'Usuário bloqueado');
           this.mostrarModalBloqueio.set(false);
           this.carregarUsuarios();
         } else {
@@ -143,7 +143,7 @@ export class AdmUsuariosComponent implements OnInit {
 
   async desbloquearUsuario(usuario: any) {
     const confirmado = await this.confirmService.confirmar(
-      'Desbloquear Usuário',
+      'Desbloquear usuário',
       `Deseja realmente desbloquear o acesso do usuário ${usuario.nome_completo}?`
     );
 
@@ -151,7 +151,7 @@ export class AdmUsuariosComponent implements OnInit {
       this.authApi.desbloquearUsuario(usuario.cpf_cnpj).subscribe({
         next: (res) => {
           if (res.sucesso) {
-            this.alertaService.sucesso(`O usuário ${usuario.nome_completo} foi desbloqueado.`, 'Usuário Desbloqueado');
+            this.alertaService.sucesso(`O usuário ${usuario.nome_completo} foi desbloqueado.`, 'Usuário desbloqueado');
             this.carregarUsuarios();
           } else {
             this.alertaService.erro(res.mensagem || 'Erro ao desbloquear usuário.', 'Erro');
@@ -163,12 +163,12 @@ export class AdmUsuariosComponent implements OnInit {
 
   async confirmarExclusao(usuario: any) {
     if (this.ehUsuarioLogado(usuario)) {
-      this.alertaService.erro('Você não pode desativar a sua própria conta.', 'Ação Negada');
+      this.alertaService.erro('Você não pode desativar a sua própria conta.', 'Ação negada');
       return;
     }
 
     const confirmado = await this.confirmService.confirmar(
-      'Desativar Usuário',
+      'Desativar usuário',
       `Tem certeza que deseja desativar o usuário ${usuario.nome_completo}? Ele não poderá mais acessar o sistema.`
     );
 
@@ -176,7 +176,7 @@ export class AdmUsuariosComponent implements OnInit {
       this.authApi.excluirUsuario(usuario.cpf_cnpj).subscribe({
         next: (res) => {
           if (res.sucesso) {
-            this.alertaService.sucesso('O usuário foi desativado do sistema.', 'Desativação Concluída');
+            this.alertaService.sucesso('O usuário foi desativado do sistema.', 'Desativação concluída');
             this.carregarUsuarios();
           } else {
             this.alertaService.erro(res.mensagem || 'Erro ao desativar usuário.', 'Erro');

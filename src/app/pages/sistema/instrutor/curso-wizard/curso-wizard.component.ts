@@ -44,21 +44,21 @@ export class CursoWizardComponent implements OnInit {
   fases: Fase[] = [
     {
       id: 1,
-      titulo: 'Informações Básicas',
+      titulo: 'Informações básicas',
       descricao: 'Título, descrição e categoria',
       icone: 'documento',
       concluida: false,
     },
     {
       id: 2,
-      titulo: 'Público e Objetivos',
+      titulo: 'Público e objetivos',
       descricao: 'Quem são seus alunos e o que vão aprender',
       icone: 'pessoas',
       concluida: false,
     },
     {
       id: 3,
-      titulo: 'Estrutura do Curso',
+      titulo: 'Estrutura do curso',
       descricao: 'Organize o currículo em seções',
       icone: 'curso',
       concluida: false,
@@ -278,7 +278,7 @@ export class CursoWizardComponent implements OnInit {
     }
 
     const confirmado = await this.confirmService.confirmar(
-      'Enviar para Análise',
+      'Enviar para análise',
       'Deseja enviar este curso para análise?',
     );
 

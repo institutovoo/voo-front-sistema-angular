@@ -79,10 +79,10 @@ export class AutenticacaoService {
 
           // Define onde salvar baseado no "Manter conectado"
           const storage = manterConectado ? localStorage : sessionStorage;
-          
+
           storage.setItem('token', response.token);
           storage.setItem('usuario', JSON.stringify(usuario));
-          
+
           this.usuarioLogado.set(usuario);
 
           if (!manterConectado) {
@@ -92,20 +92,20 @@ export class AutenticacaoService {
           }
 
           if (usuario.primeiroLogin) {
-            this.router.navigate(['/troca-senha-obrigatoria']);
+            this.router.navigate(['/usuarios/troca-senha-obrigatoria']);
             return;
           }
-          
-          Logger.audit(`Usuário logado com sucesso`, 'Auth', { 
-            id: usuario.id, 
-            email: usuario.email, 
+
+          Logger.audit(`Usuário logado com sucesso`, 'Auth', {
+            id: usuario.id,
+            email: usuario.email,
             perfil: usuario.perfilAtual,
-            manterConectado
+            manterConectado,
           });
         } else {
-          Logger.warn(`Falha na tentativa de login`, 'Auth', { 
-            identificador: dados.identificador, 
-            mensagem: response.mensagem 
+          Logger.warn(`Falha na tentativa de login`, 'Auth', {
+            identificador: dados.identificador,
+            mensagem: response.mensagem,
           });
         }
       }),
@@ -121,7 +121,7 @@ export class AutenticacaoService {
       fromEvent(document, 'mousemove'),
       fromEvent(document, 'keydown'),
       fromEvent(document, 'scroll'),
-      fromEvent(document, 'touchstart')
+      fromEvent(document, 'touchstart'),
     );
 
     this.inatividadeSub = atividade$.subscribe(() => {
@@ -140,7 +140,9 @@ export class AutenticacaoService {
     this.timerInatividade = setTimeout(() => {
       if (this.estaLogado() && !localStorage.getItem('token')) {
         Logger.warn('Sessão encerrada por inatividade', 'Auth');
-        this.alertaService.aviso('Sessão encerrada por inatividade. Por favor, faça login novamente.');
+        this.alertaService.aviso(
+          'Sessão encerrada por inatividade. Por favor, faça login novamente.',
+        );
         this.logout();
       }
     }, this.TEMPO_INATIVIDADE);
@@ -162,17 +164,17 @@ export class AutenticacaoService {
     if (usuario && usuario.perfis.includes(perfil)) {
       const perfilAntigo = usuario.perfilAtual;
       usuario.perfilAtual = perfil;
-      
+
       const storage = localStorage.getItem('token') ? localStorage : sessionStorage;
       storage.setItem('usuario', JSON.stringify(usuario));
-      
+
       this.usuarioLogado.set({ ...usuario });
 
-      Logger.audit(`Usuário alterou o perfil ativo`, 'Auth', { 
-        id: usuario.id, 
-        email: usuario.email, 
-        perfilAntigo, 
-        perfilNovo: perfil 
+      Logger.audit(`Usuário alterou o perfil ativo`, 'Auth', {
+        id: usuario.id,
+        email: usuario.email,
+        perfilAntigo,
+        perfilNovo: perfil,
       });
 
       this.redirecionarParaDashboard(perfil);
@@ -183,20 +185,26 @@ export class AutenticacaoService {
     const usuario = this.usuarioLogado();
     if (!usuario) return;
 
-    const precisaAprovacao = perfil.includes('Instrutor') && usuario.indicador_tipo_conta !== 'Admin';
+    const precisaAprovacao =
+      perfil.includes('Instrutor') && usuario.indicador_tipo_conta !== 'Admin';
 
     if (precisaAprovacao) {
-      this.api.solicitarPerfil({
-        cpf_cnpj: usuario.cpf_cnpj,
-        perfil: perfil,
-        dadosExtras: dadosExtras
-      }).subscribe(response => {
-        if (response.sucesso) {
-          this.alertaService.info('Sua solicitação para ser instrutor foi enviada para análise do administrador.', 'Solicitação Enviada');
-        } else {
-          this.alertaService.erro(response.mensagem || 'Erro ao enviar solicitação.');
-        }
-      });
+      this.api
+        .solicitarPerfil({
+          cpf_cnpj: usuario.cpf_cnpj,
+          perfil: perfil,
+          dadosExtras: dadosExtras,
+        })
+        .subscribe((response) => {
+          if (response.sucesso) {
+            this.alertaService.info(
+              'Sua solicitação para ser instrutor foi enviada para análise do administrador.',
+              'Solicitação Enviada',
+            );
+          } else {
+            this.alertaService.erro(response.mensagem || 'Erro ao enviar solicitação.');
+          }
+        });
       return;
     }
 
@@ -211,7 +219,7 @@ export class AutenticacaoService {
           if (response.sucesso && response.usuario) {
             const usuarioAtualizado = response.usuario;
             usuarioAtualizado.perfilAtual = perfil;
-            
+
             const storage = localStorage.getItem('token') ? localStorage : sessionStorage;
             storage.setItem('usuario', JSON.stringify(usuarioAtualizado));
 
@@ -247,19 +255,21 @@ export class AutenticacaoService {
     const usuario = this.usuarioLogado();
     if (!usuario) return;
 
-    return this.api.alterarSenha({
-      cpf_cnpj: usuario.cpf_cnpj,
-      novaSenha
-    }).pipe(
-      tap(response => {
-        if (response.sucesso) {
-          usuario.primeiroLogin = false;
-          const storage = localStorage.getItem('token') ? localStorage : sessionStorage;
-          storage.setItem('usuario', JSON.stringify(usuario));
-          this.usuarioLogado.set({ ...usuario });
-        }
+    return this.api
+      .alterarSenha({
+        cpf_cnpj: usuario.cpf_cnpj,
+        novaSenha,
       })
-    );
+      .pipe(
+        tap((response) => {
+          if (response.sucesso) {
+            usuario.primeiroLogin = false;
+            const storage = localStorage.getItem('token') ? localStorage : sessionStorage;
+            storage.setItem('usuario', JSON.stringify(usuario));
+            this.usuarioLogado.set({ ...usuario });
+          }
+        }),
+      );
   }
 
   logout() {
@@ -267,24 +277,24 @@ export class AutenticacaoService {
     const isAdmin = usuario?.perfilAtual === 'Admin' || usuario?.indicador_tipo_conta === 'Admin';
 
     if (usuario) {
-      Logger.audit(`Usuário realizou logout`, 'Auth', { 
-        id: usuario.id, 
-        email: usuario.email 
+      Logger.audit(`Usuário realizou logout`, 'Auth', {
+        id: usuario.id,
+        email: usuario.email,
       });
     }
-    
+
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('usuario');
-    
+
     this.usuarioLogado.set(null);
     this.pararMonitoramentoInatividade();
 
     if (isAdmin) {
       this.router.navigate(['/admin/login']);
     } else {
-      this.router.navigate(['/autenticacao/login']);
+      this.router.navigate(['/login']);
     }
   }
 

@@ -69,7 +69,7 @@ export class AlunoDashboardComponent implements OnInit {
 
     this.cursoAtual = {
       id: 1,
-      titulo: 'Desenvolvimento Web Fullstack: Do Zero ao Pro',
+      titulo: 'Desenvolvimento web fullstack: do zero ao pro',
       categoria: 'Programação',
       categoriaColor: '#21b7cd',
       instrutor: 'Prof. Carlos Mendes',
@@ -80,13 +80,13 @@ export class AlunoDashboardComponent implements OnInit {
       duracao: '4h 20m',
       avaliacao: 4.8,
       totalAvaliacoes: 234,
-      modulo: 'Módulo 3: Introdução ao React Hooks e Context API',
+      modulo: 'Módulo 3: introdução ao React hooks e context API',
     };
 
     this.meusCursos = [
       {
         id: 1,
-        titulo: 'Desenvolvimento Web Fullstack: Do Zero ao Pro',
+        titulo: 'Desenvolvimento web fullstack: do zero ao pro',
         categoria: 'Programação',
         categoriaColor: '#21b7cd',
         instrutor: 'Prof. Carlos Mendes',
@@ -101,7 +101,7 @@ export class AlunoDashboardComponent implements OnInit {
       },
       {
         id: 2,
-        titulo: 'UX/UI Design Masterclass',
+        titulo: 'UX/UI design masterclass',
         categoria: 'Design',
         categoriaColor: '#8b5cf6',
         instrutor: 'Prof. Ana Souza',
@@ -121,7 +121,7 @@ export class AlunoDashboardComponent implements OnInit {
         id: 1,
         tipo: 'aula',
         titulo: 'Aula concluída',
-        descricao: 'Módulo 3: Componentes React - Desenv...',
+        descricao: 'Módulo 3: componentes React - desenv...',
         tempo: 'Há 2 horas',
         icone: 'check',
         cor: '#22c55e',
@@ -130,7 +130,7 @@ export class AlunoDashboardComponent implements OnInit {
         id: 2,
         tipo: 'certificado',
         titulo: 'Certificado emitido',
-        descricao: 'Você concluiu o curso de Python para In...',
+        descricao: 'Você concluiu o curso de Python para iniciantes',
         tempo: 'Há 1 dia',
         icone: 'certificado',
         cor: '#21b7cd',
@@ -139,7 +139,7 @@ export class AlunoDashboardComponent implements OnInit {
         id: 3,
         tipo: 'avaliacao',
         titulo: 'Avaliação enviada',
-        descricao: 'Você avaliou o curso Marketing Digital ...',
+        descricao: 'Você avaliou o curso marketing digital estratégico',
         tempo: 'Há 2 dias',
         icone: 'star',
         cor: '#f59e0b',
@@ -148,7 +148,7 @@ export class AlunoDashboardComponent implements OnInit {
         id: 4,
         tipo: 'curso',
         titulo: 'Novo curso iniciado',
-        descricao: 'UI/UX Design Fundamentos',
+        descricao: 'UI/UX design fundamentos',
         tempo: 'Há 3 dias',
         icone: 'curso',
         cor: '#8b5cf6',

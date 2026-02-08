@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -26,6 +26,7 @@ export class LoginComponent {
   private authController = inject(AutenticacaoController);
   private alertaService = inject(AlertaService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   formulario = new FormGroup({
     identificador: new FormControl('', {
@@ -40,6 +41,7 @@ export class LoginComponent {
   });
 
   erro = '';
+  carregando = false;
   mostrarAlertaBloqueio = false;
 
   async enviar() {
@@ -48,31 +50,47 @@ export class LoginComponent {
       return;
     }
 
+    this.carregando = true;
     this.erro = '';
     this.mostrarAlertaBloqueio = false;
+    this.cdr.detectChanges();
+
     const { identificador, senha, lembrar } = this.formulario.getRawValue();
     const portal = 'publico';
 
-    const resultado = await this.authController.login({ 
-      identificador: identificador.trim(), 
-      senha: senha.trim(), 
-      portal,
-      lembrar
-    });
-    
-    if (!resultado.sucesso) {
-      this.erro = resultado.mensagem || 'Erro desconhecido';
+    try {
+      const resultado = await this.authController.login({ 
+        identificador: identificador.trim(), 
+        senha: senha.trim(), 
+        portal,
+        lembrar
+      });
       
-      // Se for um Admin tentando logar no portal público
-      if (this.erro.includes('portal administrativo')) {
-        this.alertaService.aviso(this.erro, 'Acesso Administrativo');
-        setTimeout(() => this.router.navigate(['/admin/login']), 3000);
-        return;
-      }
+      if (!resultado.sucesso) {
+        this.erro = resultado.mensagem || 'Erro ao realizar login';
 
-      if (this.erro.toLowerCase().includes('bloqueada')) {
-        this.alertaService.erro(this.erro, 'Acesso Bloqueado');
+        // Se for um Admin tentando logar no portal público
+        const erroLower = this.erro.toLowerCase();
+        const ehAdmin = erroLower.includes('admin') || erroLower.includes('administrador');
+        const ehPortalErrado = erroLower.includes('portal') || erroLower.includes('acesso') || erroLower.includes('administrativo');
+
+        if (ehAdmin && ehPortalErrado) {
+          this.alertaService.aviso('Administradores devem usar o portal administrativo. Redirecionando...', 'Acesso Admin');
+          setTimeout(() => {
+            this.router.navigate(['/admin/login']);
+          }, 2000);
+        } else if (erroLower.includes('bloqueada')) {
+          this.alertaService.erro(this.erro, 'Acesso Bloqueado');
+        } else {
+          this.alertaService.erro(this.erro);
+        }
       }
+    } catch (err) {
+      this.erro = 'Ocorreu um erro inesperado ao tentar logar.';
+      this.alertaService.erro(this.erro);
+    } finally {
+      this.carregando = false;
+      this.cdr.detectChanges();
     }
   }
 }

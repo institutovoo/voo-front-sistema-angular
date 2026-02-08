@@ -55,14 +55,9 @@ export class AutenticacaoController {
           },
           error: (err: any) => {
             console.error('[AutenticacaoController] Erro de rede ou servidor ao logar:', err);
-            
-            // Tenta extrair a mensagem de erro retornada pelo BFF (ex: erro 400 com body JSON)
-            let mensagem = 'Erro de conexão ou credenciais inválidas';
-            if (err.error && err.error.message) {
-              mensagem = err.error.message;
-            } else if (err.error && err.error.mensagem) {
-              mensagem = err.error.mensagem;
-            }
+
+            // O Interceptor já normaliza o erro para { sucesso: false, mensagem: '...' }
+            const mensagem = err.mensagem || err.message || 'Erro de conexão ou credenciais inválidas';
 
             resolve({ sucesso: false, mensagem });
           },
@@ -106,7 +101,7 @@ export class AutenticacaoController {
         next: (response: AuthResponse) => {
           console.log('[AutenticacaoController] Resposta da recuperação:', response);
           if (response.sucesso) {
-            this.router.navigate(['/reset-senha'], { queryParams: { email } });
+            this.router.navigate(['/usuarios/reset-senha'], { queryParams: { email } });
           }
           resolve({
             sucesso: true,

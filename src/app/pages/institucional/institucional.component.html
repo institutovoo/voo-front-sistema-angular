@@ -711,22 +711,22 @@
     <div class="contato__formulario-wrapper">
       <form class="contato-form" [formGroup]="formularioContato" (ngSubmit)="enviarMensagem()">
         @if (mensagemEnviada) {
-        <div class="contato-form__sucesso">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-            <polyline points="22 4 12 14.01 9 11.01" />
-          </svg>
-          <span>Mensagem enviada com sucesso! Retornaremos em breve.</span>
-        </div>
+          <div class="contato-form__sucesso">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+            <span>Mensagem enviada com sucesso! Retornaremos em breve.</span>
+          </div>
         }
 
         <div class="contato-form__grupo">
@@ -742,7 +742,7 @@
             "
           />
           @if (formularioContato.get('nome')?.invalid && formularioContato.get('nome')?.touched) {
-          <span class="contato-form__erro">Por favor, informe seu nome</span>
+            <span class="contato-form__erro">Por favor, informe seu nome</span>
           }
         </div>
 
@@ -759,7 +759,7 @@
             "
           />
           @if (formularioContato.get('email')?.invalid && formularioContato.get('email')?.touched) {
-          <span class="contato-form__erro">Por favor, informe um e-mail válido</span>
+            <span class="contato-form__erro">Por favor, informe um e-mail válido</span>
           }
         </div>
 
@@ -780,9 +780,10 @@
             <option value="sugestao">Sugestão</option>
             <option value="outro">Outro</option>
           </select>
-          @if (formularioContato.get('assunto')?.invalid &&
-          formularioContato.get('assunto')?.touched) {
-          <span class="contato-form__erro">Por favor, selecione um assunto</span>
+          @if (
+            formularioContato.get('assunto')?.invalid && formularioContato.get('assunto')?.touched
+          ) {
+            <span class="contato-form__erro">Por favor, selecione um assunto</span>
           }
         </div>
 
@@ -799,11 +800,12 @@
               formularioContato.get('mensagem')?.touched
             "
           ></textarea>
-          @if (formularioContato.get('mensagem')?.invalid &&
-          formularioContato.get('mensagem')?.touched) {
-          <span class="contato-form__erro"
-            >Por favor, escreva uma mensagem (mínimo 10 caracteres)</span
-          >
+          @if (
+            formularioContato.get('mensagem')?.invalid && formularioContato.get('mensagem')?.touched
+          ) {
+            <span class="contato-form__erro"
+              >Por favor, escreva uma mensagem (mínimo 10 caracteres)</span
+            >
           }
         </div>
 
@@ -953,9 +955,11 @@
 
 <!-- Modais de Diretrizes -->
 @if (mostrarTermos) {
-<app-termos (fechou)="fecharTermos()"></app-termos>
-} @if (mostrarPrivacidade) {
-<app-privacidade (fechou)="fecharPrivacidade()"></app-privacidade>
-} @if (mostrarCookies) {
-<app-cookies (fechou)="fecharCookies()"></app-cookies>
+  <app-termos (fechou)="fecharTermos()"></app-termos>
+}
+@if (mostrarPrivacidade) {
+  <app-privacidade (fechou)="fecharPrivacidade()"></app-privacidade>
+}
+@if (mostrarCookies) {
+  <app-cookies (fechou)="fecharCookies()"></app-cookies>
 }

@@ -93,8 +93,12 @@
       <h1 class="titulo">Criar conta</h1>
       <p class="subtitulo">Preencha os dados abaixo para começar</p>
 
-      <div *ngIf="erro" class="mensagem-erro">{{ erro }}</div>
-      <div *ngIf="sucesso" class="mensagem-sucesso">{{ sucesso }}</div>
+      <div *ngIf="erro" class="mensagem-erro" style="color: #dc2626; background: #fef2f2; padding: 12px; border-radius: 8px; margin-bottom: 16px; border: 1px solid #fee2e2; font-size: 14px;">
+        {{ erro }}
+      </div>
+      <div *ngIf="sucesso" class="mensagem-sucesso" style="color: #166534; background: #dcfce7; padding: 12px; border-radius: 8px; margin-bottom: 16px; border: 1px solid #bbf7d0; font-size: 14px;">
+        {{ sucesso }}
+      </div>
 
       <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()">
         <div class="tipo-conta">
@@ -430,10 +434,10 @@
           tipo="submit"
           variante="primario"
           [larguraTotal]="true"
-          [carregando]="enviando"
-          [desabilitado]="enviando"
+          [carregando]="isLoading"
+          [desabilitado]="isLoading"
         >
-          {{ enviando ? 'Cadastrando...' : 'Criar minha conta' }}
+          Criar minha conta
         </app-botao>
       </form>
 

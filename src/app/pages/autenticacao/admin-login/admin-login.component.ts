@@ -24,7 +24,7 @@ export class AdminLoginComponent implements OnInit {
 
   formulario!: FormGroup;
   erro = '';
-  carregando = false;
+  isLoading = false;
 
   ngOnInit(): void {
     this.formulario = this.fb.group({
@@ -36,7 +36,7 @@ export class AdminLoginComponent implements OnInit {
 
   async login(): Promise<void> {
     if (this.formulario.valid) {
-      this.carregando = true;
+      this.isLoading = true;
       this.erro = '';
       this.cdr.detectChanges();
       
@@ -66,7 +66,7 @@ export class AdminLoginComponent implements OnInit {
         this.alertaService.erro(this.erro);
         this.cdr.detectChanges();
       } finally {
-        this.carregando = false;
+        this.isLoading = false;
         this.cdr.detectChanges();
       }
     } else {

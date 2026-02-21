@@ -41,7 +41,7 @@ export class LoginComponent {
   });
 
   erro = '';
-  carregando = false;
+  isLoading = false;
   mostrarAlertaBloqueio = false;
 
   async enviar() {
@@ -50,7 +50,7 @@ export class LoginComponent {
       return;
     }
 
-    this.carregando = true;
+    this.isLoading = true;
     this.erro = '';
     this.mostrarAlertaBloqueio = false;
     this.cdr.detectChanges();
@@ -89,7 +89,7 @@ export class LoginComponent {
       this.erro = 'Ocorreu um erro inesperado ao tentar logar.';
       this.alertaService.erro(this.erro);
     } finally {
-      this.carregando = false;
+      this.isLoading = false;
       this.cdr.detectChanges();
     }
   }

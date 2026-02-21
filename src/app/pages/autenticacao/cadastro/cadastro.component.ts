@@ -42,7 +42,7 @@ export class CadastroComponent {
   sucesso = '';
   buscandoCep = false;
   enderecoCarregado = false;
-  enviando = false;
+  isLoading = false;
 
   get rotuloNome(): string {
     const tipo = this.formulario.get('tipoConta')?.value;
@@ -78,7 +78,7 @@ export class CadastroComponent {
     'Ensino fundamental',
     'Ensino médio',
     'Ensino superior',
-    'Pós-graduação',
+    'MBA',
     'Mestrado',
     'Doutorado',
     'Outros',
@@ -401,9 +401,11 @@ export class CadastroComponent {
 
     console.log('[Cadastro] Dados preparados para envio:', { ...dadosCadastro, senha: '***' });
 
-    this.enviando = true;
-
     try {
+      this.isLoading = true;
+      this.erro = '';
+      this.sucesso = '';
+      this.cdr.detectChanges(); // Garante que o loading apareça
       const resultado = await this.authController.cadastrar(dadosCadastro);
       console.log('[Cadastro] Resposta do servidor:', resultado);
 
@@ -416,11 +418,12 @@ export class CadastroComponent {
           resultado.mensagem || 'Erro ao realizar cadastro. Verifique os dados e tente novamente.';
         console.error('[Cadastro] Erro retornado pelo servidor:', resultado.mensagem);
       }
-    } catch (err) {
-      this.erro = 'Ocorreu um erro inesperado de comunicação com o servidor.';
+    } catch (err: any) {
+      // O Interceptor já normaliza o erro
+      this.erro = err.mensagem || err.message || 'Erro ao realizar cadastro. Tente novamente.';
       console.error('[Cadastro] Erro crítico na requisição:', err);
     } finally {
-      this.enviando = false;
+      this.isLoading = false;
     }
   }
 

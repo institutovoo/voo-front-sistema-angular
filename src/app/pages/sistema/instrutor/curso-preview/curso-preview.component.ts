@@ -1,9 +1,8 @@
 import { Component, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SistemaLayoutComponent } from '../../../../components/sistema/layout/layout.component';
 import { HeaderIconeComponent } from '../../../../components/sistema/header/components/icone/icone.component';
-import { BarraProgressoComponent } from '../../../../components/sistema/barra-progresso/barra-progresso.component';
 import { FormsModule } from '@angular/forms';
 
 interface Aula {
@@ -56,10 +55,8 @@ interface CursoCompleto {
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     SistemaLayoutComponent,
     HeaderIconeComponent,
-    BarraProgressoComponent,
     FormsModule,
   ],
   templateUrl: './curso-preview.component.html',

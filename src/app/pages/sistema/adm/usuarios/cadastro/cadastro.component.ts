@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { LogoComponent } from '../../../../../components/logo/logo.component';
 import { HeaderIconeComponent } from '../../../../../components/sistema/header/components/icone/icone.component';
+import { BotaoComponent } from '../../../../../components/botao/botao.component';
 import { AutenticacaoController } from '../../../../../core/controller/autenticacao.controller';
 import { AlertaService } from '../../../../../core/service/alerta.service';
 import { CadastroRequest } from '../../../../../core/model/autenticacao.model';
@@ -11,7 +12,7 @@ import { CadastroRequest } from '../../../../../core/model/autenticacao.model';
 @Component({
   selector: 'app-adm-cadastro-usuario',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, LogoComponent, HeaderIconeComponent],
+  imports: [CommonModule, FormsModule, RouterLink, LogoComponent, HeaderIconeComponent, BotaoComponent],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.scss'
 })
@@ -28,7 +29,7 @@ export class AdmCadastroUsuarioComponent implements OnInit {
     status: 'ativo'
   };
 
-  enviando = false;
+  isLoading = false;
 
   ngOnInit() {}
 
@@ -38,7 +39,7 @@ export class AdmCadastroUsuarioComponent implements OnInit {
       return;
     }
 
-    this.enviando = true;
+    this.isLoading = true;
 
     // Mapeia o tipo simplificado para o tipo esperado pelo backend
     let tipoContaFinal = 'Aluno';
@@ -65,7 +66,7 @@ export class AdmCadastroUsuarioComponent implements OnInit {
     } catch (error) {
       this.alertaService.erro('Erro de comunicação com o servidor.');
     } finally {
-      this.enviando = false;
+      this.isLoading = false;
     }
   }
 }

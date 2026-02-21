@@ -51,16 +51,22 @@
       </div>
 
       <div class="acoes">
-        <button type="button" class="btn-cancelar" routerLink="/admin/usuarios" [disabled]="enviando">
-          Cancelar
-        </button>
-        <button
-          type="submit"
-          class="btn-cadastrar"
-          [disabled]="!cadastroForm.form.valid || enviando"
+        <app-botao
+          tipo="button"
+          variante="outline"
+          routerLink="/admin/usuarios"
+          [desabilitado]="isLoading"
         >
-          {{ enviando ? 'Cadastrando...' : 'Cadastrar' }}
-        </button>
+          Cancelar
+        </app-botao>
+        <app-botao
+          tipo="submit"
+          variante="primario"
+          [desabilitado]="!cadastroForm.form.valid"
+          [carregando]="isLoading"
+        >
+          Cadastrar
+        </app-botao>
       </div>
     </form>
   </div>

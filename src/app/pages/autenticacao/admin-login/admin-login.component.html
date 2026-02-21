@@ -47,7 +47,12 @@
         </label>
       </div>
 
-      <app-botao tipo="submit" variante="primario" [desabilitado]="!formulario.valid">
+      <app-botao
+        tipo="submit"
+        variante="primario"
+        [desabilitado]="!formulario.valid"
+        [carregando]="isLoading"
+      >
         Entrar
       </app-botao>
     </form>
